@@ -13,23 +13,28 @@ import lombok.Data;
 @Data
 @Entity
 public class Servicio {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
-	private String title;
-	private String description;
-	private Date registerDate;
-	private Date happeningDate;
-	@ManyToOne
-	@JoinColumn(name = "studentId_fk")
-	private Student studentId;
-	@ManyToOne
-	@JoinColumn(name = "businessId_fk")
-	private Business businessId;
-	@ManyToOne
-	@JoinColumn(name = "profesionalFamilyId_fk")
-	private ProfesionalFamily familyId;
-	private int valoration;
-	private boolean finished;
-	private String comment;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    private String title;
+    private String description;
+    private Date registerDate;
+    private Date happeningDate;
+
+    @ManyToOne
+    @JoinColumn(name = "studentId")
+    private Student studentId;
+
+    @ManyToOne
+    @JoinColumn(name = "businessId")
+    private Business businessId;
+
+    @ManyToOne
+    @JoinColumn(name = "profesionalFamilyId")
+    private ProfesionalFamily profesionalFamilyId;
+
+    private int valoration;
+    private boolean finished;
+    private String comment;
 }

@@ -14,23 +14,20 @@ import lombok.Data;
 @Entity
 @Data
 public class Report {
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
-	
-//	@NotNull(message = "Custom message")
-	private Date fullDate;
-	private int serviceTime;
-	private String report;
-	
-	@ManyToOne
-	@JoinColumn(name = "studentId_fk")
-	private Student student;
-	
-	@OneToOne
-	@JoinColumn(name = "serviceId_fk")
-	private Servicio servicio;
-	
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+
+    private Date fullDate;
+    private int serviceTime;
+    private String report;
+
+    @ManyToOne
+    @JoinColumn(name = "studentId")
+    private Student studentId;
+
+    @OneToOne
+    @JoinColumn(name = "servicioId")
+    private Servicio servicioId;
 }
