@@ -19,7 +19,7 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private String name, surname, email, password;
+    private String name, surname, email, password, role;
 
     @ManyToOne
     @JoinColumn(name = "profesionalFamilyId")
@@ -27,4 +27,6 @@ public class Student {
 
     @OneToMany(mappedBy = "studentId")
     private List<Servicio> servicios;
+    
+    private boolean enabled;
 }

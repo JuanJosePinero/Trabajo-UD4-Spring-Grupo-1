@@ -6,7 +6,8 @@ import lombok.Data;
 public class StudentModel {
 
 	private int id;
-	private String name, surname, email, password;
+	private String name, surname, email, password, role;
+	private boolean enabled;
 	
 }
 
