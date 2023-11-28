@@ -26,7 +26,7 @@ public class SecurityConfig {
 	    http
 	        .authorizeHttpRequests(authorizeRequests ->
 	            authorizeRequests
-	                .requestMatchers("/", "/courses/**", "/imgs/**", "/auth/**", "/webjars/**", "/css/**", "/home/**" ,"/files/**"
+	                .requestMatchers("/", "/courses/**", "/imgs/**", "/auth/**", "/webjars/**", "/css/**", "/home/**", "/register" ,"/files/**"
 	                ).permitAll()
 	                .requestMatchers(
 	                    "/admin/**"
@@ -47,8 +47,6 @@ public class SecurityConfig {
 	        );
 	    return http.build();
 	}
-
-
 
     @Bean
      UserDetailsService userDetailsService() {

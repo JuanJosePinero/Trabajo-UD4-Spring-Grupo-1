@@ -1,0 +1,36 @@
+@charset "UTF-8";
+
+body {
+	background-image: url('/imgs/background.png');
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+}
+
+.container {
+	width: 300px;
+	margin: auto;
+	margin-top: 50px;
+	padding: 20px;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	background-color: rgba(248, 249, 250, 0.8);
+}
+
+.container input {
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.form-heading {
+	text-align: center;
+}
+
+.form-group {
+	text-align: center;
+}
+
+.btn-primary {
+	width: 100%;
+}
+
