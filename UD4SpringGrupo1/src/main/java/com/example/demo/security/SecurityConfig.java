@@ -15,15 +15,8 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled=true)
 public class SecurityConfig {
 
-	
-//	Para que sirva para cualquier role que yo le meta
-//	http.authorizeHttpRequests((requests) -> requests.requestMatchers("/", "/courses/**", "/imgs/**", "/auth/**",
-//			"/webjars/**", "/css/**", "/files/**").permitAll().anyRequest().hasRole("cualquierRole").authenticated()
-//		)
-	
 	@Bean
 	AuthenticationManager authenticationManager(AuthenticationConfiguration authentificationConfiguration) throws Exception {
 		return authentificationConfiguration.getAuthenticationManager();
@@ -34,7 +27,7 @@ public class SecurityConfig {
 	    http
 	        .authorizeHttpRequests(authorizeRequests ->
 	            authorizeRequests
-	                .requestMatchers("/", "/courses/**", "/imgs/**", "/auth/**", "/webjars/**", "/css/**", "/files/**"
+	                .requestMatchers("/", "/courses/**", "/imgs/**", "/auth/**", "/webjars/**", "/css/**", "/home/**" ,"/files/**"
 	                ).permitAll()
 	                .requestMatchers(
 	                    "/admin/**"
@@ -43,7 +36,7 @@ public class SecurityConfig {
 	        )
 	        .formLogin(formLogin ->
 	            formLogin
-	                .loginPage("/auth/login")
+	                .loginPage("/login")
 	                .defaultSuccessUrl("/courses/listCourses")
 	                .permitAll()
 	        )
