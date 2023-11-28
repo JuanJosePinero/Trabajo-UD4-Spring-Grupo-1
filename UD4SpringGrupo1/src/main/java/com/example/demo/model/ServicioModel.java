@@ -3,7 +3,7 @@ package com.example.demo.model;
 import java.sql.Date;
 
 import com.example.demo.entity.Business;
-import com.example.demo.entity.ProfesionalFamily;
+import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Student;
 
 import lombok.Data;
@@ -28,7 +28,7 @@ public class ServicioModel {
 	private Business businessId;
 	
 
-	private ProfesionalFamily familyId;
+	private ProFamily familyId;
 	
 	private int valoration;
 	

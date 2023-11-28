@@ -32,7 +32,7 @@ public class Servicio {
 
     @ManyToOne
     @JoinColumn(name = "profesionalFamilyId")
-    private ProfesionalFamily profesionalFamilyId;
+    private ProFamily profesionalFamilyId;
 
     private int valoration;
     private boolean finished;

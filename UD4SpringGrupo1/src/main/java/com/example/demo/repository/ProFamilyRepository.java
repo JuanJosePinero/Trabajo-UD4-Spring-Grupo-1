@@ -3,11 +3,13 @@ package com.example.demo.repository;
 import java.io.Serializable;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import com.example.demo.entity.ProfesionalFamily;
+import com.example.demo.entity.ProFamily;
 
-public interface ProFamilyRepository extends JpaRepository<ProfesionalFamily , Serializable>{
+@Repository("proFamilyRepository")
+public interface ProFamilyRepository extends JpaRepository<ProFamily , Serializable>{
 	
-	public abstract ProfesionalFamily findByName(String name);
+	public abstract ProFamily findByName(String name);
 
 }

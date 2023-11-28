@@ -47,6 +47,7 @@ public class StudentServiceImpl implements StudentService {
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
 	@Override
 	public List<StudentModel> listAllStudents() {
 		List<StudentModel> students = new ArrayList<>();

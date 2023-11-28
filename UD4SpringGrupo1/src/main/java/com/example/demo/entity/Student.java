@@ -23,7 +23,7 @@ public class Student {
 
     @ManyToOne
     @JoinColumn(name = "profesionalFamilyId")
-    private ProfesionalFamily profesionalFamily;
+    private ProFamily profesionalFamily;
 
     @OneToMany(mappedBy = "studentId")
     private List<Servicio> servicios;
