@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -23,7 +22,7 @@ public class SecurityConfig {
 	}
 	
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	    http
 	        .authorizeHttpRequests(authorizeRequests ->
 	            authorizeRequests
@@ -52,15 +51,15 @@ public class SecurityConfig {
 
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.withDefaultPasswordEncoder()
-            .username("user")
+     UserDetailsService userDetailsService() {
+        UserDetails user = User
+            .withUsername("user")
             .password("password")
             .roles("USER")
             .build();
 
-        UserDetails admin = User.withDefaultPasswordEncoder()
-            .username("admin")
+        UserDetails admin = User
+            .withUsername("admin")
             .password("adminpassword")
             .roles("ADMIN")
             .build();
