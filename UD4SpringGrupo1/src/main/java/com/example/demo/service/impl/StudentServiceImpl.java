@@ -41,7 +41,7 @@ public class StudentServiceImpl implements StudentService {
 		Student student = model2entity(studentModel);
 		student.setPassword(passwordEncoder().encode(student.getPassword()));
 		student.setEnabled(false);
-		student.setRole("ROLE_USER");
+		student.setRole("u");
 		return studentRepository.save(student);
 	}
 

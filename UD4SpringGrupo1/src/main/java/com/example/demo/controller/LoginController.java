@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.model.StudentModel;
-import com.example.demo.service.LoginService;
 import com.example.demo.service.StudentService;
 
 @Controller

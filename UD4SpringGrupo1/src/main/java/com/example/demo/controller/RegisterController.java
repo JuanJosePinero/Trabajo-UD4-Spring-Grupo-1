@@ -1,13 +1,18 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.demo.entity.ProFamily;
 import com.example.demo.model.StudentModel;
+import com.example.demo.service.ProFamilyService;
 import com.example.demo.service.StudentService;
 
 @Controller
@@ -19,15 +24,22 @@ public class RegisterController {
 	 @Autowired
 	 private StudentService studentService;
 	
-	@GetMapping("/register")
-	public String register() {
-		return REGISTER_VIEW;
-	}
+	 @Autowired
+	    private ProFamilyService proFamilyService;
+
+	    @GetMapping("/register")
+	    public String registerForm(@ModelAttribute("studentModel") StudentModel studentModel, Model model) {
+	        // Agregar la lista de nombres de las familias profesionales al modelo
+	        List<ProFamily> profesionalFamilies = proFamilyService.getAllProfesionalFamilies();
+	        model.addAttribute("profesionalFamilies", profesionalFamilies);
+
+	        return REGISTER_VIEW;
+	    }
 	
-	@PostMapping("/register")
-    public String registerSubmit(@ModelAttribute("student") StudentModel studentModel) {
-        studentService.register(studentModel);
-        return "redirect:/login"; 
-    }
+	    @PostMapping("/register")
+	    public String registerSubmit(@ModelAttribute("studentModel") StudentModel studentModel) {
+	        studentService.register(studentModel);
+	        return "redirect:/login"; 
+	    }
 
 }
