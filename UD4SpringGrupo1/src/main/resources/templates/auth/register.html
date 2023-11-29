@@ -10,10 +10,13 @@
 </head>
 
 <body>
+<!-- 
 <nav class="navbar navbar-dark bg-dark">
     <span class="navbar-brand mb-0 h1">Colegio Salesiano</span>
     <a class="btn btn-outline-light" href="/home">Home</a>
 </nav>
+-->
+<div th:replace="main/CustomNavbar.html"></div>
 <br><br>
 <div class="container mt-5">
     <form class="form-signin" method="POST" th:action="@{/register}">

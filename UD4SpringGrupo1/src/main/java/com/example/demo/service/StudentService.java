@@ -10,42 +10,20 @@ import com.example.demo.entity.Student;
 import com.example.demo.model.StudentModel;
 import com.example.demo.repository.StudentRepository;
 
-@Service
-public class StudentService {
-	
-	List<StudentModel> listAllStudents() {
-		return null;
-	}
-	
-	@Autowired
-    private StudentRepository studentRepository;
+public interface StudentService {
 
-    public void register(StudentModel studentModel) {
-    	ModelMapper mp = new ModelMapper();
-    	Student student = mp.map(studentModel, Student.class);
-        studentRepository.save(student);
-    }
-    
-    public boolean login(String email, String password) {
-        // Here you can implement authentication logic
-        // For simplicity, I'll just return true for any credentials
-        return true;
-    }
-    
-    
-    
-	int deleteStudent(int id) {
-		return 0;
-	}
-	Student updateStudent(StudentModel studentModel) {
-		return null;
-	}
-	Student enable(StudentModel studentModel) {
-		studentModel.setEnabled(true);
-		ModelMapper mp = new ModelMapper();
-		return mp.map(studentModel, Student.class);
-	}
-	
-	
+	List<StudentModel> listAllStudents();
+
+	public Student register(StudentModel studentModel);
+
+	public boolean login(String email, String password);
+
+	public boolean authenticate(String email, String password);
+
+	int deleteStudent(int id);
+
+	Student updateStudent(StudentModel studentModel);
+
+	Student enable(StudentModel studentModel);
 
 }

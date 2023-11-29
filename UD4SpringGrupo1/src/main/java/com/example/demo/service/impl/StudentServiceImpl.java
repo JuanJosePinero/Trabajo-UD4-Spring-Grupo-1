@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Student;
 import com.example.demo.model.StudentModel;
@@ -17,6 +18,7 @@ import com.example.demo.repository.StudentRepository;
 import com.example.demo.service.StudentService;
 
 @Configuration
+@Service("studentService")
 public class StudentServiceImpl implements StudentService {
 
 	@Autowired
@@ -35,7 +37,7 @@ public class StudentServiceImpl implements StudentService {
 	
 
 	@Override
-	public com.example.demo.entity.Student register(com.example.demo.model.StudentModel studentModel) {
+	public Student register(StudentModel studentModel) {
 		Student student = model2entity(studentModel);
 		student.setPassword(passwordEncoder().encode(student.getPassword()));
 		student.setEnabled(false);
@@ -71,6 +73,18 @@ public class StudentServiceImpl implements StudentService {
 	public Student enable(StudentModel studentModel) {
 		studentModel.setEnabled(true);
 		return studentRepository.save(model2entity(studentModel));
+	}
+
+	@Override
+	public boolean login(String email, String password) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean authenticate(String email, String password) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
