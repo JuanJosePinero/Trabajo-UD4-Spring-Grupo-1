@@ -32,7 +32,7 @@ public class LoginController {
 	@GetMapping("/adminScreen")
 	public String adminScreen(Model model) {
 	    List<StudentModel> students = studentService.listAllStudents();
-	    model.addAttribute("studentModel", students); 
+	    model.addAttribute("students", students); 
 	    return ADMIN_VIEW;
 	}
 	
