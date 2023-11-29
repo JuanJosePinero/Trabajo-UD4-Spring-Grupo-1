@@ -77,9 +77,24 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public boolean login(String email, String password) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+        Student student = studentRepository.findByEmail(email);
+
+        // Verifica si el estudiante existe y si la contraseña coincide
+        return student != null && passwordEncoder().matches(password, student.getPassword());
+    }
+//	public boolean login(String email, String password) {
+//		 Student student = studentRepository.findByEmail(email);
+//		 System.out.println("HOL");
+//		    if (student != null && passwordEncoder().matches(password, student.getPassword())) {
+//		        // Passwords match, login successful
+//		    	System.out.println("Passwords match, login successful");
+//		        return true;
+//		    } else {
+//		        // Either the email is not found or the passwords do not match
+//		    	System.out.println("Either the email is not found or the passwords do not match");
+//		        return false;
+//		    }
+//	}
 
 	@Override
 	public boolean authenticate(String email, String password) {
