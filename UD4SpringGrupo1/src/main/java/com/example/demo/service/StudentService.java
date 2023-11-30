@@ -2,13 +2,11 @@ package com.example.demo.service;
 
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.example.demo.entity.Student;
 import com.example.demo.model.StudentModel;
-import com.example.demo.repository.StudentRepository;
 
 public interface StudentService {
 
@@ -26,4 +24,5 @@ public interface StudentService {
 
 	Student enable(StudentModel studentModel);
 
+//	UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }

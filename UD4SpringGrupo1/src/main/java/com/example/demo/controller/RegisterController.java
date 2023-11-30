@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.ProFamily;
 import com.example.demo.model.StudentModel;
@@ -37,8 +38,9 @@ public class RegisterController {
 	    }
 	
 	    @PostMapping("/register")
-	    public String registerSubmit(@ModelAttribute("studentModel") StudentModel studentModel) {
+	    public String registerSubmit(@ModelAttribute("studentModel") StudentModel studentModel, RedirectAttributes flash) {
 	        studentService.register(studentModel);
+	        flash.addFlashAttribute("success", "Student registered succesfully!");
 	        return "redirect:/login"; 
 	    }
 

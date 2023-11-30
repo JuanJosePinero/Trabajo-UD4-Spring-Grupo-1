@@ -11,5 +11,6 @@ import com.example.demo.entity.Student;
 public interface StudentRepository extends JpaRepository<Student, Serializable>{
 	
 	public abstract Student findByEmail(String email);
+//	public abstract Student findByUsername(String name);
 
 }
