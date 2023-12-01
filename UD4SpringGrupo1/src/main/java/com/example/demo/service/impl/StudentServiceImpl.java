@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,7 +23,7 @@ import com.example.demo.service.StudentService;
 
 @Configuration
 @Service("studentService")
-public class StudentServiceImpl implements StudentService {
+public class StudentServiceImpl implements StudentService, UserDetailsService {
 
 	@Autowired
 	@Qualifier("studentRepository")
@@ -104,22 +105,26 @@ public class StudentServiceImpl implements StudentService {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-//	@Override
-//	public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-//	    Student student = studentRepository.findByUsername(name);
-//	    
-//	    if (student != null) {
-//	        return User.builder()
-//	                .username(student.getName())
-//	                .password(student.getPassword())
-//	                .disabled(!student.isEnabled())
-//	                .roles(student.getRole())
-//	                .build();
-//	    } else {
-//	        throw new UsernameNotFoundException("Student not found");
-//	    }
-//	}
+
+	public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
+    Student student = studentRepository.findByEmail(email);
+    
+    if (student != null) {
+        return User.builder()
+                .username(student.getName())
+                .password(student.getPassword())
+                .disabled(!student.isEnabled())
+                .roles(student.getRole())
+                .build();
+    } else {
+        throw new UsernameNotFoundException("Student not found");
+    }
+}
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 
 }

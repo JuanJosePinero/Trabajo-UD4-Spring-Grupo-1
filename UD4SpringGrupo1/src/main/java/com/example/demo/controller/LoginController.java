@@ -17,8 +17,8 @@ import com.example.demo.service.StudentService;
 @RequestMapping("/")
 public class LoginController {
 
-	private static final String LOGIN_VIEW = "auth/login.html";
-	private static final String ADMIN_VIEW = "admin/adminScreen";
+	private static final String LOGIN_VIEW = "/auth/login.html";
+	private static final String ADMIN_VIEW = "/admin/adminScreen";
 	
 	@Autowired
 	 private StudentService studentService;
