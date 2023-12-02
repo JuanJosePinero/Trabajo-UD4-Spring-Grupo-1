@@ -26,11 +26,11 @@ public class SecurityConfig {
 	    http
 	        .authorizeHttpRequests(authorizeRequests ->
 	            authorizeRequests
-	                .requestMatchers("/", "/courses/**", "/imgs/**", "/errors", "/auth/**", "/webjars/**", "/css/**", "/home/**", "/register" ,"/files/**"
+	                .requestMatchers("/", "/courses/**", "/imgs/**", "/admin/**", "/errors", "/auth/**", "/webjars/**", "/css/**", "/home/**", "/register" ,"/files/**"
 	                ).permitAll()
-	                .requestMatchers(
-	                    "/admin/**"
-	                ).hasRole("ADMIN")
+//	                .requestMatchers(
+//	                    "/admin/**"
+//	                ).hasRole("a")
 	                .anyRequest().authenticated()
 	        )
 	        .formLogin(formLogin ->
@@ -43,7 +43,7 @@ public class SecurityConfig {
 	            logout
 	                .permitAll()
 	                .logoutUrl("/logout")
-	                .logoutSuccessUrl("/auth/login?logout")
+	                .logoutSuccessUrl("/login?logout")
 	        );
 	    return http.build();
 	}

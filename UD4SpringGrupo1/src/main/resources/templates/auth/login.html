@@ -23,16 +23,18 @@
 	<br>
 	<br>
 	<div class="container mt-5 login-container">
+	
 		<form class="form-signin" method="POST" th:action="@{/login}">
 			<h2 class="form-heading text-center">Log in</h2>
 			<div class="form-group">
 
-				<input name="email" type="text" class="form-control"
-					placeholder="Email" autofocus="true" /> <input name="password"
+				<input id="email" name="email" type="text" class="form-control"
+					placeholder="Email" autofocus="true" /> <input id="password" name="password"
 					type="password" class="form-control" placeholder="Password" />
 				<div th:if="${param.error}">
 					<p style="color: red;">Invalid credentials. Please try again.</p>
 				</div>
+				<input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 				<button class="btn btn-lg btn-primary btn-block" type="submit">Log
 					In</button>
 				<h6 class="text-center mt-3">
@@ -40,6 +42,7 @@
 					<a th:href="@{/register}">Create an account</a>
 				</h6>
 			</div>
+			<input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 		</form>
 	</div>
 

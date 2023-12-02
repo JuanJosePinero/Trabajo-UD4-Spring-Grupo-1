@@ -8,7 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -83,7 +87,6 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 	public boolean login(String email, String password) {
         Student student = studentRepository.findByEmail(email);
 
-        // Verifica si el estudiante existe y si la contraseña coincide
         return student != null && passwordEncoder().matches(password, student.getPassword());
     }
 //	public boolean login(String email, String password) {
@@ -107,18 +110,18 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 	}
 
 	public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
-    Student student = studentRepository.findByEmail(email);
+    com.example.demo.entity.Student student = studentRepository.findByEmail(email);
+    
+    UserBuilder builder = null;
     
     if (student != null) {
-        return User.builder()
-                .username(student.getName())
-                .password(student.getPassword())
-                .disabled(!student.isEnabled())
-                .roles(student.getRole())
-                .build();
-    } else {
+    	builder = User.withUsername(email);
+        		builder.disabled(false);
+        		builder.password(student.getPassword());
+                builder.authorities(new SimpleGrantedAuthority(student.getRole()));
+    } else
         throw new UsernameNotFoundException("Student not found");
-    }
+    return builder.build();
 }
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
