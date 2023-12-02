@@ -36,7 +36,7 @@
 
 				<!-- Add the dropdown for Profesional Family -->
 				<label for="profesionalFamily">Profesional Family:</label> <select
-					name="selectedProfesionalFamily" class="form-control">
+					name="ProfesionalFamily" class="form-control">
 					<option th:each="proFamily : ${profesionalFamilies}"
 						th:value="${proFamily.id}" th:text="${proFamily.name}"></option>
 				</select>
