@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,11 +24,13 @@ public class LoginController {
 	private static final String ADMIN_VIEW = "/admin/adminScreen";
 	
 	@Autowired
+	@Qualifier("studentService")
 	 private StudentService studentService;
 	
 	@GetMapping("/auth/login")
 	public String login(Model model, @RequestParam(name="error", required=false) String error, 
 			@RequestParam(name="logout", required=false) String logout) {
+		System.out.println("Hola desde login controller");
 		model.addAttribute("student", new Student());
 		model.addAttribute("error", error);
 		model.addAttribute("logout", logout);
@@ -41,9 +44,9 @@ public class LoginController {
 	    return ADMIN_VIEW;
 	}
 	
-//	@PostMapping("/login")
+//	@PostMapping("/auth/login")
 //    public String loginSubmit(@ModelAttribute("studentModel") StudentModel studentModel, Model model) {
-//        if (studentService.login(studentModel.getEmail(), studentModel.getPassword())) {
+//        if (studentService.login(studentModel.getUsername(), studentModel.getPassword())) {
 //            return "redirect:/" + ADMIN_VIEW;
 //        } else {
 //            model.addAttribute("error", "Invalid credentials");

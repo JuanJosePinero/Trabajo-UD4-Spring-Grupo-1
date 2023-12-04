@@ -24,5 +24,5 @@ public interface StudentService {
 
 	Student enable(StudentModel studentModel);
 
-//	UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+	UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }

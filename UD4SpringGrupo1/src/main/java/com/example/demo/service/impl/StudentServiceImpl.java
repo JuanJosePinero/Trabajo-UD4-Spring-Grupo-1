@@ -58,6 +58,26 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 		return new BCryptPasswordEncoder();
 	}
 	
+	public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
+	    com.example.demo.entity.Student student = studentRepository.findByUsername(email);
+	    System.out.println("Student service impl dice hola");
+	    UserBuilder builder = null;
+	    
+	    if (student != null) {
+	    	builder = User.withUsername(email);
+	        		builder.disabled(false);
+	        		builder.password(student.getPassword());
+//	        		if(student.getRole().equalsIgnoreCase("u")) {
+//	        			
+//	        		}else if(student.getRole().equalsIgnoreCase("a")) {
+//	        			
+//	        		}
+	                builder.authorities(new SimpleGrantedAuthority(student.getRole()));
+	    } else
+	        throw new UsernameNotFoundException("Student not found");
+	    return builder.build();
+	}
+	
 	@Override
 	public List<StudentModel> listAllStudents() {
 		List<StudentModel> students = new ArrayList<>();
@@ -105,29 +125,31 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 
 	@Override
 	public boolean authenticate(String email, String password) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
-	public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
-    com.example.demo.entity.Student student = studentRepository.findByUsername(email);
-    
-    UserBuilder builder = null;
-    
-    if (student != null) {
-    	builder = User.withUsername(email);
-        		builder.disabled(false);
-        		builder.password(student.getPassword());
-                builder.authorities(new SimpleGrantedAuthority(student.getRole()));
-    } else
-        throw new UsernameNotFoundException("Student not found");
-    return builder.build();
-}
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		 com.example.demo.entity.Student student = studentRepository.findByUsername(username);
+		    System.out.println("Student service impl dice hola");
+		    UserBuilder builder = null;
+		    
+		    if (student != null) {
+		    	builder = User.withUsername(username);
+		        		builder.disabled(false);
+		        		builder.password(student.getPassword());
+//		        		if(student.getRole().equalsIgnoreCase("u")) {
+//		        			
+//		        		}else if(student.getRole().equalsIgnoreCase("a")) {
+//		        			
+//		        		}
+		                builder.authorities(new SimpleGrantedAuthority(student.getRole()));
+		    } else
+		        throw new UsernameNotFoundException("Student not found");
+		    return builder.build();
+		}
 
 
 }

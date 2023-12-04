@@ -29,15 +29,15 @@ public class SecurityConfig {
 	                .requestMatchers("/", "/courses/**", "/imgs/**", "/admin/**", "/error", 
 	                		"/auth/**", "/webjars/**", "/css/**", "/home/**", "/files/**"
 	                ).permitAll()
-//	                .requestMatchers(
-//	                    "/admin/**"
-//	                ).hasRole("a")
+	                .requestMatchers(
+	                    "/admin/**"
+	                ).hasRole("a")
 	                .anyRequest().authenticated()
 	        )
 	        .formLogin(formLogin ->
 	            formLogin
 	                .loginPage("/auth/login")
-	                .defaultSuccessUrl("/home/")
+	                .defaultSuccessUrl("/courses/listCourses")
 	                .permitAll()
 	        )
 	        .logout(logout ->
@@ -46,6 +46,7 @@ public class SecurityConfig {
 	                .logoutUrl("/auth/logout")
 	                .logoutSuccessUrl("/auth/login?logout")
 	        );
+	    System.out.println("Hola desde security config");
 	    return http.build();
 	}
 
@@ -54,13 +55,13 @@ public class SecurityConfig {
         UserDetails user = User
             .withUsername("user")
             .password("password")
-            .roles("USER")
+            .roles("u")
             .build();
 
         UserDetails admin = User
             .withUsername("admin")
             .password("adminpassword")
-            .roles("ADMIN")
+            .roles("a")
             .build();
 
         return new InMemoryUserDetailsManager(user, admin);
