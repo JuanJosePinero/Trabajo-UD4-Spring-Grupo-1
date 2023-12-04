@@ -11,6 +11,7 @@ import com.example.demo.model.StudentModel;
 public interface StudentService {
 
 	List<StudentModel> listAllStudents();
+	StudentModel getStudentById(int id);
 
 	public Student register(StudentModel studentModel);
 

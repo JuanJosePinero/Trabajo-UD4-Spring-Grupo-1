@@ -36,7 +36,8 @@ public class Student implements UserDetails{
     @OneToMany(mappedBy = "studentId")
     private List<Servicio> servicios;
     
-    private boolean enabled;
+    private int enabled;
+    private int deleted;
 
 	public int getId() {
 		return id;
@@ -102,16 +103,24 @@ public class Student implements UserDetails{
 		this.servicios = servicios;
 	}
 
-	public boolean isEnabled() {
+	public int getEnabled() {
 		return enabled;
 	}
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
+	public void setEnabled(int deleted) {
+		this.deleted = deleted;
+	}
+	
+	public int getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
 	}
 
 	public Student(int id, String name, String surname, String username, String password, String role,
-			ProFamily profesionalFamily, List<Servicio> servicios, boolean enabled) {
+			ProFamily profesionalFamily, List<Servicio> servicios, int enabled, int deleted) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -122,6 +131,7 @@ public class Student implements UserDetails{
 		this.profesionalFamily = profesionalFamily;
 		this.servicios = servicios;
 		this.enabled = enabled;
+		this.deleted = deleted;
 	}
 
 	public Student() {
@@ -151,6 +161,11 @@ public class Student implements UserDetails{
 		// TODO Auto-generated method stub
 		return false;
 	}
-    
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     
 }

@@ -16,7 +16,8 @@ public class StudentModel {
 
 	private int id;
 	private String name, surname, username, password, role;
-	private boolean enabled;
+	private int enabled;
+	private int deleted;
 	private ProFamily profesionalFamily;
 	private List<Servicio> servicios;
 	
@@ -84,16 +85,24 @@ public class StudentModel {
 		this.servicios = servicios;
 	}
 
-	public boolean isEnabled() {
+	public int getEnabled() {
 		return enabled;
 	}
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
+	public void setEnabled(int deleted) {
+		this.deleted = deleted;
+	}
+	
+	public int getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
 	}
 
 	public StudentModel(int id, String name, String surname, String username, String password, String role,
-			ProFamily profesionalFamily, List<Servicio> servicios, boolean enabled) {
+			ProFamily profesionalFamily, List<Servicio> servicios, int enabled, int deleted) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -104,6 +113,7 @@ public class StudentModel {
 		this.profesionalFamily = profesionalFamily;
 		this.servicios = servicios;
 		this.enabled = enabled;
+		this.deleted = deleted;
 	}
 
 	public StudentModel() {

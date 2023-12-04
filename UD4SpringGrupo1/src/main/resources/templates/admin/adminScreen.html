@@ -20,6 +20,8 @@
                     <th>Email</th>
                     <th>Profesional Family</th>
                     <th>Enabled</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,9 +32,11 @@
                     <td th:text="${student.username}"></td>
                     <td th:text="${student.profesionalFamily.name}"></td>
                    <td>
-                        <img th:if="${student.enabled}" src="imgs/on.png" alt="On" width="40px">
-                        <img th:unless="${student.enabled}" src="imgs/off.png" alt="Off" width="40px">
+                        <img th:if="${student.enabled}" src="/imgs/on.png" alt="On img" width="40px">
+                        <img th:unless="${student.enabled}" src="/imgs/off.png" alt="Off img" width="40px">
                     </td>
+                    <td> <a class="btn btn-primary" th:href="@{'/admin/editStudent/'+${student.id}}">Edit</a>  <img src="/imgs/edit.png" alt="Edit img" width="40px"> </td>
+                    <td> <img src="imgs/delete.png" alt="Delete img" width="40px"> </td>
                 </tr>
             </tbody>
         </table>
