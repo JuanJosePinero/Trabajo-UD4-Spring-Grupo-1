@@ -16,17 +16,20 @@
 					<img height="40px"width="40px"src="/imgs/salesianosLogo.png" alt="SalesianosLogo">
 				</span>
 				Salesianos School
-			  </li>
-			<li class="nav-item"><a class="fa fa-school" style="color: #ffffff;"></a></li>
+			</li>
 			<li class="nav-item"><a th:href="@{/home}" class="nav-link">Home</a></li>
 			<li class="nav-item"><a  href="#" class="nav-link">Contact us</a></li>
 			<li class="nav-item"><a href="#" class="nav-link">Professional
 					Families</a></li>
 			<li class="nav-item"><a href="#" class="nav-link">Businesses</a></li>
 		</ul>
-		<div class="user-actions">
-			<a th:href="@{/auth/login}" class="nav-link"><span class="fas fa-sign-in-alt"></span>Log in</a> <a  href="/auth/register" class="nav-link">Sign
-				up</a>
+		<div sec:authorize="isAuthenticated()" class="user-actions">
+			<h3>
+				Hello <span sec:authentication="username"></span>
+			</h3>
+		</div>
+		<div sec:authorize="!isAuthenticated()" class="user-actions">
+			<a th:href="@{/auth/login}" class="nav-link">Log in</a> <a  href="/auth/register" class="nav-link">Sign up</a>	
 		</div>
 	</nav>
 </body>
