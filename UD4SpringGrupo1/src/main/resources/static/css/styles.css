@@ -1,12 +1,35 @@
 @charset "UTF-8";
 
 body {
-	background-image: url('/imgs/background.png');
-	background-size: 100% 100%;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 }
+.bodyHome {
+	background-image: url('/imgs/backgroundHome.jpg');
+	background-size: 100% 100%;
+}
+.bodyAuth{
+	background-image: url('/imgs/background.png');
+	background-size: 100% 100%;
+}
 
+h1{
+	text-align: center;
+	
+}
+
+.containerHome {
+    grid-column: span 1; 
+    grid-row: span 1;  
+    padding: 20px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-left: 8px;
+    margin-right: 8px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: rgba(248, 249, 250, 0.8);
+}
 .container {
 	width: 300px;
 	margin: auto;
@@ -15,6 +38,10 @@ body {
 	border: 1px solid #ddd;
 	border-radius: 10px;
 	background-color: rgba(248, 249, 250, 0.8);
+}
+.container image{
+	width: 250px;
+	height: 250px;
 }
 
 .container input {
