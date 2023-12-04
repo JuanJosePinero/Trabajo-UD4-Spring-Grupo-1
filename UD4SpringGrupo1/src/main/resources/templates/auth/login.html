@@ -10,7 +10,7 @@
 <link href="/css/styles.css" rel="stylesheet">
 </head>
 
-<body>
+<body class="bodyAuth">
 <div th:replace="/main/CustomNavbar.html"></div>
 	<br>
 	<br>
@@ -39,5 +39,6 @@
 			<input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 		</form>
 	</div>
+ -->
 </body>
 </html>

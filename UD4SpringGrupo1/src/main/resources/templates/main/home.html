@@ -1,22 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="utf-8">
-      <title>Home</title>
-      <link rel="stylesheet" href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css">
-      
+	<meta charset="utf-8">
+	<title>Home - Colegio Salesiano</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link href="/css/styles.css" rel="stylesheet">
 </head>
-<body>
-<!-- 
-<nav class="navbar navbar-dark bg-dark">
-    <span class="navbar-brand mb-0 h1">Colegio Salesiano</span>
-    <a class="btn btn-outline-light" href="/home">Home</a>
-</nav>
--->
-<div th:replace="/main/CustomNavbar.html"></div>
-<br><br><br><br>
-<div>
-	<h1 class="display-6">kys</h1>
+
+<body class="bodyHome">
+	<div th:replace="/main/CustomNavbar.html"></div>
+	<div>
+		<div class="container">
+			<img height="100%"width="100%"src="/imgs/salesianosLogo.png" alt="SalesianosLogo">
+		</div>
+		<table width="100%">
+			<tr>
+				<th>
+					<h1 class="display-6 containerHome">
+						Welcome!
+					</h1> 
+				</th>
+				<th>
+					<h1 class="display-6 containerHome">
+						About us
+					</h1> 
+				</th>
+			</tr>
+			<tr>
+				<th>
+					<p class="containerHome">
+						Welcome to Salesianos, where learning becomes an inspiring journey! We are delighted to have you explore our school's digital gateway. At Salesianos, we believe in nurturing not just academic excellence but also the holistic development of every student. Our dedicated educators, state-of-the-art facilities, and vibrant community create an environment that fosters curiosity, creativity, and a love for learning.
+						As you navigate through our website, discover the numerous opportunities that await your child. Whether it's engaging in innovative academic programs, participating in enriching extracurricular activities, or building lifelong friendships, Salesianos is committed to providing a nurturing and empowering educational experience.
+						Thank you for considering Salesianos as your partner in education. We invite you to explore the wealth of possibilities that our school offers, and we look forward to welcoming you into our dynamic and caring community.
+					</p>
+				</th>
+				<th>
+					<p class="containerHome">
+						Salesianos is not just a school; it's a community dedicated to fostering academic excellence, character development, and lifelong learning. Established with a rich history and rooted in the values of the Salesian tradition, our school is a vibrant hub where students are encouraged to explore, discover, and grow.
+						Our mission is to provide a holistic education that goes beyond textbooks. We strive to create an environment where students feel inspired to question, innovate, and contribute positively to society. At Salesianos, we value the uniqueness of each individual and believe in providing a supportive and inclusive space for diverse talents to flourish.
+					</p>
+				</th>
+			</tr>
+		</table>
+
 	</div>
 </body>
 </html>
