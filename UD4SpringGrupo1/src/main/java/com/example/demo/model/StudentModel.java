@@ -15,7 +15,7 @@ import lombok.Setter;
 public class StudentModel {
 
 	private int id;
-	private String name, surname, email, password, role;
+	private String name, surname, username, password, role;
 	private boolean enabled;
 	private ProFamily profesionalFamily;
 	private List<Servicio> servicios;
@@ -44,12 +44,12 @@ public class StudentModel {
 		this.surname = surname;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -92,13 +92,13 @@ public class StudentModel {
 		this.enabled = enabled;
 	}
 
-	public StudentModel(int id, String name, String surname, String email, String password, String role,
+	public StudentModel(int id, String name, String surname, String username, String password, String role,
 			ProFamily profesionalFamily, List<Servicio> servicios, boolean enabled) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
-		this.email = email;
+		this.username = username;
 		this.password = password;
 		this.role = role;
 		this.profesionalFamily = profesionalFamily;
@@ -109,8 +109,6 @@ public class StudentModel {
 	public StudentModel() {
 		super();
 	}
-	
-	
 	
 }
 

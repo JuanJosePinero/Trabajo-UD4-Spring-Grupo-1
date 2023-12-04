@@ -28,7 +28,7 @@ public class RegisterController {
 	 @Autowired
 	    private ProFamilyService proFamilyService;
 
-	    @GetMapping("/register")
+	    @GetMapping("/auth/register")
 	    public String registerForm(@ModelAttribute("studentModel") StudentModel studentModel, Model model) {
 	        // Agregar la lista de nombres de las familias profesionales al modelo
 	        List<ProFamily> profesionalFamilies = proFamilyService.getAllProfesionalFamilies();
@@ -37,7 +37,7 @@ public class RegisterController {
 	        return REGISTER_VIEW;
 	    }
 	
-	    @PostMapping("/register")
+	    @PostMapping("/auth/register")
 	    public String registerSubmit(@ModelAttribute("studentModel") StudentModel studentModel, RedirectAttributes flash) {
 	        studentService.register(studentModel);
 	        flash.addFlashAttribute("success", "Student registered succesfully!");

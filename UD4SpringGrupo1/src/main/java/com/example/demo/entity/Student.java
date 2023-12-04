@@ -27,7 +27,7 @@ public class Student implements UserDetails{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private String name, surname, email, password, role;
+    private String name, surname, username, password, role;
 
     @ManyToOne
     @JoinColumn(name = "profesionalFamilyId")
@@ -62,12 +62,12 @@ public class Student implements UserDetails{
 		this.surname = surname;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -110,13 +110,13 @@ public class Student implements UserDetails{
 		this.enabled = enabled;
 	}
 
-	public Student(int id, String name, String surname, String email, String password, String role,
+	public Student(int id, String name, String surname, String username, String password, String role,
 			ProFamily profesionalFamily, List<Servicio> servicios, boolean enabled) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
-		this.email = email;
+		this.username = username;
 		this.password = password;
 		this.role = role;
 		this.profesionalFamily = profesionalFamily;
@@ -130,12 +130,6 @@ public class Student implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getUsername() {
 		// TODO Auto-generated method stub
 		return null;
 	}

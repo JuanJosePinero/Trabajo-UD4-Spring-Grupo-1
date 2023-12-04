@@ -26,7 +26,8 @@ public class SecurityConfig {
 	    http
 	        .authorizeHttpRequests(authorizeRequests ->
 	            authorizeRequests
-	                .requestMatchers("/", "/courses/**", "/imgs/**", "/admin/**", "/errors", "/auth/**", "/webjars/**", "/css/**", "/home/**", "/register" ,"/files/**"
+	                .requestMatchers("/", "/courses/**", "/imgs/**", "/admin/**", "/error", 
+	                		"/auth/**", "/webjars/**", "/css/**", "/home/**", "/files/**"
 	                ).permitAll()
 //	                .requestMatchers(
 //	                    "/admin/**"
@@ -35,15 +36,15 @@ public class SecurityConfig {
 	        )
 	        .formLogin(formLogin ->
 	            formLogin
-	                .loginPage("/login")
-	                .defaultSuccessUrl("/courses/listCourses")
+	                .loginPage("/auth/login")
+	                .defaultSuccessUrl("/home/")
 	                .permitAll()
 	        )
 	        .logout(logout ->
 	            logout
 	                .permitAll()
-	                .logoutUrl("/logout")
-	                .logoutSuccessUrl("/login?logout")
+	                .logoutUrl("/auth/logout")
+	                .logoutSuccessUrl("/auth/login?logout")
 	        );
 	    return http.build();
 	}

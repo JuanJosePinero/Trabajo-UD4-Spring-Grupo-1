@@ -25,7 +25,7 @@ public class LoginController {
 	@Autowired
 	 private StudentService studentService;
 	
-	@GetMapping("/login")
+	@GetMapping("/auth/login")
 	public String login(Model model, @RequestParam(name="error", required=false) String error, 
 			@RequestParam(name="logout", required=false) String logout) {
 		model.addAttribute("student", new Student());
@@ -41,14 +41,14 @@ public class LoginController {
 	    return ADMIN_VIEW;
 	}
 	
-	@PostMapping("/login")
-    public String loginSubmit(@ModelAttribute("studentModel") StudentModel studentModel, Model model) {
-        if (studentService.login(studentModel.getEmail(), studentModel.getPassword())) {
-            return "redirect:/" + ADMIN_VIEW;
-        } else {
-            model.addAttribute("error", "Invalid credentials");
-            return LOGIN_VIEW;
-        }
-    }
+//	@PostMapping("/login")
+//    public String loginSubmit(@ModelAttribute("studentModel") StudentModel studentModel, Model model) {
+//        if (studentService.login(studentModel.getEmail(), studentModel.getPassword())) {
+//            return "redirect:/" + ADMIN_VIEW;
+//        } else {
+//            model.addAttribute("error", "Invalid credentials");
+//            return LOGIN_VIEW;
+//        }
+//    }
 	
 }

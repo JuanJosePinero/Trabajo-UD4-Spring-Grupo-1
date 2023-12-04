@@ -85,7 +85,7 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 
 	@Override
 	public boolean login(String email, String password) {
-        Student student = studentRepository.findByEmail(email);
+        Student student = studentRepository.findByUsername(email);
 
         return student != null && passwordEncoder().matches(password, student.getPassword());
     }
@@ -110,7 +110,7 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 	}
 
 	public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
-    com.example.demo.entity.Student student = studentRepository.findByEmail(email);
+    com.example.demo.entity.Student student = studentRepository.findByUsername(email);
     
     UserBuilder builder = null;
     
