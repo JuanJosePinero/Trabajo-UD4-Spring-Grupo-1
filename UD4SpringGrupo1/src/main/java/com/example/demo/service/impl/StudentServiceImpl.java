@@ -21,9 +21,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Student;
 import com.example.demo.model.StudentModel;
-import com.example.demo.repository.ProFamilyRepository;
 import com.example.demo.repository.StudentRepository;
 import com.example.demo.service.StudentService;
+
+import jakarta.transaction.Transactional;
 
 @Configuration
 @Service("studentService")
@@ -102,12 +103,6 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 	 }
 
 	@Override
-	public Student enable(StudentModel studentModel) {
-		studentModel.setEnabled(1);
-		return studentRepository.save(model2entity(studentModel));
-	}
-
-	@Override
 	public boolean login(String email, String password) {
 		Student student = studentRepository.findByUsername(email);
 
@@ -129,7 +124,6 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 
 	@Override
 	public boolean authenticate(String email, String password) {
-
 		return false;
 	}
 
@@ -163,6 +157,31 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 		}
 		// throw new IllegalArgumentException("Alumno no encontrado con ID: " + id);
 		return null;
+	}
+	
+	@Override
+	public Student enable(StudentModel studentModel) {
+		studentModel.setEnabled(1);
+		return studentRepository.save(model2entity(studentModel));
+	}
+
+	@Transactional
+	public boolean setEnable(int studentId) {
+		Optional<Student> optionalStudent = studentRepository.findById(studentId);
+
+	    if (optionalStudent.isPresent()) {
+	        Student student = optionalStudent.get();
+	        int currentStatus = student.getEnabled();
+
+	        int newStatus = (currentStatus == 0) ? 1 : 0;
+	        student.setEnabled(newStatus);
+
+	        studentRepository.save(student);
+
+	        return newStatus == 1;
+	    } else {
+	        return false;
+	    }
 	}
 
 }

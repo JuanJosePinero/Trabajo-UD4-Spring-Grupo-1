@@ -22,6 +22,8 @@ public interface StudentService {
 	int deleteStudent(int id);
 
 	Student updateStudent(StudentModel studentModel);
+	
+	public boolean setEnable(int studentId);
 
 	Student enable(StudentModel studentModel);
 

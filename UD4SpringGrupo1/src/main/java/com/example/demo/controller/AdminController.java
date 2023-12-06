@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.ProFamily;
 import com.example.demo.model.StudentModel;
@@ -46,4 +47,31 @@ public class AdminController {
         studentService.updateStudent(studentModel);
         return "redirect:/admin/adminScreen";
     }
+	
+	@PostMapping("/enabled/{studentId}")
+	public String enable(@PathVariable("studentId") int studentId, Model model) {
+	    boolean enable = studentService.setEnable(studentId);
+	    
+	    List<StudentModel> students = studentService.listAllStudents();
+	    List<ProFamily> proFamilies = proFamilyRepository.findAll();
+	    
+	    model.addAttribute("students", students);
+	    model.addAttribute("proFamilies", proFamilies);
+	    
+	    return ADMIN_VIEW;
+	}
+	
+	@PostMapping("/delete/{studentId}")
+	public String delete(@PathVariable("studentId") int studentId, Model model) {
+	    int delete = studentService.deleteStudent(studentId);
+	    
+	    List<StudentModel> students = studentService.listAllStudents();
+	    List<ProFamily> proFamilies = proFamilyRepository.findAll();
+	    
+	    model.addAttribute("students", students);
+	    model.addAttribute("proFamilies", proFamilies);
+	    
+	    return ADMIN_VIEW;
+	}
+
 }
