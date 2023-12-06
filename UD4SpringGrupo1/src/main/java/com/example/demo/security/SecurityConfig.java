@@ -37,7 +37,7 @@ public class SecurityConfig {
 	        .formLogin(formLogin ->
 	            formLogin
 	                .loginPage("/auth/login")
-	                .defaultSuccessUrl("/courses/listCourses")
+	                .defaultSuccessUrl("/admin/adminScreen")
 	                .permitAll()
 	        )
 	        .logout(logout ->
@@ -50,21 +50,5 @@ public class SecurityConfig {
 	    return http.build();
 	}
 
-    @Bean
-     UserDetailsService userDetailsService() {
-        UserDetails user = User
-            .withUsername("user")
-            .password("password")
-            .roles("u")
-            .build();
-
-        UserDetails admin = User
-            .withUsername("admin")
-            .password("adminpassword")
-            .roles("a")
-            .build();
-
-        return new InMemoryUserDetailsManager(user, admin);
-    }
 
 }

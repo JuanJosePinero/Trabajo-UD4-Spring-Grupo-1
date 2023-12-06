@@ -25,7 +25,7 @@
 		</ul>
 		<div sec:authorize="isAuthenticated()" class="user-actions">
 			<h3>
-				Hello <span sec:authentication="username"></span>
+				 Hello <span th:text="${#authentication.principal.username}"></span>
 			</h3>
 		</div>
 		<div sec:authorize="!isAuthenticated()" class="user-actions">
