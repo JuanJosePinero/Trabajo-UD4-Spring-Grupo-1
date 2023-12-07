@@ -45,33 +45,20 @@ public class AdminController {
 	@PostMapping("/editStudent")
     public String saveEditedStudent(@ModelAttribute StudentModel studentModel) {
         studentService.updateStudent(studentModel);
-        return "redirect:/admin/adminScreen";
+        return "redirect:/adminScreen";
     }
 	
 	@PostMapping("/enabled/{studentId}")
 	public String enable(@PathVariable("studentId") int studentId, Model model) {
-	    boolean enable = studentService.setEnable(studentId);
-	    
-	    List<StudentModel> students = studentService.listAllStudents();
-	    List<ProFamily> proFamilies = proFamilyRepository.findAll();
-	    
-	    model.addAttribute("students", students);
-	    model.addAttribute("proFamilies", proFamilies);
-	    
-	    return ADMIN_VIEW;
+		studentService.enableStudent(studentId);
+	    return "redirect:/adminScreen";
 	}
 	
 	@PostMapping("/delete/{studentId}")
 	public String delete(@PathVariable("studentId") int studentId, Model model) {
-	    int delete = studentService.deleteStudent(studentId);
+		studentService.deleteStudent(studentId);
 	    
-	    List<StudentModel> students = studentService.listAllStudents();
-	    List<ProFamily> proFamilies = proFamilyRepository.findAll();
-	    
-	    model.addAttribute("students", students);
-	    model.addAttribute("proFamilies", proFamilies);
-	    
-	    return ADMIN_VIEW;
+	    return "redirect:/adminScreen";
 	}
 
 }

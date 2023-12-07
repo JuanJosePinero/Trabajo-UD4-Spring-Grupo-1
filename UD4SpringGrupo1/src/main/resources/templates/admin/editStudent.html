@@ -29,7 +29,7 @@
             <option th:each="proFamily : ${profesionalFamilies}" th:value="${proFamily.id}" th:text="${proFamily.name}"></option>
         </select>
         <br><br>
-			<a class="btn-save" type="button" th:href="@{/editStudent/{studentId}}">Save</a>
+			<button class="btn-save" type="submit">Save</button>
 			<a class="btn-cancel" type="button" th:href="@{/adminScreen}">Cancel</a>
 		</form>
 	</div>

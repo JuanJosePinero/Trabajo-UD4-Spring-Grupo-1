@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Student;
 import com.example.demo.model.StudentModel;
+import com.example.demo.repository.ProFamilyRepository;
 import com.example.demo.repository.StudentRepository;
 import com.example.demo.service.StudentService;
 
@@ -33,6 +34,10 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 	@Autowired
 	@Qualifier("studentRepository")
 	private StudentRepository studentRepository;
+	
+	@Autowired
+	@Qualifier("proFamilyRepository")
+	private ProFamilyRepository proFamilyRepository;
 
 	private Student model2entity(StudentModel studentModel) {
 		ModelMapper mapper = new ModelMapper();
@@ -58,26 +63,6 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 		return new BCryptPasswordEncoder();
 	}
 
-	public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
-		com.example.demo.entity.Student student = studentRepository.findByUsername(email);
-		System.out.println("Student service impl dice hola");
-		UserBuilder builder = null;
-
-		if (student != null) {
-			builder = User.withUsername(email);
-			builder.disabled(false);
-			builder.password(student.getPassword());
-//	        		if(student.getRole().equalsIgnoreCase("u")) {
-//	        			
-//	        		}else if(student.getRole().equalsIgnoreCase("a")) {
-//	        			
-//	        		}
-			builder.authorities(new SimpleGrantedAuthority(student.getRole()));
-		} else
-			throw new UsernameNotFoundException("Student not found");
-		return builder.build();
-	}
-
 	@Override
 	public List<StudentModel> listAllStudents() {
 		List<StudentModel> students = new ArrayList<>();
@@ -88,17 +73,24 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 
 	@Override
 	public int deleteStudent(int id) {
-		studentRepository.deleteById(id);
-		return 0;
-	}
+		Optional<Student> optionalStudent = studentRepository.findById(id);
+
+        if (optionalStudent.isPresent()) {
+            Student student = optionalStudent.get();
+            student.setDeleted(1);
+            studentRepository.save(student);
+            return 1;
+        } else
+            return 0;
+    }
 
 	@Override
 	public Student updateStudent(StudentModel studentModel) {
-		 Student student = studentRepository.findById(studentModel.getId()) .orElseThrow(() -> new RuntimeException("Student not found")); 
+		 Student student = studentRepository.findById(studentModel.getId()) .orElseThrow(() -> new RuntimeException("Student not found"));
 		 student.setName(studentModel.getName());
 		 student.setSurname(studentModel.getSurname());
 		 student.setUsername(studentModel.getUsername()); 
-//		 student.setProfesionalFamily(ProFamilyRepository.findById(studentModel.getProfesionalFamily().getId()).orElseThrow(() -> new RuntimeException("ProfesionalFamily not found"))); 
+		 student.setProfesionalFamily(proFamilyRepository.findById(studentModel.getProfesionalFamily().getId()).orElseThrow(() -> new RuntimeException("ProfesionalFamily not found"))); 
 		 return studentRepository.save(student);
 	 }
 
@@ -108,19 +100,6 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 
 		return student != null && passwordEncoder().matches(password, student.getPassword());
 	}
-//	public boolean login(String email, String password) {
-//		 Student student = studentRepository.findByEmail(email);
-//		 System.out.println("HOL");
-//		    if (student != null && passwordEncoder().matches(password, student.getPassword())) {
-//		        // Passwords match, login successful
-//		    	System.out.println("Passwords match, login successful");
-//		        return true;
-//		    } else {
-//		        // Either the email is not found or the passwords do not match
-//		    	System.out.println("Either the email is not found or the passwords do not match");
-//		        return false;
-//		    }
-//	}
 
 	@Override
 	public boolean authenticate(String email, String password) {
@@ -148,6 +127,26 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 		return builder.build();
 	}
 
+	public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
+		com.example.demo.entity.Student student = studentRepository.findByUsername(email);
+		System.out.println("Student service impl dice hola");
+		UserBuilder builder = null;
+
+		if (student != null) {
+			builder = User.withUsername(email);
+			builder.disabled(false);
+			builder.password(student.getPassword());
+//	        		if(student.getRole().equalsIgnoreCase("u")) {
+//	        			
+//	        		}else if(student.getRole().equalsIgnoreCase("a")) {
+//	        			
+//	        		}
+			builder.authorities(new SimpleGrantedAuthority(student.getRole()));
+		} else
+			throw new UsernameNotFoundException("Student not found");
+		return builder.build();
+	}
+
 	@Override
 	public StudentModel getStudentById(int id) {
 		Optional<Student> optionalStudent = studentRepository.findById(id);
@@ -155,33 +154,30 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 			Student student = optionalStudent.get();
 			return entity2model(student);
 		}
-		// throw new IllegalArgumentException("Alumno no encontrado con ID: " + id);
-		return null;
-	}
-	
-	@Override
-	public Student enable(StudentModel studentModel) {
-		studentModel.setEnabled(1);
-		return studentRepository.save(model2entity(studentModel));
+		 throw new IllegalArgumentException("Alumno no encontrado con ID: " + id);
 	}
 
-	@Transactional
-	public boolean setEnable(int studentId) {
+	@Override
+	public int enableStudent(int studentId) {
+//	    Optional<Student> optionalStudent = studentRepository.findById(studentId);
+//
+//	    if (optionalStudent.isPresent()) {
+//            Student student = optionalStudent.get();
+//            student.setEnabled(student.getEnabled()== 0 ? 1 : 0);
+//            studentRepository.save(student);
+//            return student.getEnabled();
+//        } else
+//            throw new IllegalArgumentException("Alumno no encontrado con ID: " + studentId);
+		System.out.println("hola");
 		Optional<Student> optionalStudent = studentRepository.findById(studentId);
 
-	    if (optionalStudent.isPresent()) {
-	        Student student = optionalStudent.get();
-	        int currentStatus = student.getEnabled();
-
-	        int newStatus = (currentStatus == 0) ? 1 : 0;
-	        student.setEnabled(newStatus);
-
-	        studentRepository.save(student);
-
-	        return newStatus == 1;
-	    } else {
-	        return false;
-	    }
+        if (optionalStudent.isPresent()) {
+            Student student = optionalStudent.get();
+            student.setEnabled(1);
+            studentRepository.save(student);
+            return 1;
+        } else
+            return 0;
 	}
-
+	
 }

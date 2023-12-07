@@ -12,5 +12,6 @@ import com.example.demo.entity.ProFamily;
 public interface ProFamilyRepository extends JpaRepository<ProFamily, Serializable> {
     ProFamily findByName(String name);
     List<ProFamily> findAll();
+    ProFamily findById(ProFamily proFaily);
 }
 
