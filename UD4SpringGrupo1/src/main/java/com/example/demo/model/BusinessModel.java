@@ -12,6 +12,7 @@ public class BusinessModel {
 	private int id;
 	private String name, address,phone, email, logo;
 	private List<Servicio> servicioList;
+	private int deleted;
 	
 	public int getId() {
 		return id;
@@ -68,9 +69,17 @@ public class BusinessModel {
 	public void setServicioList(List<Servicio> servicioList) {
 		this.servicioList = servicioList;
 	}
+	
+	public int getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
+	}
 
 	public BusinessModel(int id, String name, String address, String phone, String email, String logo,
-			List<Servicio> servicioList) {
+			List<Servicio> servicioList, int deleted) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -79,6 +88,7 @@ public class BusinessModel {
 		this.email = email;
 		this.logo = logo;
 		this.servicioList = servicioList;
+		this.deleted = deleted;
 	}
 
 	public BusinessModel() {

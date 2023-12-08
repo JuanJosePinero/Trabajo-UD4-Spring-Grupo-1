@@ -54,7 +54,7 @@ public class AdminController {
 	    return "redirect:/adminScreen";
 	}
 	
-	@PostMapping("/delete/{studentId}")
+	@PostMapping("/deleteStudent/{studentId}")
 	public String delete(@PathVariable("studentId") int studentId, Model model) {
 		studentService.deleteStudent(studentId);
 	    

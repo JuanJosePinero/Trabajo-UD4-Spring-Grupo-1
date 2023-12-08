@@ -1,8 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.ProFamily;
-
 import java.util.List;
+
+import com.example.demo.entity.ProFamily;
+import com.example.demo.model.ProFamilyModel;
 
 public interface ProFamilyService {
 
@@ -12,5 +13,7 @@ public interface ProFamilyService {
 
     ProFamily saveProFamily(ProFamily proFamily);
 
-    void deleteProFamily(int id);
+    int deleteProFamily(int id);
+
+	ProFamily updateProFamily(ProFamilyModel proFamilyModel);
 }

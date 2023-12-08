@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit a Profesional Family</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+          crossorigin="anonymous">
+    <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body>
+
+<br><br><br><br>
+<div class="container mt-5 login-container">
+    <h2>Edit Profesional Family</h2>
+    <form id="proFamilyForm" th:object="${proFamily}" method="post" th:action="@{/proFamily/editProFamily}">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" th:field="*{name}" required>
+
+        <br><br>
+			<button class="btn-save" type="submit">Save</button>
+			<a class="btn-cancel" type="button" th:href="@{/proFamily/list}">Cancel</a>
+		</form>
+	</div>
+</body>
+</html>

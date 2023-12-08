@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Admin screen - Colegio Salesiano</title>
+<title>ProFamily Screen - Colegio Salesiano</title>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 	integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
@@ -11,39 +11,21 @@
 <body>
 	<div th:replace="/main/CustomNavbar.html"></div>
 	<div class="container mt-5">
-		<h2 class="text-center">List of Students</h2>
+		<h2 class="text-center">List of Profesional Families</h2>
 		<table class="table">
 			<thead>
 				<tr>
 					<th>Name</th>
-					<th>Surname</th>
-					<th>Email</th>
-					<th>Profesional Family</th>
-					<th>Enabled</th>
 					<th>Edit</th>
 					<th>Delete</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="student : ${students}">
-					<td hidden="id" th:text="${student.id}"></td>
-					<td th:text="${student.name}"></td>
-					<td th:text="${student.surname}"></td>
-					<td th:text="${student.username}"></td>
-					<td th:text="${student.profesionalFamily.name}"></td>
+				<tr th:each="profesionalFamily : ${profesionalFamilies}">
+					<td hidden="id" th:text="${profesionalFamily.id}"></td>
+					<td th:text="${profesionalFamily.name}"></td>
 					<td>
-						<form th:action="@{'/admin/enabled/' + ${student.id}}"
-							method="post">
-							<button type="submit" class="btn btn-link p-0 m-0">
-								<img
-									th:src="${student.enabled == 1 ? '/imgs/on.png' : '/imgs/off.png'}"
-									alt="Toggle img" width="40px">
-							</button>
-						</form>
-
-					</td>
-					<td>
-						<form th:action="@{'/admin/editStudent/' + ${student.id}}"
+						<form th:action="@{'/proFamily/editProFamily/' + ${profesionalFamily.id}}"
 							method="get">
 							<button type="submit" class="btn btn-link p-0 m-0">
 								<img src="/imgs/edit.png" alt="Edit img" width="30px">
@@ -51,7 +33,7 @@
 						</form>
 					</td>
 					<td>
-						<form th:action="@{'/admin/deleteStudent/' + ${student.id}}"
+						<form th:action="@{'/proFamily/deleteProFamily/' + ${profesionalFamily.id}}"
 							method="post"
 							onsubmit="return confirm('¿Estás seguro que quieres cambiar su estado?');">
 							<button type="submit" class="btn btn-link p-0 m-0">

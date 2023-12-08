@@ -22,6 +22,8 @@ public class Business {
 	
 	@OneToMany(mappedBy="businessId")
 	private List<Servicio> servicioList;
+	
+	private int deleted;
 
 	public int getId() {
 		return id;
@@ -79,8 +81,16 @@ public class Business {
 		this.servicioList = servicioList;
 	}
 
+	public int getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
+	}
+	
 	public Business(int id, String name, String address, String phone, String email, String logo,
-			List<Servicio> servicioList) {
+			List<Servicio> servicioList, int deleted) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -89,6 +99,8 @@ public class Business {
 		this.email = email;
 		this.logo = logo;
 		this.servicioList = servicioList;
+		this.deleted = deleted;
+		
 	}
 
 	public Business() {

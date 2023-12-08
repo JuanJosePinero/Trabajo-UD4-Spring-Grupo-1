@@ -13,6 +13,7 @@ public class ProFamily {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	private String name;
+	private int deleted;
 	public int getId() {
 		return id;
 	}
@@ -25,10 +26,19 @@ public class ProFamily {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public ProFamily(int id, String name) {
+	public int getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
+	}
+	
+	public ProFamily(int id, String name, int deleted) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.deleted = deleted;
 	}
 	public ProFamily() {
 		super();
