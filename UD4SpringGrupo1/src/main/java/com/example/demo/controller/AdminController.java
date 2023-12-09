@@ -61,7 +61,7 @@ public class AdminController {
 	@PostMapping("/editStudent")
     public String saveEditedStudent(@ModelAttribute StudentModel studentModel) {
         studentService.updateStudent(studentModel);
-        return "redirect:/adminScreen";
+        return "redirect:/admin/adminScreen";
     }
 	
 	@PostMapping("/enabled/{studentId}")

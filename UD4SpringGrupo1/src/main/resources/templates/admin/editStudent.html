@@ -15,6 +15,7 @@
 <div class="container mt-5 login-container">
     <h2>Edit Student</h2>
     <form id="studentForm" th:object="${student}" method="post" th:action="@{/admin/editStudent}">
+       <input type="hidden" id="id" name="id" th:field="*{id}">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" th:field="*{name}" required>
 
