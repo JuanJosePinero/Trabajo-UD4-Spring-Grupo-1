@@ -81,7 +81,7 @@ public class AdminController {
 	public String delete(@PathVariable("studentId") int studentId, Model model) {
 		studentService.deleteStudent(studentId);
 	    
-	    return "redirect:/adminScreen";
+	    return "redirect:/admin/adminScreen";
 	}
 	
 	@GetMapping("/logout")

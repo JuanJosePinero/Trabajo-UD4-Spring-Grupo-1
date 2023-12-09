@@ -33,6 +33,7 @@
 					<td th:text="${student.username}"></td>
 					<td th:text="${student.profesionalFamily.name}"></td>
 					<td th:text="${student.enabled}"></td>
+					<td th:text="${student.deleted}"></td>
 					
 					<td>
 						<form th:action="@{'/admin/enabled/' + ${student.id}}"
