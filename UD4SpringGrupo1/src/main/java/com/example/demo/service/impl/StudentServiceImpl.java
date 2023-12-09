@@ -1,8 +1,10 @@
 package com.example.demo.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +47,15 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 	}
 
 	private StudentModel entity2model(Student student) {
-		ModelMapper mapper = new ModelMapper();
-		return mapper.map(student, StudentModel.class);
+		System.out.println("Estado de Student antes de la conversión: " + student);
+	    
+	    ModelMapper mapper = new ModelMapper();
+	    StudentModel studentModel = mapper.map(student, StudentModel.class);
+	    mapper.typeMap(Student.class, StudentModel.class)
+        .addMappings(m -> m.map(src -> ((Student) src).getEnabled(), StudentModel::setEnabled));
+	    System.out.println("Estado de StudentModel después de la conversión: " + studentModel);
+	    
+	    return studentModel;
 	}
 
 	@Override
@@ -65,11 +74,14 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 
 	@Override
 	public List<StudentModel> listAllStudents() {
-		List<StudentModel> students = new ArrayList<>();
-		for (Student s : studentRepository.findAll())
-			students.add(entity2model(s));
-		return students;
+	    List<StudentModel> students = new ArrayList<>();
+	    for (Student s : studentRepository.findAll()) {
+	        students.add(entity2model(s));
+	        System.out.println("Campo enabled: " + s.getEnabled());
+	    }
+	    return students;
 	}
+
 
 	@Override
 	public int deleteStudent(int id) {
@@ -134,7 +146,6 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 
 	public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
 		com.example.demo.entity.Student student = studentRepository.findByUsername(email);
-		System.out.println("Student service impl dice hola");
 		UserBuilder builder = null;
 
 		if (student != null) {
@@ -173,7 +184,6 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 //            return student.getEnabled();
 //        } else
 //            throw new IllegalArgumentException("Alumno no encontrado con ID: " + studentId);
-		System.out.println("hola");
 		Optional<Student> optionalStudent = studentRepository.findById(studentId);
 
         if (optionalStudent.isPresent()) {
@@ -183,6 +193,22 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
             return 1;
         } else
             return 0;
+	}
+
+	@Override
+	public List<StudentModel> listAllEnabledOrDisabledStudents() {
+		
+		List<Student> allStudents = studentRepository.findAllByEnabledIn(Arrays.asList(0, 1));
+	    for(Student s: allStudents) {
+			System.out.println("EEEEEEEEEHHHHHH: "+s);
+		}
+	    List<StudentModel> studentModels = allStudents.stream()
+	            .map(this::entity2model)  // Utiliza tu método de conversión entity2model
+	            .collect(Collectors.toList());
+	    for(StudentModel sm: studentModels) {
+	    	System.out.println("QUE PASA AKIII: "+sm);
+	    }
+	    return studentModels;
 	}
 	
 }

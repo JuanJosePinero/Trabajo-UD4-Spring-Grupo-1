@@ -26,9 +26,11 @@ public class Student implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-
+    private int enabled;
+    private int deleted;
+    
     private String name, surname, username, password, role;
-
+   
     @ManyToOne
     @JoinColumn(name = "profesionalFamilyId")
     private ProFamily profesionalFamily;
@@ -36,8 +38,7 @@ public class Student implements UserDetails{
     @OneToMany(mappedBy = "studentId")
     private List<Servicio> servicios;
     
-    private int enabled;
-    private int deleted;
+    
 
 	public int getId() {
 		return id;

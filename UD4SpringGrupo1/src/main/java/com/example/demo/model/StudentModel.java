@@ -21,6 +21,25 @@ public class StudentModel {
 	private ProFamily profesionalFamily;
 	private List<Servicio> servicios;
 	
+	public StudentModel(int id, String name, String surname, String username, String password, String role,
+			ProFamily profesionalFamily, List<Servicio> servicios, int enabled, int deleted) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.surname = surname;
+		this.username = username;
+		this.password = password;
+		this.role = role;
+		this.profesionalFamily = profesionalFamily;
+		this.servicios = servicios;
+		this.enabled = enabled;
+		this.deleted = deleted;
+	}
+
+	public StudentModel() {
+		super();
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -99,25 +118,6 @@ public class StudentModel {
 
 	public void setDeleted(int deleted) {
 		this.deleted = deleted;
-	}
-
-	public StudentModel(int id, String name, String surname, String username, String password, String role,
-			ProFamily profesionalFamily, List<Servicio> servicios, int enabled, int deleted) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.surname = surname;
-		this.username = username;
-		this.password = password;
-		this.role = role;
-		this.profesionalFamily = profesionalFamily;
-		this.servicios = servicios;
-		this.enabled = enabled;
-		this.deleted = deleted;
-	}
-
-	public StudentModel() {
-		super();
 	}
 	
 }

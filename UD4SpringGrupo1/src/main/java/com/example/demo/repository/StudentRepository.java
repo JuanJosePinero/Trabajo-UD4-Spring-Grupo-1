@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -14,6 +15,7 @@ import com.example.demo.entity.Student;
 public interface StudentRepository extends JpaRepository<Student, Serializable>{
 	
 	public abstract Student findByUsername(String username);
+	List<Student> findAllByEnabledIn(List<Integer> enabledValues);
 
 //	@Modifying
 //    @Query("UPDATE Student s SET s.enabled = :enabled WHERE s.id = :id")

@@ -37,12 +37,6 @@ public class LoginController {
 		return LOGIN_VIEW;
 	}
 	
-	@GetMapping("/adminScreen")
-	public String adminScreen(Model model) {
-	    List<StudentModel> students = studentService.listAllStudents();
-	    model.addAttribute("students", students); 
-	    return ADMIN_VIEW;
-	}
 	
 //	@PostMapping("/auth/login")
 //    public String loginSubmit(@ModelAttribute("studentModel") StudentModel studentModel, Model model) {

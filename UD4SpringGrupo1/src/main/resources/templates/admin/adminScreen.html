@@ -23,6 +23,7 @@
 					<th>Edit</th>
 					<th>Delete</th>
 				</tr>
+				
 			</thead>
 			<tbody>
 				<tr th:each="student : ${students}" th:unless="${student.deleted eq 1}">
@@ -31,13 +32,14 @@
 					<td th:text="${student.surname}"></td>
 					<td th:text="${student.username}"></td>
 					<td th:text="${student.profesionalFamily.name}"></td>
+					<td th:text="${student.enabled}"></td>
+					
 					<td>
 						<form th:action="@{'/admin/enabled/' + ${student.id}}"
 							method="post">
 							<button type="submit" class="btn btn-link p-0 m-0">
-								<img
-									th:src="${student.enabled == 1 ? '/imgs/on.png' : '/imgs/off.png'}"
-									alt="Toggle img" width="40px">
+								<img th:src="${student.enabled == 1 ? '/imgs/on.png' : '/imgs/off.png'}" alt="Toggle img" width="40px">
+
 							</button>
 						</form>
 
