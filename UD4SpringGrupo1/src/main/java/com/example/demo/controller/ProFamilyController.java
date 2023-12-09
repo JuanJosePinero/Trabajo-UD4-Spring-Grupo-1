@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,17 +39,19 @@ public class ProFamilyController {
 	}
 	
 	@GetMapping("/editProFamily/{proFamilyId}")
-	public String editStudent(@PathVariable("proFamilyId") int proFamilyId, Model model) {
-		List<ProFamily> proFamilyList = proFamilyRepository.findAll();
-		model.addAttribute("profesionalFamilies", proFamilyList); 
+	public String editProFamily(@PathVariable("proFamilyId") int proFamilyId, Model model) {
+	    ProFamily proFamily = proFamilyRepository.findById(proFamilyId).orElse(null);
+	    model.addAttribute("proFamily", proFamily);
 	    return EDIT_PRO_FAMILY_VIEW;
 	}
+
 	
-//	@PostMapping("/editProFamily")
-//    public String saveEditedStudent(@ModelAttribute ProFamilyModel proFamilyModel) {
-//        studentService.updateStudent(proFamilyModel);
-//        return "redirect:/adminScreen";
-//    }
+	@PostMapping("/editProFamily/{proFamilyId}")
+	public String saveEditedProFamily(@PathVariable("proFamilyId") int proFamilyId, @ModelAttribute ProFamily proFamily) {
+	    proFamily.setId(proFamilyId);
+	    proFamilyService.updateProFamily(proFamily);
+	    return "redirect:/proFamily/list";
+	}
 
 	@PostMapping("/deleteProFamily/{proFamilyId}")
 	public String delete(@PathVariable("proFamilyId") int proFamilyId, Model model) {
@@ -58,4 +61,3 @@ public class ProFamilyController {
 	}
 
 }
-

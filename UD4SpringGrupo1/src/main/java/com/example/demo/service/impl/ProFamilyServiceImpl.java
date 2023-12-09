@@ -54,8 +54,8 @@ public class ProFamilyServiceImpl implements ProFamilyService {
     }
 
 	@Override
-	public ProFamily updateProFamily(ProFamilyModel proFamilyModel) {
-		ProFamily proFamily = proFamilyRepository.findById(proFamilyModel.getId()) .orElseThrow(() -> new RuntimeException("Profesional Family not found"));
+	public ProFamily updateProFamily(ProFamily proFamilyM) {
+		ProFamily proFamily = proFamilyRepository.findById(proFamilyM.getId()) .orElseThrow(() -> new RuntimeException("Profesional Family not found"));
 		proFamily.setName(proFamily.getName()); 
 		 return proFamilyRepository.save(proFamily);
 	 }

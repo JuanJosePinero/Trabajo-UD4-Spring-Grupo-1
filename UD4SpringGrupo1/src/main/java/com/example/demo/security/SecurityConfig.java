@@ -41,12 +41,13 @@ public class SecurityConfig {
 	                .permitAll()
 	        )
 	        .logout(logout ->
-	            logout
-	                .permitAll()
-	                .logoutUrl("/auth/logout")
-	                .logoutSuccessUrl("/auth/login?logout")
-	        );
-	    System.out.println("Hola desde security config");
+            logout
+                .permitAll()
+                .logoutUrl("/logout") // URL para el logout
+                .logoutSuccessUrl("/") // URL a la que redirigir después del logout
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID") // Elimina las cookies al hacer logout
+        );
 	    return http.build();
 	}
 

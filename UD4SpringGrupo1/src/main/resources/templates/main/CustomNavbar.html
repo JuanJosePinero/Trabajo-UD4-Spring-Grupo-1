@@ -1,36 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="/css/NavbarCSS.css">
-<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/fontawesome.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/NavbarCSS.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/fontawesome.min.css">
+    <!-- Agrega un script para mostrar la ventana emergente -->
+    <script>
+        function showLogoutMessage() {
+            alert("You have successfully logged out");
+        }
+    </script>
 </head>
 <body>
-	<!-- Navbar -->
-	<nav class="navbar">
-		<ul class="nav-list">
-			<li class="nav-item">
-				<span>
-					<img height="40px"width="40px"src="/imgs/salesianosLogo.png" alt="SalesianosLogo">
-				</span>
-				Salesianos School
-			</li>
-			<li class="nav-item"><a th:href="@{/home}" class="nav-link">Home</a></li>
-			<li class="nav-item"><a  href="#" class="nav-link">Contact us</a></li>
-			<li class="nav-item"><a th:href="@{/proFamily/list}" class="nav-link">Professional
-					Families</a></li>
-			<li class="nav-item"><a th:href="@{/business/list}" class="nav-link">Businesses</a></li>
-		</ul>
-		<div sec:authorize="isAuthenticated()" class="user-actions">
-			<h3>
-				 Hello <span th:text="${#authentication.principal.username}"></span>
-			</h3>
-		</div>
-		<div sec:authorize="!isAuthenticated()" class="user-actions">
-			<a th:href="@{/auth/login}" class="nav-link">Log in</a> <a  href="/auth/register" class="nav-link">Sign up</a>	
-		</div>
-	</nav>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li class="nav-item">
+                <span>
+                    <img height="40px" width="40px" src="/imgs/salesianosLogo.png" alt="SalesianosLogo">
+                </span>
+                Salesianos School
+            </li>
+            <li class="nav-item"><a th:href="@{/home}" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Contact us</a></li>
+            <li class="nav-item"><a th:href="@{/adminScreen}" class="nav-link">Students</a></li>
+            <li class="nav-item"><a th:href="@{/proFamily/list}" class="nav-link">Professional Families</a></li>
+            <li class="nav-item"><a th:href="@{/business/list}" class="nav-link">Businesses</a></li>
+        </ul>
+        <div th:if="${param.logout}">
+            <p th:text="${logoutMessage}"></p>
+        </div>
+        <div sec:authorize="isAuthenticated()" class="user-actions">
+            <div class="dropdown">
+                <button class="dropbtn">
+                    Hello <span th:text="${#authentication.principal.username}"></span>
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a th:href="@{/admin/editStudent/{studentId}(studentId=${studentId})}">Profile</a>
+                    <a th:href="@{/admin/logout}" class="nav-link" onclick="showLogoutMessage()">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 </body>
 </html>
