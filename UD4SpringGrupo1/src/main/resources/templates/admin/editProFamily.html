@@ -17,14 +17,17 @@
 	<br>
 	<div class="container mt-5 login-container">
 		<h2>Edit Profesional Family</h2>
-		<form id="proFamilyForm" th:object="${proFamily}" method="post"
-			th:action="@{/proFamily/editProFamily/{proFamilyId}(proFamilyId=${proFamily.id})}">
-			<label for="name">Name:</label> <input type="text" id="name"
-				name="name" th:field="*{name}" required> <br>
-			<br>
-			<button class="btn-save" type="submit">Save</button>
-			<a class="btn-cancel" type="button" th:href="@{/proFamily/list}">Cancel</a>
-		</form>
+		<form id="proFamilyForm" th:object="${proFamilyModel}" method="post" th:action="@{/proFamily/editProFamily}">
+            <!-- Agrega un campo oculto para el id -->
+            <input type="hidden" id="id" name="id" th:field="*{id}">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" th:field="*{name}" required> <br>
+            <br>
+            <button class="btn-save" type="submit">Save</button>
+            <a class="btn-cancel" type="button" th:href="@{/proFamily/list}">Cancel</a>
+        </form>
+
+
 
 	</div>
 </body>

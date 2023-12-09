@@ -56,17 +56,48 @@ public class ProFamilyController {
 	@GetMapping("/editProFamily/{proFamilyId}")
 	public String editProFamily(@PathVariable("proFamilyId") int proFamilyId, Model model) {
 	    ProFamily proFamily = proFamilyRepository.findById(proFamilyId).orElse(null);
-	    model.addAttribute("proFamily", proFamily);
+
+	    if (proFamily != null) {
+	        ProFamilyModel proFamilyModel = new ProFamilyModel();
+	        proFamilyModel.setId(proFamily.getId());
+	        proFamilyModel.setName(proFamily.getName());
+	        model.addAttribute("proFamilyModel", proFamilyModel);
+	    }
+
 	    return EDIT_PRO_FAMILY_VIEW;
 	}
 
-	
-	@PostMapping("/editProFamily/{proFamilyId}")
-	public String saveEditedProFamily(@PathVariable("proFamilyId") int proFamilyId, @ModelAttribute ProFamily proFamily) {
-	    proFamily.setId(proFamilyId);
-	    proFamilyService.updateProFamily(proFamily);
+	@PostMapping("/editProFamily")
+	public String saveEditedProFamily(@ModelAttribute ProFamilyModel proFamilyModel, RedirectAttributes flash) {
+	    if (proFamilyModel.getId() > 0) {
+	        ProFamily proFamily = proFamilyRepository.findById(proFamilyModel.getId()).orElse(null);
+
+	        if (proFamily != null) {
+	            proFamily.setName(proFamilyModel.getName());
+	            ProFamily updatedProFamily = proFamilyService.updateProFamily(proFamily);
+
+	            if (updatedProFamily != null) {
+	                flash.addFlashAttribute("success", "ProFamily updated successfully!");
+	                System.out.println("Success: ProFamily updated. ID: " + updatedProFamily.getId() + ", Name: " + updatedProFamily.getName());
+	            } else {
+	                flash.addFlashAttribute("error", "Failed to update ProFamily.");
+	                System.out.println("Failed: Unable to update ProFamily.");
+	            }
+	        } else {
+	            flash.addFlashAttribute("error", "ProFamily not found.");
+	            System.out.println("Failed: ProFamily not found.");
+	        }
+	    } else {
+	        flash.addFlashAttribute("error", "Invalid ProFamily ID.");
+	        System.out.println("Failed: Invalid ProFamily ID.");
+	    }
+
 	    return "redirect:/proFamily/list";
 	}
+
+
+
+
 
 	@PostMapping("/deleteProFamily/{proFamilyId}")
 	public String delete(@PathVariable("proFamilyId") int proFamilyId, Model model) {
