@@ -117,7 +117,7 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 		UserBuilder builder = null;
 
 		if (student != null) {
-			builder = User.withUsername(username);
+			builder = User.withUsername(student.getName());
 			builder.disabled(false);
 			builder.password(student.getPassword());
 //		        		if(student.getRole().equalsIgnoreCase("u")) {
@@ -130,6 +130,7 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 			throw new UsernameNotFoundException("Student not found");
 		return builder.build();
 	}
+	
 
 	public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
 		com.example.demo.entity.Student student = studentRepository.findByUsername(email);
