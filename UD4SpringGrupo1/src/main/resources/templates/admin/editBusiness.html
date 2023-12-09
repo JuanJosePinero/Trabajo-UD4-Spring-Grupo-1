@@ -1,10 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Edit Bussines</title>
+    <meta charset="UTF-8">
+    <title>Edit Business</title>
+    <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+        crossorigin="anonymous">
+    <link href="/css/styles.css" rel="stylesheet">
 </head>
 <body>
 
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="container mt-5 login-container">
+        <h2>Edit Business</h2>
+        <form id="businessForm" th:object="${businessModel}" method="post" th:action="@{/business/editBusiness}">
+            <!-- Agrega campos ocultos para otros atributos -->
+            <input type="hidden" id="id" name="id" th:field="*{id}">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" th:field="*{name}" required> <br>
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" th:field="*{address}" required> <br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" th:field="*{email}" required> <br>
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" name="phone" th:field="*{phone}" required> <br>
+            <!-- Puedes añadir más campos según sea necesario -->
+            <br>
+            <button class="btn-save" type="submit">Save</button>
+            <a class="btn-cancel" type="button" th:href="@{/business/list}">Cancel</a>
+        </form>
+    </div>
 </body>
 </html>

@@ -20,7 +20,7 @@ public interface BusinessService {
 
     int deleteBusiness(int id);
 
-    Business updateBusiness(BusinessModel businessModel);
+    Business updateBusiness(Business business);
 
     Business addBusiness(BusinessModel businessModel);
 

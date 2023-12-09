@@ -100,16 +100,56 @@ public class BusinessController {
 	
 	@GetMapping("/editBusiness/{businessId}")
 	public String editBusiness(@PathVariable("businessId") int businessId, Model model) {
-		List<Business> businessList = businessRepository.findAll();
-		model.addAttribute("business", businessList); 
+	    Business business = businessRepository.findById(businessId).orElse(null);
+
+	    if (business != null) {
+	        BusinessModel businessModel = new BusinessModel();
+	        businessModel.setId(business.getId());
+	        businessModel.setName(business.getName());
+	        businessModel.setAddress(business.getAddress());
+	        businessModel.setEmail(business.getEmail());
+	        businessModel.setPhone(business.getPhone());
+	        // Puedes establecer logo como null por ahora
+	        businessModel.setLogo(null);
+
+	        model.addAttribute("businessModel", businessModel);
+	    }
+
 	    return EDIT_BUSINESS_VIEW;
 	}
-	
-//	@PostMapping("/editBusiness")
-//    public String saveEditedStudent(@ModelAttribute BusinessModel businessModel) {
-//        businessService.updateBusiness(businessModel);
-//        return "redirect:/adminScreen";
-//    }
+
+	@PostMapping("/editBusiness")
+	public String saveEditedBusiness(@ModelAttribute BusinessModel businessModel, RedirectAttributes flash) {
+	    if (businessModel.getId() > 0) {
+	        Business business = businessRepository.findById(businessModel.getId()).orElse(null);
+
+	        if (business != null) {
+	            business.setName(businessModel.getName());
+	            business.setAddress(businessModel.getAddress());
+	            business.setEmail(businessModel.getEmail());
+	            business.setPhone(businessModel.getPhone());
+	            business.setLogo(null);
+
+	            Business updatedBusiness = businessService.updateBusiness(business);
+
+	            if (updatedBusiness != null) {
+	                flash.addFlashAttribute("success", "Business updated successfully!");
+	                System.out.println("Success: Business updated. ID: " + updatedBusiness.getId() + ", Name: " + updatedBusiness.getName());
+	            } else {
+	                flash.addFlashAttribute("error", "Failed to update Business.");
+	                System.out.println("Failed: Unable to update Business.");
+	            }
+	        } else {
+	            flash.addFlashAttribute("error", "Business not found.");
+	            System.out.println("Failed: Business not found.");
+	        }
+	    } else {
+	        flash.addFlashAttribute("error", "Invalid Business ID.");
+	        System.out.println("Failed: Invalid Business ID.");
+	    }
+
+	    return "redirect:/business/list";
+	}
 
 	@PostMapping("/deleteBusiness/{businessId}")
 	public String delete(@PathVariable("businessId") int businessId, Model model) {

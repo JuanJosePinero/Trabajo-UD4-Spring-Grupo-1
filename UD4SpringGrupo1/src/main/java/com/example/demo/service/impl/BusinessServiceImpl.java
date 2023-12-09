@@ -71,11 +71,21 @@ public class BusinessServiceImpl implements BusinessService {
 	}
 
 	@Override
-	public Business updateBusiness(BusinessModel businessModel) {
-		Business business = businessRepository.findById(businessModel.getId()) .orElseThrow(() -> new RuntimeException("Business not found"));
-		business.setName(business.getName()); 
-		 return businessRepository.save(business);
-	}
+    public Business updateBusiness(Business business) {
+        Business existingBusiness = businessRepository.findById(business.getId())
+                .orElseThrow(() -> new RuntimeException("Business not found"));
+
+        // Actualiza los campos necesarios
+        existingBusiness.setName(business.getName());
+        existingBusiness.setAddress(business.getAddress());
+        existingBusiness.setEmail(business.getEmail());
+        existingBusiness.setPhone(business.getPhone());
+        // Puedes establecer logo como null por ahora
+        existingBusiness.setLogo(null);
+
+        // Guarda el Business actualizado en el repositorio
+        return businessRepository.save(existingBusiness);
+    }
 
 	@Override
 	public Business addBusiness(BusinessModel businessModel) {
