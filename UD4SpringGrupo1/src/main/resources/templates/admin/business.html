@@ -11,6 +11,7 @@
 <body>
 	<div th:replace="/main/CustomNavbar.html"></div>
 	<div class="container mt-5">
+	<a th:href="@{/business/addBusiness}" class="btn btn-primary mb-2">Add Business</a>
 		<h2 class="text-center">List of Business</h2>
 		<table class="table">
 			<thead>
@@ -25,7 +26,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="business : ${business1}">
+				<tr th:each="business : ${business1}" th:unless="${business.deleted eq 1}">
 					<td hidden="id" th:text="${business.id}"></td>
 					<td th:text="${business.name}"></td>
 					<td th:text="${business.address}"></td>

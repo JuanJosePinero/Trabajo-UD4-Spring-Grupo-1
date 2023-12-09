@@ -11,7 +11,7 @@
 <body>
     <div th:replace="/main/CustomNavbar.html"></div>
     <div class="container mt-5">
-        <!-- Agrega el botón de redirección -->
+
         <a th:href="@{/proFamily/addProFamily}" class="btn btn-primary mb-2">Add ProFamily</a>
         
         <h2 class="text-center">List of Profesional Families</h2>
@@ -24,7 +24,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="profesionalFamily : ${profesionalFamilies}">
+                <tr th:each="profesionalFamily : ${profesionalFamilies}" th:unless="${profesionalFamily.deleted eq 1}">
                     <td hidden="id" th:text="${profesionalFamily.id}"></td>
                     <td th:text="${profesionalFamily.name}"></td>
                     <td>

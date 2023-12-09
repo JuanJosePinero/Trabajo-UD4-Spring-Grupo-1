@@ -25,7 +25,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="student : ${students}">
+				<tr th:each="student : ${students}" th:unless="${student.deleted eq 1}">
 					<td hidden="id" th:text="${student.id}"></td>
 					<td th:text="${student.name}"></td>
 					<td th:text="${student.surname}"></td>

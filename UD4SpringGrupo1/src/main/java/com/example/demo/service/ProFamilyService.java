@@ -16,4 +16,6 @@ public interface ProFamilyService {
     int deleteProFamily(int id);
 
 	ProFamily updateProFamily(ProFamily proFamily);
+	
+	ProFamily addProFamily(ProFamilyModel proFamilyModel);
 }

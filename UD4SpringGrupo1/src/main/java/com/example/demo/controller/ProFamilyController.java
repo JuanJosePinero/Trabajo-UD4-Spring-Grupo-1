@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.ProFamily;
+import com.example.demo.model.ProFamilyModel;
 import com.example.demo.repository.ProFamilyRepository;
 import com.example.demo.service.ProFamilyService;
 
@@ -22,6 +24,7 @@ public class ProFamilyController {
 
 	private static final String PRO_FAMILY_VIEW = "/admin/proFamily";
 	private static final String EDIT_PRO_FAMILY_VIEW = "/admin/editProFamily";
+	private static final String ADD_PRO_FAMILY_VIEW = "/admin/addProFamily";
 	
 	@Autowired
 	@Qualifier("proFamilyService")
@@ -36,6 +39,18 @@ public class ProFamilyController {
 		List<ProFamily> proFamilyList = proFamilyRepository.findAll();
 		model.addAttribute("profesionalFamilies", proFamilyList); 
 	    return PRO_FAMILY_VIEW;
+	}
+	
+	@GetMapping("/addProFamily")
+	public String addProFamily() {
+	    return ADD_PRO_FAMILY_VIEW;
+	}
+	
+	@PostMapping("/addProFamily")
+	public String saveAddProFamily(@ModelAttribute ProFamilyModel proFamilyModel, RedirectAttributes flash) {
+	    proFamilyService.addProFamily(proFamilyModel);
+	    flash.addFlashAttribute("success", "ProFamily registered succesfully!");
+	    return "redirect:/proFamily/list";
 	}
 	
 	@GetMapping("/editProFamily/{proFamilyId}")

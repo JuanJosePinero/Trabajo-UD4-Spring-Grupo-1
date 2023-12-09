@@ -2,8 +2,12 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.demo.entity.Business;
+import com.example.demo.entity.ProFamily;
 import com.example.demo.model.BusinessModel;
+import com.example.demo.model.ProFamilyModel;
 
 
 public interface BusinessService {
@@ -17,5 +21,7 @@ public interface BusinessService {
     int deleteBusiness(int id);
 
     Business updateBusiness(BusinessModel businessModel);
+
+    Business addBusiness(BusinessModel businessModel);
 
 }
