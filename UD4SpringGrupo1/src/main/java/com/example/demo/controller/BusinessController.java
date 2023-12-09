@@ -53,6 +53,51 @@ public class BusinessController {
 	    return "redirect:/business/list";
 	}
 	
+//	@PostMapping("/addBusiness")
+//	public String saveAddBusiness(@ModelAttribute BusinessModel businessModel,
+//			@RequestParam("logoImage") MultipartFile file, RedirectAttributes flash,
+//			HttpServletResponse response) {
+//		businessModel = businessRepository.findById(businessModel.getId());
+//		
+//		if(businessModel != null) {
+//			if(businessModel.getName().isEmpty()) {
+//				flash.addFlashAttribute("error", "Name null");
+//			}else {
+//				String projectDir = System.getProperty("user.dir");
+//				
+//				String uploadDir = projectDir + "/src/main/resources/static/imgs/empresas/";
+//				
+//				try {
+//					File uploadDirFile = new File(uploadDir);
+//					if(!uploadDirFile.exists()) {
+//						uploadDirFile.mkdirs();
+//					}
+//					
+//					String logoName = file.getOriginalFilename();
+//					
+//					if(businessModel.getLogo() != null) {
+//						File oldImageFile = new File(uploadDir + businessModel.getLogo());
+//						if(oldImageFile.exists()) {
+//							oldImageFile.delete();
+//						}
+//					}
+//					
+//					file.transferTo(new File(uploadDir + logoName));
+//					
+//					businessModel.setLogo(logoName);
+//					
+//				}catch(Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//		
+//		
+//		businessService.addBusiness(businessModel);
+//	    flash.addFlashAttribute("success", "Business registered succesfully!");
+//	    return "redirect:/business/list";
+//	}
+	
 	@GetMapping("/editBusiness/{businessId}")
 	public String editBusiness(@PathVariable("businessId") int businessId, Model model) {
 		List<Business> businessList = businessRepository.findAll();

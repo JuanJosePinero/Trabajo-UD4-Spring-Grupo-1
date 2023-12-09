@@ -24,7 +24,11 @@
 					autofocus="true" /> <input name="email" type="text"
 					class="form-control" placeholder="Email" autofocus="true" /> <input
 					name="phone" type="phone" class="form-control"
-					placeholder="Phone" /> <label>Business Logo</label><input name="logo" type="file" class="form-control" accept="image/*" />
+					placeholder="Phone" /> 
+					<label for="logo">Business Logo</label>
+					
+					<input id="logo" name="logo" type="file" class="form-control-file" accept="image/*" />
+					<input type="hidden" id="logo" name="logo" />
 
 				<input type="hidden" name="${_csrf.parameterName}"
 					value="${_csrf.token}" /> <br>
