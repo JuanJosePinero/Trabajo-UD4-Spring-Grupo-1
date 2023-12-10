@@ -173,15 +173,9 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 	public List<StudentModel> listAllEnabledOrDisabledStudents() {
 		
 		List<Student> allStudents = studentRepository.findAllByEnabledIn(Arrays.asList(0, 1));
-	    for(Student s: allStudents) {
-			System.out.println("EEEEEEEEEHHHHHH: "+s);
-		}
 	    List<StudentModel> studentModels = allStudents.stream()
 	            .map(this::entity2model)
 	            .collect(Collectors.toList());
-	    for(StudentModel sm: studentModels) {
-	    	System.out.println("QUE PASA AKIII: "+sm);
-	    }
 	    return studentModels;
 	}
 	

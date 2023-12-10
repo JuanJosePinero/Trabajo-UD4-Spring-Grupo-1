@@ -25,6 +25,4 @@ public interface StudentService {
 	Student updateStudent(StudentModel studentModel);
 	
 	public int enableStudent(int studentId);
-
-	UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }

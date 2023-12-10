@@ -29,7 +29,7 @@
             <li class="nav-item"><a th:href="@{/proFamily/list}" class="nav-link">Professional Families</a></li>
             -->
             <li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"><a th:href="@{/admin/adminScreen}" class="nav-link">Students</a></li>
-    		<li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"><a th:href="@{/user}" class="nav-link">Professional Family</a></li>
+    		<li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"><a th:href="@{/proFamily/list}" class="nav-link">Professional Family</a></li>
     		
             <!-- 
             <li class="nav-item"><a th:href="@{/business/list}" class="nav-link">Businesses</a></li>
@@ -54,7 +54,7 @@
                 </button>
                 <div class="dropdown-content">
                     <a th:href="@{/admin/editStudent/{studentId}(studentId=${studentId})}">Profile</a>
-                    <a th:href="@{/admin/logout}" class="nav-link" onclick="showLogoutMessage()">Logout</a>
+                    <a th:href="@{/logout}" class="nav-link" onclick="showLogoutMessage()">Logout</a>
                 </div>
             </div>
         </div>
