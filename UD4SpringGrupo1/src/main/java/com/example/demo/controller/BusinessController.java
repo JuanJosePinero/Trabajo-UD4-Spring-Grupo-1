@@ -64,7 +64,7 @@ public class BusinessController {
 	                              @RequestParam("logo") MultipartFile file,
 	                              RedirectAttributes flash,
 	                              HttpServletResponse response) {
-		System.out.println("BusinessModel ID: " + businessModel.getId());
+		System.out.println("BusinessModel ID: " + businessModel.toString());
 	    Business business = businessRepository.findById(businessModel.getId()).orElse(null);
 	    System.out.println("JDSFJKDFSJKDFSKJ");
 	    if (business != null) {

@@ -97,5 +97,12 @@ public class BusinessModel {
 	public BusinessModel() {
 		super();
 	}
+
+	@Override
+	public String toString() {
+		return "BusinessModel [id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + ", email="
+				+ email + ", logo=" + logo + ", servicioList=" + servicioList + ", deleted=" + deleted + "]";
+	}
+	
 	
 }
