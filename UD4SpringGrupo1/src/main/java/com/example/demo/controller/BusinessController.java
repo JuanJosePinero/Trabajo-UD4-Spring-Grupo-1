@@ -64,16 +64,16 @@ public class BusinessController {
 	                              @RequestParam("logo") MultipartFile file,
 	                              RedirectAttributes flash,
 	                              HttpServletResponse response) {
-
+		System.out.println("BusinessModel ID: " + businessModel.getId());
 	    Business business = businessRepository.findById(businessModel.getId()).orElse(null);
-
+	    System.out.println("JDSFJKDFSJKDFSKJ");
 	    if (business != null) {
 	        if (business.getName().isEmpty()) {
 	            flash.addFlashAttribute("error", "Name is null");
 	        } else {
 	            String projectDir = System.getProperty("user.dir");
-	            String uploadDir = projectDir + "/static/imgs/business/";
-
+	            String uploadDir = projectDir + "src/main/resources/static/imgs/business/";
+	            System.out.println("AAAAAAAAAA");
 	            try {
 	                File uploadDirFile = new File(uploadDir);
 	                if (!uploadDirFile.exists()) {
@@ -81,7 +81,7 @@ public class BusinessController {
 	                }
 
 	                String logoName = file.getOriginalFilename();
-
+	                System.out.println("BBBBBBBBBBBBB");
 	                if (business.getLogo() != null) {
 	                    File oldImageFile = new File(uploadDir + business.getLogo());
 	                    if (oldImageFile.exists()) {
