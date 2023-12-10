@@ -17,7 +17,4 @@ public interface StudentRepository extends JpaRepository<Student, Serializable>{
 	public abstract Student findByUsername(String username);
 	List<Student> findAllByEnabledIn(List<Integer> enabledValues);
 
-//	@Modifying
-//    @Query("UPDATE Student s SET s.enabled = :enabled WHERE s.id = :id")
-//    void updateEnabled(@Param("id") int id, @Param("enabled") int enabled);
 }

@@ -108,8 +108,8 @@ public class Student implements UserDetails{
 		return enabled;
 	}
 
-	public void setEnabled(int deleted) {
-		this.deleted = deleted;
+	public void setEnabled(int enabled) {
+		this.enabled = enabled;
 	}
 	
 	public int getDeleted() {

@@ -43,11 +43,12 @@ public class AdminController {
 	    List<StudentModel> students = studentService.listAllStudents();
 	    model.addAttribute("students", students);
 	    for (StudentModel student : students) {
-            System.out.println(student);
-        }
-	    
+	        System.out.println("Student: " + student);
+	    }
+
 	    return ADMIN_VIEW;
 	}
+
 	
 	@GetMapping("/editStudent/{studentId}")
 	public String editStudent(@PathVariable("studentId") int studentId, Model model) {

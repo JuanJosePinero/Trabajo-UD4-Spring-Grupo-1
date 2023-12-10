@@ -47,23 +47,27 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 	}
 
 	private StudentModel entity2model(Student student) {
-		System.out.println("Estado de Student antes de la conversión: " + student);
-	    
+	    System.out.println("Estado de Student antes de la conversión: " + student);
+
 	    ModelMapper mapper = new ModelMapper();
-	    StudentModel studentModel = mapper.map(student, StudentModel.class);
-	    mapper.typeMap(Student.class, StudentModel.class)
-        .addMappings(m -> m.map(src -> ((Student) src).getEnabled(), StudentModel::setEnabled));
-	    System.out.println("Estado de StudentModel después de la conversión: " + studentModel);
 	    
+	    mapper.createTypeMap(Student.class, StudentModel.class)
+	            .addMapping(src -> ((Student) src).getEnabled(), StudentModel::setEnabled);
+
+	    StudentModel studentModel = mapper.map(student, StudentModel.class);
+
+	    System.out.println("Estado de StudentModel después de la conversión: " + studentModel);
+
 	    return studentModel;
 	}
+
 
 	@Override
 	public Student register(StudentModel studentModel) {
 		Student student = model2entity(studentModel);
 		student.setPassword(passwordEncoder().encode(student.getPassword()));
 		student.setEnabled(0);
-		student.setRole("u");
+		student.setRole("ROLE_STUDENT");
 		return studentRepository.save(student);
 	}
 
@@ -104,10 +108,6 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 		 student.setUsername(studentModel.getUsername()); 
 		 student.setProfesionalFamily(proFamilyRepository.findById(studentModel.getProfesionalFamily().getId()).orElseThrow(() -> new RuntimeException("ProfesionalFamily not found"))); 
 		 return studentRepository.save(student);
-		 
-//		 Student student = model2entity(studentModel);
-//		 studentRepository.save(student);
-//		 return student;
 	 }
 
 	@Override
@@ -125,18 +125,12 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		com.example.demo.entity.Student student = studentRepository.findByUsername(username);
-		System.out.println("Student service impl dice hola");
 		UserBuilder builder = null;
 
 		if (student != null) {
 			builder = User.withUsername(student.getName());
 			builder.disabled(false);
 			builder.password(student.getPassword());
-//		        		if(student.getRole().equalsIgnoreCase("u")) {
-//		        			
-//		        		}else if(student.getRole().equalsIgnoreCase("a")) {
-//		        			
-//		        		}
 			builder.authorities(new SimpleGrantedAuthority(student.getRole()));
 		} else
 			throw new UsernameNotFoundException("Student not found");
@@ -152,11 +146,6 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 			builder = User.withUsername(email);
 			builder.disabled(false);
 			builder.password(student.getPassword());
-//	        		if(student.getRole().equalsIgnoreCase("u")) {
-//	        			
-//	        		}else if(student.getRole().equalsIgnoreCase("a")) {
-//	        			
-//	        		}
 			builder.authorities(new SimpleGrantedAuthority(student.getRole()));
 		} else
 			throw new UsernameNotFoundException("Student not found");
@@ -175,25 +164,17 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 
 	@Override
 	public int enableStudent(int studentId) {
-//	    Optional<Student> optionalStudent = studentRepository.findById(studentId);
-//
-//	    if (optionalStudent.isPresent()) {
-//            Student student = optionalStudent.get();
-//            student.setEnabled(student.getEnabled()== 0 ? 1 : 0);
-//            studentRepository.save(student);
-//            return student.getEnabled();
-//        } else
-//            throw new IllegalArgumentException("Alumno no encontrado con ID: " + studentId);
-		Optional<Student> optionalStudent = studentRepository.findById(studentId);
+	    Optional<Student> optionalStudent = studentRepository.findById(studentId);
 
-        if (optionalStudent.isPresent()) {
-            Student student = optionalStudent.get();
-            student.setEnabled(1);
-            studentRepository.save(student);
-            return 1;
-        } else
-            return 0;
+	    if (optionalStudent.isPresent()) {
+	        Student student = optionalStudent.get();
+	        student.setEnabled(student.getEnabled() == 0 ? 1 : 0);
+	        studentRepository.save(student);
+	        return student.getEnabled();
+	    } else
+	        return 0;
 	}
+
 
 	@Override
 	public List<StudentModel> listAllEnabledOrDisabledStudents() {
@@ -203,7 +184,7 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 			System.out.println("EEEEEEEEEHHHHHH: "+s);
 		}
 	    List<StudentModel> studentModels = allStudents.stream()
-	            .map(this::entity2model)  // Utiliza tu método de conversión entity2model
+	            .map(this::entity2model)
 	            .collect(Collectors.toList());
 	    for(StudentModel sm: studentModels) {
 	    	System.out.println("QUE PASA AKIII: "+sm);
