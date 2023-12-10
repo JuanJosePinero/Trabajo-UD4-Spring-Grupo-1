@@ -26,12 +26,12 @@ public class SecurityConfig {
 	    http
 	        .authorizeHttpRequests(authorizeRequests ->
 	            authorizeRequests
-	                .requestMatchers("/", "/courses/**", "/imgs/**", "/admin/**", "/error", 
+	                .requestMatchers("/", "/courses/**", "/imgs/**", "/error", 
 	                		"/auth/**", "/webjars/**", "/css/**", "/home/**", "/files/**"
 	                ).permitAll()
 	                .requestMatchers(
 	                    "/admin/**"
-	                ).hasRole("a")
+	                ).hasRole("ADMIN")
 	                .anyRequest().authenticated()
 	        )
 	        .formLogin(formLogin ->

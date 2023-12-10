@@ -84,15 +84,5 @@ public class AdminController {
 	    
 	    return "redirect:/admin/adminScreen";
 	}
-	
-	@GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response, Model model) {
-        org.springframework.security.core.Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
-        model.addAttribute("logoutMessage", "You have successfully logged out");
-        return "redirect:/home?logout";
-    }
 
 }

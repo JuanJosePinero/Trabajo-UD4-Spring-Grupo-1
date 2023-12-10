@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.demo.entity.Student;
 import com.example.demo.model.StudentModel;
 import com.example.demo.service.StudentService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/")
@@ -30,13 +35,21 @@ public class LoginController {
 	@GetMapping("/auth/login")
 	public String login(Model model, @RequestParam(name="error", required=false) String error, 
 			@RequestParam(name="logout", required=false) String logout) {
-		System.out.println("Hola desde login controller");
 		model.addAttribute("student", new Student());
 		model.addAttribute("error", error);
 		model.addAttribute("logout", logout);
 		return LOGIN_VIEW;
 	}
 	
+	@GetMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response, Model model) {
+        org.springframework.security.core.Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        model.addAttribute("logoutMessage", "You have successfully logged out");
+        return "redirect:/home?logout";
+    }
 	
 //	@PostMapping("/auth/login")
 //    public String loginSubmit(@ModelAttribute("studentModel") StudentModel studentModel, Model model) {
