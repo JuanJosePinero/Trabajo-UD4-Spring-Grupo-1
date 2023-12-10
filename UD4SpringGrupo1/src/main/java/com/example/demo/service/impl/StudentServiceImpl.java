@@ -47,17 +47,10 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 	}
 
 	private StudentModel entity2model(Student student) {
-	    System.out.println("Estado de Student antes de la conversión: " + student);
-
 	    ModelMapper mapper = new ModelMapper();
-	    
 	    mapper.createTypeMap(Student.class, StudentModel.class)
 	            .addMapping(src -> ((Student) src).getEnabled(), StudentModel::setEnabled);
-
 	    StudentModel studentModel = mapper.map(student, StudentModel.class);
-
-	    System.out.println("Estado de StudentModel después de la conversión: " + studentModel);
-
 	    return studentModel;
 	}
 
