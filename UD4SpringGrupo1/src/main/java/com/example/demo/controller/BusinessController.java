@@ -100,7 +100,7 @@ public class BusinessController {
 	        // Por ejemplo, verificar la extensión del archivo, transferir el archivo, etc.
 
 	        file.transferTo(new File(uploadDir, logoName));
-	        business.setLogo(logoName);
+	        business.setLogo(logoName);  // Establecer el nombre del archivo en el modelo
 
 	        businessService.addBusiness(convertBusinessToModel(business));
 
@@ -112,6 +112,7 @@ public class BusinessController {
 
 	    return "redirect:/business/list";
 	}
+
 
 
 
