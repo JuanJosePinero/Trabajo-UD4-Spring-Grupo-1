@@ -25,4 +25,8 @@ public interface StudentService {
 	Student updateStudent(StudentModel studentModel);
 	
 	public int enableStudent(int studentId);
+	
+	public boolean mailExists(String mail);
+	
+	public boolean isMailValid(String mail);
 }

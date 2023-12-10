@@ -178,5 +178,21 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 	            .collect(Collectors.toList());
 	    return studentModels;
 	}
+
+	@Override
+	public boolean mailExists(String mail) {
+		List<Student> students = new ArrayList<>();
+		for (Student student : students) {
+			if(student.getUsername() == mail)
+				return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isMailValid(String mail) {
+		String mailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+		return mail.matches(mailRegex);
+	}
 	
 }

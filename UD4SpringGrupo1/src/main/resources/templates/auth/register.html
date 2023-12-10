@@ -32,7 +32,6 @@
 					<option th:each="proFamily : ${profesionalFamilies}"
 						th:value="${proFamily.id}" th:text="${proFamily.name}"></option>
 				</select>
-
 				<input type="hidden" name="${_csrf.parameterName}"
 					value="${_csrf.token}" /> <br>
 				<button class="btn btn-lg btn-primary" type="submit">Register</button>
