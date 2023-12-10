@@ -25,8 +25,14 @@
 				<input id="username" name="username" type="text" th:field="*{username}" class="form-control"
 					placeholder="Email" autofocus="true" /> <input id="password" name="password"
 					type="password" th:field="*{password}" class="form-control" placeholder="Password" />
+					
+				<!-- 	
+				PRUEBA DE ERROR DE ACTIVACIÓN
+				<div th:if="${activationError}" style="color: red;">
+   				 	Your account is not activated. Please wait for admin approval.
+				</div>
+				-->
 				<div th:if="${param.error}">
-					<p th:if="${#strings.contains(request.getParameter('error'), 'User is disabled')}" style="color: red;">Your account is not activated. Please wait for admin approval.</p>
 					<p style="color: red;">Invalid credentials. Please try again.</p>
 				</div>
 				<input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
@@ -40,6 +46,6 @@
 			<input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 		</form>
 	</div>
- -->
+
 </body>
 </html>

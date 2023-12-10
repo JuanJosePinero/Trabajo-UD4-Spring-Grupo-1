@@ -32,6 +32,14 @@ public class LoginController {
 			@RequestParam(name="logout", required=false) String logout) {
 		model.addAttribute("student", new Student());
 		model.addAttribute("error", error);
+		
+//		PRUEBA DE ERROR DE ACTIVACIÓN
+//		Student stud = (Student) model.getAttribute("student");
+//		if(stud.getEnabled() == 0) {
+//			error = "User is disabled";
+//	        model.addAttribute("activationError", true);
+//		}
+		
 		model.addAttribute("logout", logout);
 		return LOGIN_VIEW;
 	}
