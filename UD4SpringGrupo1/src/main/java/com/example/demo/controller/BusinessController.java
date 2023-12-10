@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import java.io.File;
 import java.util.List;
 
-import org.apache.el.stream.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.apache.commons.lang3.StringUtils;
 
 import com.example.demo.entity.Business;
 import com.example.demo.model.BusinessModel;
@@ -64,51 +64,58 @@ public class BusinessController {
 	                              @RequestParam("logo") MultipartFile file,
 	                              RedirectAttributes flash,
 	                              HttpServletResponse response) {
-		System.out.println("BusinessModel ID: " + businessModel.toString());
-	    Business business = businessRepository.findById(businessModel.getId()).orElse(null);
-	    System.out.println("JDSFJKDFSJKDFSKJ");
-	    if (business != null) {
-	        if (business.getName().isEmpty()) {
-	            flash.addFlashAttribute("error", "Name is null");
-	        } else {
-	            String projectDir = System.getProperty("user.dir");
-	            String uploadDir = projectDir + "src/main/resources/static/imgs/business/";
-	            System.out.println("AAAAAAAAAA");
-	            try {
-	                File uploadDirFile = new File(uploadDir);
-	                if (!uploadDirFile.exists()) {
-	                    uploadDirFile.mkdirs();
-	                }
 
-	                String logoName = file.getOriginalFilename();
-	                System.out.println("BBBBBBBBBBBBB");
-	                if (business.getLogo() != null) {
-	                    File oldImageFile = new File(uploadDir + business.getLogo());
-	                    if (oldImageFile.exists()) {
-	                        oldImageFile.delete();
-	                    }
-	                }
-	                System.out.println("Vale llegas aqui");
-	                file.transferTo(new File(uploadDir, logoName));
-
-	                business.setLogo(logoName);
-	              
-	                BusinessModel convertedBusinessModel = convertBusinessToModel(business);
-	                businessService.addBusiness(convertedBusinessModel);
-	                
-	                flash.addFlashAttribute("success", "Business registered successfully!");
-	           
-	            } catch (Exception e) {
-	                e.printStackTrace();
-	                flash.addFlashAttribute("error", "Error saving business");
-	            }
-	        }
-	    } else {
-	        flash.addFlashAttribute("error", "Business not found");
+	    // Validar manualmente los campos del objeto BusinessModel
+	    if (StringUtils.isBlank(businessModel.getName())) {
+	        flash.addFlashAttribute("error", "Name is required");
+	        return "redirect:/business/list";
 	    }
-	    System.out.println("LLEGAS?");
+
+	    // Agregar más validaciones según sea necesario para otras propiedades...
+
+	    try {
+	        String projectDir = System.getProperty("user.dir");
+	        String uploadDir = projectDir + "/imgs/business/";
+
+	        File uploadDirFile = new File(uploadDir);
+	        if (!uploadDirFile.exists()) {
+	            uploadDirFile.mkdirs();
+	        }
+
+	        // Validar si se proporcionó un archivo de logo
+	        if (file == null || file.isEmpty()) {
+	            flash.addFlashAttribute("error", "Logo is required");
+	            return "redirect:/business/list";
+	        }
+
+	        String logoName = file.getOriginalFilename();
+
+	        Business business = new Business();
+	        business.setName(businessModel.getName());
+	        business.setAddress(businessModel.getAddress());
+	        business.setPhone(businessModel.getPhone());
+	        business.setEmail(businessModel.getEmail());
+
+	        // Resto del código para manejar el logo...
+	        // Por ejemplo, verificar la extensión del archivo, transferir el archivo, etc.
+
+	        file.transferTo(new File(uploadDir, logoName));
+	        business.setLogo(logoName);
+
+	        businessService.addBusiness(convertBusinessToModel(business));
+
+	        flash.addFlashAttribute("success", "Business registered successfully!");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        flash.addFlashAttribute("error", "Error saving business");
+	    }
+
 	    return "redirect:/business/list";
 	}
+
+
+
+
 
 
 
@@ -125,8 +132,7 @@ public class BusinessController {
 	        businessModel.setAddress(business.getAddress());
 	        businessModel.setEmail(business.getEmail());
 	        businessModel.setPhone(business.getPhone());
-	        // Puedes establecer logo como null por ahora
-	        businessModel.setLogo(null);
+	        
 
 	        model.addAttribute("businessModel", businessModel);
 	    }
@@ -144,7 +150,7 @@ public class BusinessController {
 	            business.setAddress(businessModel.getAddress());
 	            business.setEmail(businessModel.getEmail());
 	            business.setPhone(businessModel.getPhone());
-	            business.setLogo(null);
+	            
 
 	            Business updatedBusiness = businessService.updateBusiness(business);
 

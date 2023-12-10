@@ -80,8 +80,7 @@ public class BusinessServiceImpl implements BusinessService {
         existingBusiness.setAddress(business.getAddress());
         existingBusiness.setEmail(business.getEmail());
         existingBusiness.setPhone(business.getPhone());
-        // Puedes establecer logo como null por ahora
-        existingBusiness.setLogo(null);
+        
 
         // Guarda el Business actualizado en el repositorio
         return businessRepository.save(existingBusiness);
@@ -89,23 +88,16 @@ public class BusinessServiceImpl implements BusinessService {
 
 	@Override
 	public Business addBusiness(BusinessModel businessModel) {
-		Business business = model2entity(businessModel);
-		business.setName(businessModel.getName());
-		business.setAddress(businessModel.getAddress());
-		business.setEmail(businessModel.getEmail());
-		business.setLogo(null);
-		business.setPhone(businessModel.getPhone());
-//		if (logoFile != null && !logoFile.isEmpty()) {
-//            try {
-//                byte[] bytes = logoFile.getBytes();
-//                Path path = Paths.get("imgs/business/" + logoFile.getOriginalFilename());
-//                Files.write(path, bytes);
-//                business.setLogo(path.toString()); 
-//            } catch (IOException e) {
-//                // Manejar la excepción (por ejemplo, lanzarla o registrarla)
-//            }
-//        }
-		return businessRepository.save(business);
+	    Business business = model2entity(businessModel);
+	    business.setName(businessModel.getName());
+	    business.setAddress(businessModel.getAddress());
+	    business.setEmail(businessModel.getEmail());
+	    business.setPhone(businessModel.getPhone());
+
+	    business.setLogo(businessModel.getLogo());
+	    
+
+	    return businessRepository.save(business);
 	}
 
 }

@@ -33,8 +33,8 @@
             <td th:text="${business.email}"></td>
             <td th:text="${business.phone}"></td>
             <td>
-                <img th:src="${business.logo} != null and ${business.logo} != '' ? @{/imgs/business/{business.logo}} : @{/imgs/business/businessDefault.png}"
-                     alt="Logo" width="50px"/>
+                <img th:src="${business.logo} != null and ${business.logo} != '' ? '/imgs/business/' + ${business.logo} : '/imgs/business/businessDefault.png'" alt="Logo" width="50px"/>
+
             </td>
             <td>
                 <form th:action="@{'/business/editBusiness/' + ${business.id}}"

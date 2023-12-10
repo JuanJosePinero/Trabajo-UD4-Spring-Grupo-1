@@ -12,10 +12,26 @@ import lombok.Data;
 public class BusinessModel {
 	
 	private int id;
-	private String name, address,phone, email;
-	private MultipartFile logo;
+	private String name, address,phone, email,logo;
 	private List<Servicio> servicioList;
 	private int deleted;
+	
+	public BusinessModel(int id, String name, String address, String phone, String email, String logo,
+			List<Servicio> servicioList, int deleted) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.address = address;
+		this.phone = phone;
+		this.email = email;
+		this.logo = logo;
+		this.servicioList = servicioList;
+		this.deleted = deleted;
+	}
+
+	public BusinessModel() {
+		super();
+	}
 	
 	public int getId() {
 		return id;
@@ -57,11 +73,11 @@ public class BusinessModel {
 		this.email = email;
 	}
 
-	public MultipartFile getLogo() {
+	public String getLogo() {
 		return logo;
 	}
 
-	public void setLogo(MultipartFile logo) {
+	public void setLogo(String logo) {
 		this.logo = logo;
 	}
 
@@ -81,22 +97,6 @@ public class BusinessModel {
 		this.deleted = deleted;
 	}
 
-	public BusinessModel(int id, String name, String address, String phone, String email, MultipartFile logo,
-			List<Servicio> servicioList, int deleted) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.address = address;
-		this.phone = phone;
-		this.email = email;
-		this.logo = logo;
-		this.servicioList = servicioList;
-		this.deleted = deleted;
-	}
-
-	public BusinessModel() {
-		super();
-	}
 
 	@Override
 	public String toString() {
