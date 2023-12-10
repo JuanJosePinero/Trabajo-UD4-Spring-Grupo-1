@@ -2,6 +2,8 @@ package com.example.demo.model;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.demo.entity.Servicio;
 
 import lombok.Data;
@@ -10,7 +12,8 @@ import lombok.Data;
 public class BusinessModel {
 	
 	private int id;
-	private String name, address,phone, email, logo;
+	private String name, address,phone, email;
+	private MultipartFile logo;
 	private List<Servicio> servicioList;
 	private int deleted;
 	
@@ -54,11 +57,11 @@ public class BusinessModel {
 		this.email = email;
 	}
 
-	public String getLogo() {
+	public MultipartFile getLogo() {
 		return logo;
 	}
 
-	public void setLogo(String logo) {
+	public void setLogo(MultipartFile logo) {
 		this.logo = logo;
 	}
 
@@ -78,7 +81,7 @@ public class BusinessModel {
 		this.deleted = deleted;
 	}
 
-	public BusinessModel(int id, String name, String address, String phone, String email, String logo,
+	public BusinessModel(int id, String name, String address, String phone, String email, MultipartFile logo,
 			List<Servicio> servicioList, int deleted) {
 		super();
 		this.id = id;
