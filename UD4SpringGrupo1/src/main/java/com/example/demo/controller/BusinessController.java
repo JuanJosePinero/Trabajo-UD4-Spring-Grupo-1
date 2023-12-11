@@ -1,12 +1,14 @@
 package com.example.demo.controller;
 
 import java.io.File;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,11 +20,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.apache.commons.lang3.StringUtils;
 
 import com.example.demo.entity.Business;
+import com.example.demo.entity.Servicio;
 import com.example.demo.model.BusinessModel;
 import com.example.demo.repository.BusinessRepository;
 import com.example.demo.service.BusinessService;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("business")
@@ -31,6 +35,7 @@ public class BusinessController {
 	private static final String BUSINESS_VIEW = "/admin/business";
 	private static final String EDIT_BUSINESS_VIEW = "/admin/editBusiness";
 	private static final String ADD_BUSINESS_VIEW = "/admin/addBusiness";
+	private static final String BUSINESS_HOME_VIEW = "/business/businessHome";
 	
 	@Autowired
 	@Qualifier("businessService")
@@ -39,6 +44,10 @@ public class BusinessController {
 	@Autowired
 	@Qualifier("businessRepository")
 	 private BusinessRepository businessRepository;
+	
+	@Autowired
+	@Qualifier("servicioService")
+	 private ServicioService servicioService;
 	
 	@GetMapping("/list")
 	public String business(Model model) {
@@ -60,47 +69,33 @@ public class BusinessController {
 //	}
 	
 	@PostMapping("/addBusiness")
-	public String saveAddBusiness(@ModelAttribute BusinessModel businessModel,
+	public String saveAddBusiness(@ModelAttribute @Valid BusinessModel businessModel,
 	                              @RequestParam("logo") MultipartFile file,
+	                              BindingResult result,
 	                              RedirectAttributes flash,
 	                              HttpServletResponse response) {
 
-	    // Validar manualmente los campos del objeto BusinessModel
-	    if (StringUtils.isBlank(businessModel.getName())) {
-	        flash.addFlashAttribute("error", "Name is required");
+	    if (result.hasErrors()) {
+	        flash.addFlashAttribute("error", "Validation failed");
 	        return "redirect:/business/list";
 	    }
 
-	    // Agregar más validaciones según sea necesario para otras propiedades...
-
 	    try {
-	        String projectDir = System.getProperty("user.dir");
-	        String uploadDir = projectDir + "/imgs/business/";
-
-	        File uploadDirFile = new File(uploadDir);
-	        if (!uploadDirFile.exists()) {
-	            uploadDirFile.mkdirs();
-	        }
-
-	        // Validar si se proporcionó un archivo de logo
 	        if (file == null || file.isEmpty()) {
 	            flash.addFlashAttribute("error", "Logo is required");
 	            return "redirect:/business/list";
 	        }
 
-	        String logoName = file.getOriginalFilename();
-
+	        String logoBase64 = Base64.getEncoder().encodeToString(file.getBytes());
+	        
+	        // Resto del código para manejar el logo...
+	        
 	        Business business = new Business();
 	        business.setName(businessModel.getName());
 	        business.setAddress(businessModel.getAddress());
 	        business.setPhone(businessModel.getPhone());
 	        business.setEmail(businessModel.getEmail());
-
-	        // Resto del código para manejar el logo...
-	        // Por ejemplo, verificar la extensión del archivo, transferir el archivo, etc.
-
-	        file.transferTo(new File(uploadDir, logoName));
-	        business.setLogo(logoName);  // Establecer el nombre del archivo en el modelo
+	        business.setLogo(logoBase64);
 
 	        businessService.addBusiness(convertBusinessToModel(business));
 
@@ -112,6 +107,7 @@ public class BusinessController {
 
 	    return "redirect:/business/list";
 	}
+
 
 
 
@@ -188,8 +184,16 @@ public class BusinessController {
 	    businessModel.setAddress(business.getAddress());
 	    businessModel.setPhone(business.getPhone());
 	    businessModel.setEmail(business.getEmail());
+	    businessModel.setLogo(business.getLogo());
 
 	    return businessModel;
+	}
+	
+	@GetMapping("/home")
+	public String Business(Model model) {
+		List<Servicio> servicios = servicioService.getAllServicios();
+        model.addAttribute("servicio", servicios);
+	    return BUSINESS_HOME_VIEW;
 	}
 
 }

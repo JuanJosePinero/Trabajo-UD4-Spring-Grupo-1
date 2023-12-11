@@ -40,7 +40,7 @@ public class RegisterController {
 	
 	    @PostMapping("/auth/register")
 	    public String registerSubmit(@ModelAttribute("studentModel") StudentModel studentModel, RedirectAttributes flash, @RequestParam("confirmPassword") String confirmPassword) {	
-	    	if(!studentModel.getName().isEmpty() || !studentModel.getPassword().isEmpty() || !studentModel.getSurname().isEmpty()){
+	    	if(studentModel.getName().isEmpty() || studentModel.getPassword().isEmpty() || studentModel.getSurname().isEmpty()){
 	    		flash.addFlashAttribute("error", "Some fields might be empty");
 	    		return "redirect:/auth/register";
 	    	}else if(!studentModel.getName().matches("[a-zA-Z]+")) {
@@ -53,13 +53,13 @@ public class RegisterController {
 	    		flash.addFlashAttribute("error", "Passwords do not match");
 	    		return "redirect:/auth/register";
 	    	}else if(studentModel.getPassword().length() < 6 || studentModel.getPassword().length() > 18) {
-	    		flash.addAttribute("error", "Password must be between 6 and 18 characters long");
+	    		flash.addFlashAttribute("error", "Password must be between 6 and 18 characters long");
 	    		return "redirect:/auth/register";   		
-	    	}else if(!studentService.mailExists(studentModel.getUsername())) {
-	    		flash.addAttribute("error", "That email is already in use");
+	    	}else if(studentService.mailExists(studentModel.getUsername())) {
+	    		flash.addFlashAttribute("error", "That email is already in use");
 	    		return "redirect:/auth/register";	  
 	    	}else if(!studentService.isMailValid(studentModel.getUsername())){ 
-	    		flash.addAttribute("error", "That email is invalid");
+	    		flash.addFlashAttribute("error", "That email is invalid");
 	    		return "redirect:/auth/register";	 
 	    	}else{
 	    		studentService.register(studentModel);

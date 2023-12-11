@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.User.UserBuilder;
@@ -121,6 +122,10 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 		UserBuilder builder = null;
 
 		if (student != null) {
+			if (student.getEnabled() == 0) {
+	            // Si el usuario no está activado, lanzar una excepción o manejar de alguna manera
+	            throw new DisabledException("Account is not activated");
+	        }
 			builder = User.withUsername(student.getName());
 			builder.disabled(false);
 			builder.password(student.getPassword());

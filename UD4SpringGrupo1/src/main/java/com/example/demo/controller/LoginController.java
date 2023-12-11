@@ -28,21 +28,25 @@ public class LoginController {
 	 private StudentService studentService;
 	
 	@GetMapping("/auth/login")
-	public String login(Model model, @RequestParam(name="error", required=false) String error, 
-			@RequestParam(name="logout", required=false) String logout) {
-		model.addAttribute("student", new Student());
-		model.addAttribute("error", error);
-		
-//		PRUEBA DE ERROR DE ACTIVACIÓN
-//		Student stud = (Student) model.getAttribute("student");
-//		if(stud.getEnabled() == 0) {
-//			error = "User is disabled";
-//	        model.addAttribute("activationError", true);
-//		}
-		
-		model.addAttribute("logout", logout);
-		return LOGIN_VIEW;
+	public String login(Model model, @RequestParam(name = "error", required = false) String error,
+	        @RequestParam(name = "logout", required = false) String logout) {
+	    model.addAttribute("student", new Student());
+	    
+	    if (error != null) {
+	        if (error.equals("notActivated")) {
+	            System.out.println("Not Activated Error");
+	            model.addAttribute("error", "notActivated");
+	        } else if (error.equals("badCredentials")) {
+	            System.out.println("Bad Credentials Error");
+	            model.addAttribute("error", "badCredentials");
+	        }
+	    }
+
+	    model.addAttribute("logout", logout);
+	    return LOGIN_VIEW;
 	}
+
+
 	
 	@GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -51,7 +55,7 @@ public class LoginController {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         model.addAttribute("logoutMessage", "You have successfully logged out");
-        return "redirect:/home?logout";
+        return "redirect:/auth/login";
     }
 	
 	@GetMapping("/userScreen")
