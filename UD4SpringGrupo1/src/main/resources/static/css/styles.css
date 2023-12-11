@@ -13,6 +13,11 @@ body {
 	background-size: 100% 100%;
 }
 
+.bodyBusiness{
+	background-image: url('/imgs/backgroundBusiness2.jpg');
+	background-size: 100% 100%;
+}
+
 h1{
 	text-align: center;
 	

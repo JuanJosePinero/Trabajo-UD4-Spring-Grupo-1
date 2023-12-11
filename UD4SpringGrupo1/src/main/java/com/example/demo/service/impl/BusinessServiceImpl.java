@@ -94,7 +94,7 @@ public class BusinessServiceImpl implements BusinessService {
 	    business.setEmail(businessModel.getEmail());
 	    business.setPhone(businessModel.getPhone());
 
-	    business.setLogo(businessModel.getLogo());
+	    business.setLogo(null);
 	    
 
 	    return businessRepository.save(business);
