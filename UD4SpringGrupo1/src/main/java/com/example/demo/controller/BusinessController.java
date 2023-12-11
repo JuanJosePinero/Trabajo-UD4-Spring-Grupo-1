@@ -87,7 +87,7 @@ public class BusinessController {
 
 	        String logoBase64 = Base64.getEncoder().encodeToString(file.getBytes());
 	        
-	        // Resto del código para manejar el logo...
+	        
 	        
 	        Business business = new Business();
 	        business.setName(businessModel.getName());
@@ -107,16 +107,6 @@ public class BusinessController {
 	    return "redirect:/business/list";
 	}
 
-
-
-
-
-
-
-
-
-
-	
 	@GetMapping("/editBusiness/{businessId}")
 	public String editBusiness(@PathVariable("businessId") int businessId, Model model) {
 	    Business business = businessRepository.findById(businessId).orElse(null);
@@ -196,6 +186,3 @@ public class BusinessController {
 	}
 
 }
-
-
-

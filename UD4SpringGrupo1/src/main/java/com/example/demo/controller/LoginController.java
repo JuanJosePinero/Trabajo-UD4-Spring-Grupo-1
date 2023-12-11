@@ -34,10 +34,8 @@ public class LoginController {
 	    
 	    if (error != null) {
 	        if (error.equals("notActivated")) {
-	            System.out.println("Not Activated Error");
 	            model.addAttribute("error", "notActivated");
 	        } else if (error.equals("badCredentials")) {
-	            System.out.println("Bad Credentials Error");
 	            model.addAttribute("error", "badCredentials");
 	        }
 	    }

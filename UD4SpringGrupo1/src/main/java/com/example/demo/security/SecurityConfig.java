@@ -43,7 +43,7 @@ public class SecurityConfig {
 	                .loginPage("/auth/login")
 	                .defaultSuccessUrl("/home")
 	                .failureHandler((request, response, exception) -> {
-	                    String error = "unknownError";  // Valor predeterminado si no se encuentra ningún error específico
+	                    String error = "unknownError";
 
 	                    if (exception instanceof DisabledException) {
 	                        error = "notActivated";
@@ -60,10 +60,10 @@ public class SecurityConfig {
 	        .logout(logout ->
             logout
                 .permitAll()
-                .logoutUrl("/logout") // URL para el logout
-                .logoutSuccessUrl("/") // URL a la que redirigir después del logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/") 
                 .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID") // Elimina las cookies al hacer logout
+                .deleteCookies("JSESSIONID")
         );
 	    return http.build();
 	}

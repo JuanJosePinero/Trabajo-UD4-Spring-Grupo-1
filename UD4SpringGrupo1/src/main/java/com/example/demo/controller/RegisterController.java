@@ -31,7 +31,6 @@ public class RegisterController {
 
 	    @GetMapping("/auth/register")
 	    public String registerForm(@ModelAttribute("studentModel") StudentModel studentModel, Model model) {
-	        // Agregar la lista de nombres de las familias profesionales al modelo
 	        List<ProFamily> profesionalFamilies = proFamilyService.getAllProfesionalFamilies();
 	        model.addAttribute("profesionalFamilies", profesionalFamilies);
 

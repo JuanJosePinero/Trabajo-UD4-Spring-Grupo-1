@@ -75,7 +75,6 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 	    List<StudentModel> students = new ArrayList<>();
 	    for (Student s : studentRepository.findAll()) {
 	        students.add(entity2model(s));
-	        System.out.println("Campo enabled: " + s.getEnabled());
 	    }
 	    return students;
 	}
@@ -123,15 +122,19 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 
 		if (student != null) {
 			if (student.getEnabled() == 0) {
-	            // Si el usuario no está activado, lanzar una excepción o manejar de alguna manera
-	            throw new DisabledException("Account is not activated");
+				return User.withUsername(student.getName())
+	                    .disabled(true)
+	                    .password(student.getPassword())
+	                    .authorities(new SimpleGrantedAuthority(student.getRole()))
+	                    .build();
+	        
 	        }
 			builder = User.withUsername(student.getName());
 			builder.disabled(false);
 			builder.password(student.getPassword());
 			builder.authorities(new SimpleGrantedAuthority(student.getRole()));
 		} else
-			throw new UsernameNotFoundException("Student not found");
+			throw new UsernameNotFoundException("Student not found or account is not activated");
 		return builder.build();
 	}
 	
