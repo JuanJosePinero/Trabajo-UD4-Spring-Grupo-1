@@ -9,52 +9,46 @@
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
         crossorigin="anonymous">
   <link href="/css/styles.css" rel="stylesheet">
-  <style>
-    .info-container,
-    .info-container2 {
-      position: fixed;
-      top: 10%;
-      text-align: left;
-    }
-
-    .info-block-head,
-    .info-block,
-    .info-block-head2,
-    .info-block2 {
-      margin: 10px;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      background-color: rgba(248, 249, 250, 0.8);
-      width: 360px;
-    }
-
-    .info-container2 {
-      left: auto; /* Reset left */
-      right: 0; /* Align to the right */
-      transform: none; /* Remove translateY and translateX */
-    }
-  </style>
 </head>
 
 <body class="bodyBusiness">
   <div th:replace="/main/CustomNavbar.html"></div>
 
-  <!-- Your Business Information -->
   <div class="info-container">
     <div class="info-block-head">
       <h3>Your Business Information</h3>
     </div>
-    <div class="info-block">Information Here</div>
+    <div class="info-block-head">Information Here<br>Information Here<br>Information Here<br>Information Here<br></div>
   </div>
 
   <div class="info-container2">
-    <div class="info-block-head2">
-      <h3>Your services</h3>
+  <div class="info-block-head">
+      <h3>Your Services</h3>
     </div>
-    <div class="info-block2"><ul th:each="service : ${servicio}">
-        <li th:text="${service.id}"></li>
-      </ul></div>
+    <div class="info-block2">
+      <p align="right">Desplegable va aqui</p>
+      <table class="tableBusiness">
+        <thead>
+          <tr class="tableBusiness">
+            <th>Comment</th>
+            <th>Description</th>
+            <th>Finished</th>
+            <th>Title</th>
+            <th>Valoration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="service : ${servicio}">
+            <td th:hidden="${service.id}"></td>
+            <td th:text="${service.comment}"></td>
+            <td th:text="${service.description}"></td>
+            <td th:text="${service.finished}"></td>
+            <td th:text="${service.title}"></td>
+            <td th:text="${service.valoration}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </body>
 

@@ -86,3 +86,46 @@ h1{
     cursor: pointer;
 }
 
+/* Agrega estilos para la disposición de los contenedores */
+/* Agrega estilos para la disposición de los contenedores */
+.info-container {
+  display: inline-block; /* Cambia a display: inline-block */
+  width: 30%; /* Ajusta el ancho según tus preferencias */
+  vertical-align: top; /* Alinea arriba */
+}
+
+.info-container2 {
+  display: inline-block; /* Cambia a display: inline-block */
+  width: 68%; /* Ajusta el ancho según tus preferencias */
+  vertical-align: top; /* Alinea arriba */
+}
+
+/* Estilos adicionales si es necesario */
+.info-block-head, .info-block-head2 {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: rgba(248, 249, 250, 0.8);
+  width: 360px;
+}
+
+.info-block2 {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: rgba(248, 249, 250, 0.8);
+  width: 1000px;
+}
+
+.tableBusiness {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.thBusiness, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
