@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.Business;
@@ -22,6 +23,7 @@ import com.example.demo.entity.Servicio;
 import com.example.demo.model.BusinessModel;
 import com.example.demo.repository.BusinessRepository;
 import com.example.demo.service.BusinessService;
+import com.example.demo.service.FilesStorageService;
 import com.example.demo.service.ServicioService;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -48,6 +50,10 @@ public class BusinessController {
 	@Qualifier("servicioService")
 	 private ServicioService servicioService;
 	
+	@Autowired
+	@Qualifier("filesStorageService")
+	 private FilesStorageService storageService;
+	
 	@GetMapping("/list")
 	public String business(Model model) {
 		List<Business> businessList = businessRepository.findAll();
@@ -68,7 +74,7 @@ public class BusinessController {
 //	}
 	
 	@PostMapping("/addBusiness")
-	public String saveAddBusiness(@ModelAttribute @Valid BusinessModel businessModel,
+	public String saveAddBusiness(@ModelAttribute BusinessModel businessModel,
 	                              @RequestParam("logo") MultipartFile file,
 	                              BindingResult result,
 	                              RedirectAttributes flash,
@@ -80,32 +86,26 @@ public class BusinessController {
 	    }
 
 	    try {
-	        if (file == null || file.isEmpty()) {
-	            flash.addFlashAttribute("error", "Logo is required");
-	            return "redirect:/business/list";
+	        if (!file.isEmpty()) {
+	            String imageName = storageService.save(file);
+	            String imageUrl = MvcUriComponentsBuilder
+	                .fromMethodName(FileUploadController.class, "serveFile", imageName)
+	                .build().toUriString();
+	            businessModel.setLogo(imageUrl);
 	        }
 
-	        String logoBase64 = Base64.getEncoder().encodeToString(file.getBytes());
-	        
-	        
-	        
-	        Business business = new Business();
-	        business.setName(businessModel.getName());
-	        business.setAddress(businessModel.getAddress());
-	        business.setPhone(businessModel.getPhone());
-	        business.setEmail(businessModel.getEmail());
-	        business.setLogo(logoBase64);
-
-	        businessService.addBusiness(convertBusinessToModel(business));
+	        businessService.addBusiness(businessModel);
 
 	        flash.addFlashAttribute("success", "Business registered successfully!");
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        flash.addFlashAttribute("error", "Error saving business");
+	        System.out.println("LLEGAS A CATCH");
 	    }
 
 	    return "redirect:/business/list";
 	}
+
 
 	@GetMapping("/editBusiness/{businessId}")
 	public String editBusiness(@PathVariable("businessId") int businessId, Model model) {
@@ -166,17 +166,6 @@ public class BusinessController {
 	    return "redirect:/business/list";
 	}
 	
-	private BusinessModel convertBusinessToModel(Business business) {
-	    BusinessModel businessModel = new BusinessModel();
-	    businessModel.setId(business.getId());
-	    businessModel.setName(business.getName());
-	    businessModel.setAddress(business.getAddress());
-	    businessModel.setPhone(business.getPhone());
-	    businessModel.setEmail(business.getEmail());
-	    businessModel.setLogo(business.getLogo());
-
-	    return businessModel;
-	}
 	
 	@GetMapping("/home")
 	public String Business(Model model) {

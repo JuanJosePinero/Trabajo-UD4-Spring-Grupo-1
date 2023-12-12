@@ -24,8 +24,7 @@
         <input name="phone" type="phone" class="form-control" placeholder="Phone" /> 
         <label for="logo">Business Logo</label>
         <input id="logo" name="logo" type="file" class="form-control-file" accept="image/*" />
-        <!-- No es necesario el siguiente input oculto -->
-        <!-- <input type="hidden" id="logo" name="logo" /> -->
+        
 		
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> <br>
         <button class="btn btn-lg btn-primary" type="submit">Save</button>
