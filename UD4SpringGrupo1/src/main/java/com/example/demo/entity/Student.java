@@ -7,9 +7,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -21,15 +18,12 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class Student implements UserDetails{
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+public class Student extends User implements UserDetails{
+   
     private int enabled;
     private int deleted;
     
-    private String name, surname, username, password, role;
+    private String name, surname, password, role;
    
     @ManyToOne
     @JoinColumn(name = "profesionalFamilyId")
@@ -40,13 +34,7 @@ public class Student implements UserDetails{
     
     
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
+	
 
 	public String getName() {
 		return name;
@@ -64,14 +52,7 @@ public class Student implements UserDetails{
 		this.surname = surname;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
+	
 	public String getPassword() {
 		return password;
 	}
@@ -120,13 +101,11 @@ public class Student implements UserDetails{
 		this.deleted = deleted;
 	}
 
-	public Student(int id, String name, String surname, String username, String password, String role,
+	public Student(int id, String name, String surname, String email, String password, String role,
 			ProFamily profesionalFamily, List<Servicio> servicios, int enabled, int deleted) {
-		super();
-		this.id = id;
+		super(id , email);
 		this.name = name;
 		this.surname = surname;
-		this.username = username;
 		this.password = password;
 		this.role = role;
 		this.profesionalFamily = profesionalFamily;
@@ -167,6 +146,19 @@ public class Student implements UserDetails{
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String toString() {
+		return "Student [enabled=" + enabled + ", deleted=" + deleted + ", name=" + name + ", surname=" + surname
+				+ ", password=" + password + ", role=" + role + ", profesionalFamily=" + profesionalFamily
+				+ ", servicios=" + servicios + ", getId()=" + getId() + ", getEmail()=" + getEmail() + "]";
 	}
     
 }

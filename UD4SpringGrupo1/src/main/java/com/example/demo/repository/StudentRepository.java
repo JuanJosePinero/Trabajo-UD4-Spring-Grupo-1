@@ -14,7 +14,7 @@ import com.example.demo.entity.Student;
 @Repository("studentRepository")
 public interface StudentRepository extends JpaRepository<Student, Serializable>{
 	
-	public abstract Student findByUsername(String username);
+	public abstract Student findByEmail(String email);
 	List<Student> findAllByEnabledIn(List<Integer> enabledValues);
 
 }

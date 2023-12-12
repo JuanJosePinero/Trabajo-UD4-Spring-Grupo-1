@@ -12,22 +12,19 @@ import lombok.Setter;
 @Getter
 @Setter
 @Data
-public class StudentModel {
+public class StudentModel extends UserModel {
 
-	private int id;
-	private String name, surname, username, password, role;
+	private String name, surname, password, role;
 	private int enabled;
 	private int deleted;
 	private ProFamily profesionalFamily;
 	private List<Servicio> servicios;
 	
-	public StudentModel(int id, String name, String surname, String username, String password, String role,
+	public StudentModel(int id, String name, String surname, String email, String password, String role,
 			ProFamily profesionalFamily, List<Servicio> servicios, int enabled, int deleted) {
-		super();
-		this.id = id;
+		super(id, email);
 		this.name = name;
 		this.surname = surname;
-		this.username = username;
 		this.password = password;
 		this.role = role;
 		this.profesionalFamily = profesionalFamily;
@@ -38,14 +35,6 @@ public class StudentModel {
 
 	public StudentModel() {
 		super();
-	}
-	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -62,14 +51,6 @@ public class StudentModel {
 
 	public void setSurname(String surname) {
 		this.surname = surname;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
 	}
 
 	public String getPassword() {
@@ -119,6 +100,14 @@ public class StudentModel {
 	public void setDeleted(int deleted) {
 		this.deleted = deleted;
 	}
+
+	@Override
+	public String toString() {
+		return "StudentModel [name=" + name + ", surname=" + surname + ", password=" + password + ", role=" + role
+				+ ", enabled=" + enabled + ", deleted=" + deleted + ", profesionalFamily=" + profesionalFamily
+				+ ", servicios=" + servicios + ", getId()=" + getId() + ", getEmail()=" + getEmail() + "]";
+	}
+	
 	
 }
 
