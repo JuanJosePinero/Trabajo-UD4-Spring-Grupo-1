@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.User.UserBuilder;
@@ -27,8 +26,6 @@ import com.example.demo.model.StudentModel;
 import com.example.demo.repository.ProFamilyRepository;
 import com.example.demo.repository.StudentRepository;
 import com.example.demo.service.StudentService;
-
-import jakarta.transaction.Transactional;
 
 @Configuration
 @Service("studentService")
@@ -98,15 +95,14 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 		 Student student = studentRepository.findById(studentModel.getId()) .orElseThrow(() -> new RuntimeException("Student not found"));
 		 student.setName(studentModel.getName());
 		 student.setSurname(studentModel.getSurname());
-		 student.setUsername(studentModel.getUsername()); 
+		 student.setEmail(studentModel.getEmail()); 
 		 student.setProfesionalFamily(proFamilyRepository.findById(studentModel.getProfesionalFamily().getId()).orElseThrow(() -> new RuntimeException("ProfesionalFamily not found"))); 
 		 return studentRepository.save(student);
 	 }
 
 	@Override
 	public boolean login(String email, String password) {
-		Student student = studentRepository.findByUsername(email);
-
+		Student student = studentRepository.findByEmail(email);
 		return student != null && passwordEncoder().matches(password, student.getPassword());
 	}
 
@@ -117,9 +113,9 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		com.example.demo.entity.Student student = studentRepository.findByUsername(username);
+		com.example.demo.entity.Student student = studentRepository.findByEmail(username);
 		UserBuilder builder = null;
-
+		
 		if (student != null) {
 			if (student.getEnabled() == 0) {
 				return User.withUsername(student.getName())
@@ -140,7 +136,7 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 	
 
 	public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
-		com.example.demo.entity.Student student = studentRepository.findByUsername(email);
+		com.example.demo.entity.Student student = studentRepository.findByEmail(email);
 		UserBuilder builder = null;
 
 		if (student != null) {
@@ -202,5 +198,7 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 		String mailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 		return mail.matches(mailRegex);
 	}
+	
+
 	
 }

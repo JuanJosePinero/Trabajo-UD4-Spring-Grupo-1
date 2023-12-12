@@ -3,35 +3,22 @@ package com.example.demo.entity;
 import java.util.List;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 @Entity
 @Data
-public class Business {
+public class Business extends User{
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	
 	
 //	@Column(unique=true, nullable=false)
-	private String name, address,phone, email, logo;
+	private String name, address,phone, logo;
 	
 	@OneToMany(mappedBy="businessId")
 	private List<Servicio> servicioList;
 	
 	private int deleted;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
@@ -55,14 +42,6 @@ public class Business {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getLogo() {
@@ -91,12 +70,10 @@ public class Business {
 	
 	public Business(int id, String name, String address, String phone, String email, String logo,
 			List<Servicio> servicioList, int deleted) {
-		super();
-		this.id = id;
+		super(id, email);
 		this.name = name;
 		this.address = address;
 		this.phone = phone;
-		this.email = email;
 		this.logo = logo;
 		this.servicioList = servicioList;
 		this.deleted = deleted;

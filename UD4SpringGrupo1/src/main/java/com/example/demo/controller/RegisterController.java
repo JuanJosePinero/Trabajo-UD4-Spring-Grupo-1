@@ -39,6 +39,7 @@ public class RegisterController {
 	
 	    @PostMapping("/auth/register")
 	    public String registerSubmit(@ModelAttribute("studentModel") StudentModel studentModel, RedirectAttributes flash, @RequestParam("confirmPassword") String confirmPassword) {	
+	    	System.out.println(studentModel.toString());
 	    	if(studentModel.getName().isEmpty() || studentModel.getPassword().isEmpty() || studentModel.getSurname().isEmpty()){
 	    		flash.addFlashAttribute("error", "Some fields might be empty");
 	    		return "redirect:/auth/register";
@@ -54,10 +55,10 @@ public class RegisterController {
 	    	}else if(studentModel.getPassword().length() < 6 || studentModel.getPassword().length() > 18) {
 	    		flash.addFlashAttribute("error", "Password must be between 6 and 18 characters long");
 	    		return "redirect:/auth/register";   		
-	    	}else if(studentService.mailExists(studentModel.getUsername())) {
+	    	}else if(studentService.mailExists(studentModel.getEmail())) {
 	    		flash.addFlashAttribute("error", "That email is already in use");
 	    		return "redirect:/auth/register";	  
-	    	}else if(!studentService.isMailValid(studentModel.getUsername())){ 
+	    	}else if(!studentService.isMailValid(studentModel.getEmail())){ 
 	    		flash.addFlashAttribute("error", "That email is invalid");
 	    		return "redirect:/auth/register";	 
 	    	}else{

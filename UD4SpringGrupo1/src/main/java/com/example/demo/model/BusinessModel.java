@@ -2,29 +2,24 @@ package com.example.demo.model;
 
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.example.demo.entity.Servicio;
 
 import lombok.Data;
 
 @Data
-public class BusinessModel {
+public class BusinessModel extends UserModel{
 	
-	private int id;
-	private String name, address,phone, email;
+	private String name, address,phone;
 	private String logo;
 	private List<Servicio> servicioList;
 	private int deleted;
 	
 	public BusinessModel(int id, String name, String address, String phone, String email, String logo,
 			List<Servicio> servicioList, int deleted) {
-		super();
-		this.id = id;
+		super(id, email);
 		this.name = name;
 		this.address = address;
 		this.phone = phone;
-		this.email = email;
 		this.logo = logo;
 		this.servicioList = servicioList;
 		this.deleted = deleted;
@@ -32,14 +27,6 @@ public class BusinessModel {
 
 	public BusinessModel() {
 		super();
-	}
-	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -66,14 +53,6 @@ public class BusinessModel {
 		this.phone = phone;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getLogo() {
 		return logo;
 	}
@@ -96,14 +75,6 @@ public class BusinessModel {
 
 	public void setDeleted(int deleted) {
 		this.deleted = deleted;
-	}
-
-
-	@Override
-	public String toString() {
-		return "BusinessModel [id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + ", email="
-				+ email + ", logo=" + logo + ", servicioList=" + servicioList + ", deleted=" + deleted + "]";
-	}
-	
+	}	
 	
 }

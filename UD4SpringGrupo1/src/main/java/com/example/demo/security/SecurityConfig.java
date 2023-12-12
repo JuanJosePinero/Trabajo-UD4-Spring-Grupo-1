@@ -1,4 +1,4 @@
-package com.example.demo.security;
+		package com.example.demo.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,6 +41,7 @@ public class SecurityConfig {
 	        .formLogin(formLogin ->
 	            formLogin
 	                .loginPage("/auth/login")
+	                .usernameParameter("email")
 	                .defaultSuccessUrl("/home")
 	                .failureHandler((request, response, exception) -> {
 	                    String error = "unknownError";
