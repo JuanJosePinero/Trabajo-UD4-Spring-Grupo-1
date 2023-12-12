@@ -12,7 +12,8 @@ import lombok.Data;
 public class BusinessModel {
 	
 	private int id;
-	private String name, address,phone, email,logo;
+	private String name, address,phone, email;
+	private String logo;
 	private List<Servicio> servicioList;
 	private int deleted;
 	

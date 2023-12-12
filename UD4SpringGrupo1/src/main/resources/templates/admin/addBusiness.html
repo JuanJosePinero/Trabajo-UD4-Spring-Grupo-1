@@ -1,36 +1,56 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="utf-8">
-<title>Add Business</title>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-	integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-	crossorigin="anonymous">
-<link href="/css/styles.css" rel="stylesheet">
+	<meta charset="utf-8">
+	<title>Add Business</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+		integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<link href="/css/styles.css" rel="stylesheet">
 </head>
 
 <body class="bodyAuth">
-<div th:replace="/main/CustomNavbar.html"></div>
-<br><br><br>
+	<div th:replace="/main/CustomNavbar.html"></div>
+	<br><br><br>
 	<div class="container mt-5">
-		<form class="form-signin" method="POST" th:action="@{/business/addBusiness}" enctype="multipart/form-data">
-    <h2 class="form-heading">Add Business</h2>
+		<form class="form-signin" method="POST" th:action="@{/business/addBusiness}" th:object="${businessModel}"
+			enctype="multipart/form-data">
+			<h2 class="form-heading">Add Business</h2>
 
-    <div class="form-group">
-        <input name="name" type="text" class="form-control" placeholder="Name" autofocus="true" />
-        <input name="address" type="text" class="form-control" placeholder="Address" autofocus="true" />
-        <input name="email" type="text" class="form-control" placeholder="Email" autofocus="true" />
-        <input name="phone" type="phone" class="form-control" placeholder="Phone" /> 
-        <label for="logo">Business Logo</label>
-        <input id="logo" name="logo" type="file" class="form-control-file" accept="image/*" />
-        
-		
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> <br>
-        <button class="btn btn-lg btn-primary" type="submit">Save</button>
-    </div>
-</form>
+			<div class="form-group">
+				<input th:field="*{name}" type="text" class="form-control" placeholder="Name" autofocus="true" />
+				<input th:field="*{address}" type="text" class="form-control" placeholder="Address" autofocus="true" />
+				<input th:field="*{email}" type="text" class="form-control" placeholder="Email" autofocus="true" />
+				<input th:field="*{phone}" type="text" class="form-control" placeholder="Phone" />
+				<label for="logo">Business Logo</label>
+				<input id="logoImagen" type="file" class="form-control-file" accept="image/*" name="logoImagen" />
+				<input type="hidden" id="logo" name="logo">
+			</div>
+
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> <br>
+			<div th:if="${error}" class="alert alert-danger">
+				<p th:text="${error}"></p>
+			</div>
+			<button class="btn btn-lg btn-primary" type="submit">Save</button>
+	</div>
+
+
+	</form>
+
 
 	</div>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script>
+		// Cuando el usuario selecciona una imagen, actualiza el campo oculto con el nombre de la imagen
+		$(document).ready(function () {
+			$('#logoImagen').change(function () {
+				var fileName = $(this).val().split(/(\\|\/)/g).pop();
+				$('#logo').val(fileName);
+			});
+		});
+	</script>
 </body>
+
 </html>

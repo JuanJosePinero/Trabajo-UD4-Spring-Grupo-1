@@ -46,8 +46,8 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 		ModelMapper mapper = new ModelMapper();
 		return mapper.map(studentModel, Student.class);
 	}
-
-	private StudentModel entity2model(Student student) {
+	@Override
+	public StudentModel entity2model(Student student) {
 	    ModelMapper mapper = new ModelMapper();
 	    mapper.createTypeMap(Student.class, StudentModel.class)
 	            .addMapping(src -> ((Student) src).getEnabled(), StudentModel::setEnabled);

@@ -29,4 +29,6 @@ public interface StudentService {
 	public boolean mailExists(String mail);
 	
 	public boolean isMailValid(String mail);
+	
+	public StudentModel entity2model(Student student);
 }

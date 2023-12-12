@@ -1,62 +1,64 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Business Screen - Colegio Salesiano</title>
-    <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-          crossorigin="anonymous">
+	<title>Business Screen - Colegio Salesiano</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+		integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
 
 <body>
-<div th:replace="/main/CustomNavbar.html"></div>
-<div class="container mt-5">
-    <a th:href="@{/business/addBusiness}" class="btn btn-primary mb-2">Add Business</a>
-    <h2 class="text-center">List of Business</h2>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Adress</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Logo</th>
-            <th>Edit</th>
-            <th>Delete</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="business : ${business1}" th:unless="${business.deleted eq 1}">
-            <td hidden="id" th:text="${business.id}"></td>
-            <td th:text="${business.name}"></td>
-            <td th:text="${business.address}"></td>
-            <td th:text="${business.email}"></td>
-            <td th:text="${business.phone}"></td>
-            <td>
-                <img th:src="${business.logo} != null and ${business.logo} != '' ? '/imgs/business/' + ${business.logo} : '/imgs/business/businessDefault.png'" alt="Logo" width="50px"/>
+	<div th:replace="/main/CustomNavbar.html"></div>
+	<div class="container mt-5">
+		<div th:if="${success}" class="alert alert-success">
+			<p th:text="${success}"></p>
+		</div>
+		<a th:href="@{/business/addBusiness}" class="btn btn-primary mb-2">Add Business</a>
+		<h2 class="text-center">List of Business</h2>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Adress</th>
+					<th>Email</th>
+					<th>Phone</th>
+					<th>Logo</th>
+					<th>Edit</th>
+					<th>Delete</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="business : ${business1}" th:unless="${business.deleted eq 1}">
+					<td hidden="id" th:text="${business.id}"></td>
+					<td th:text="${business.name}"></td>
+					<td th:text="${business.address}"></td>
+					<td th:text="${business.email}"></td>
+					<td th:text="${business.phone}"></td>
+					<td>
+						<img th:src="${business.logo} != null and ${business.logo} != '' ? '/imgs/business/' + ${business.logo} : '/imgs/business/businessDefault.png'"
+							alt="Logo" width="50px" />
 
-            </td>
-            <td>
-                <form th:action="@{'/business/editBusiness/' + ${business.id}}"
-                      method="get">
-                    <button type="submit" class="btn btn-link p-0 m-0">
-                        <img src="/imgs/edit.png" alt="Edit img" width="30px">
-                    </button>
-                </form>
-            </td>
-            <td>
-                <form th:action="@{'/business/deleteBusiness/' + ${business.id}}"
-                      method="post"
-                      onsubmit="return confirm('¿Estás seguro que quieres cambiar su estado?');">
-                    <button type="submit" class="btn btn-link p-0 m-0">
-                        <img src="/imgs/delete.png" alt="Edit img" width="30px">
-                    </button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+					</td>
+					<td>
+						<form th:action="@{'/business/editBusiness/' + ${business.id}}" method="get">
+							<button type="submit" class="btn btn-link p-0 m-0">
+								<img src="/imgs/edit.png" alt="Edit img" width="30px">
+							</button>
+						</form>
+					</td>
+					<td>
+						<form th:action="@{'/business/deleteBusiness/' + ${business.id}}" method="post"
+							onsubmit="return confirm('¿Estás seguro que quieres cambiar su estado?');">
+							<button type="submit" class="btn btn-link p-0 m-0">
+								<img src="/imgs/delete.png" alt="Edit img" width="30px">
+							</button>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
 </body>
+
 </html>

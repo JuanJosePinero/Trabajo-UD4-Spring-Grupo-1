@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 
@@ -19,12 +21,17 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.Business;
+import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Servicio;
+import com.example.demo.entity.Student;
 import com.example.demo.model.BusinessModel;
+import com.example.demo.model.StudentModel;
 import com.example.demo.repository.BusinessRepository;
+import com.example.demo.repository.StudentRepository;
 import com.example.demo.service.BusinessService;
 import com.example.demo.service.FilesStorageService;
 import com.example.demo.service.ServicioService;
+import com.example.demo.service.StudentService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -34,8 +41,8 @@ import jakarta.validation.Valid;
 public class BusinessController {
 
 	private static final String BUSINESS_VIEW = "/admin/business";
-	private static final String EDIT_BUSINESS_VIEW = "/admin/editBusiness";
-	private static final String ADD_BUSINESS_VIEW = "/admin/addBusiness";
+	private static final String EDIT_BUSINESS_VIEW = "admin/editBusiness";
+	private static final String ADD_BUSINESS_VIEW = "admin/addBusiness";
 	private static final String BUSINESS_HOME_VIEW = "/business/businessHome";
 	
 	@Autowired
@@ -51,6 +58,14 @@ public class BusinessController {
 	 private ServicioService servicioService;
 	
 	@Autowired
+	@Qualifier("studentRepository")
+	private StudentRepository studentRepository;
+	
+	@Autowired
+	@Qualifier("studentService")
+	private StudentService studentService;
+	
+	@Autowired
 	@Qualifier("filesStorageService")
 	 private FilesStorageService storageService;
 	
@@ -62,7 +77,8 @@ public class BusinessController {
 	}
 	
 	@GetMapping("/addBusiness")
-	public String addBusiness() {
+	public String addBusiness(Model model) {
+	    model.addAttribute("businessModel", new BusinessModel());
 	    return ADD_BUSINESS_VIEW;
 	}
 	
@@ -74,60 +90,60 @@ public class BusinessController {
 //	}
 	
 	@PostMapping("/addBusiness")
-	public String saveAddBusiness(@ModelAttribute BusinessModel businessModel,
-	                              @RequestParam("logo") MultipartFile file,
-	                              BindingResult result,
-	                              RedirectAttributes flash,
-	                              HttpServletResponse response) {
+	public String addEmpresa(@ModelAttribute("empresa") BusinessModel business,
+			@RequestParam("logoImagen") MultipartFile file, @RequestParam("logo") String logoName,
+			RedirectAttributes flash) {
 
-	    if (result.hasErrors()) {
-	        flash.addFlashAttribute("error", "Validation failed");
-	        return "redirect:/business/list";
-	    }
+		if (business != null) {
+			if (business.getName().isEmpty() || business.getAddress().isEmpty() || business.getEmail().isEmpty() || business.getPhone().isEmpty()) {
+				flash.addFlashAttribute("error", "Some fields are empty");
+				return "redirect:/business/addBusiness";
+			} else {
+				
+				String projectDir = System.getProperty("user.dir");
 
-	    try {
-	        if (!file.isEmpty()) {
-	            String imageName = storageService.save(file);
-	            String imageUrl = MvcUriComponentsBuilder
-	                .fromMethodName(FileUploadController.class, "serveFile", imageName)
-	                .build().toUriString();
-	            businessModel.setLogo(imageUrl);
-	        }
+				
+				String uploadDir = projectDir + "/src/main/resources/static/imgs/business/";
 
-	        businessService.addBusiness(businessModel);
+				try {
+					
+					File uploadDirFile = new File(uploadDir);
+					if (!uploadDirFile.exists()) {
+						uploadDirFile.mkdirs();
+					}
 
-	        flash.addFlashAttribute("success", "Business registered successfully!");
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        flash.addFlashAttribute("error", "Error saving business");
-	        System.out.println("LLEGAS A CATCH");
-	    }
+					file.transferTo(new File(uploadDir + logoName));
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 
-	    return "redirect:/business/list";
+//				Student student = studentRepository.findByUsername(empresa.getEmail());
+//				StudentModel studentBusiness = studentService.entity2model(student);
+//				studentBusiness.setEnabled(1);
+//				studentBusiness.setRole("ROL_EMPRESA");
+//				studentService.updateStudent(studentBusiness);
+
+				business.setLogo(logoName);
+				
+				businessService.addBusiness(business);
+				flash.addFlashAttribute("success", "Business created succesfully");
+			}
+		}
+		return "redirect:/business/list";
 	}
-
-
-	@GetMapping("/editBusiness/{businessId}")
-	public String editBusiness(@PathVariable("businessId") int businessId, Model model) {
-	    Business business = businessRepository.findById(businessId).orElse(null);
-
-	    if (business != null) {
-	        BusinessModel businessModel = new BusinessModel();
-	        businessModel.setId(business.getId());
-	        businessModel.setName(business.getName());
-	        businessModel.setAddress(business.getAddress());
-	        businessModel.setEmail(business.getEmail());
-	        businessModel.setPhone(business.getPhone());
-	        
-
-	        model.addAttribute("businessModel", businessModel);
-	    }
-
+	
+	@GetMapping("/editBusiness/{businessID}")
+	public String editBusiness(@PathVariable("businessID")int businessId,Model model) {
+		Business business=businessService.getBusinessById(businessId);
+		model.addAttribute("businessModel", business); 
 	    return EDIT_BUSINESS_VIEW;
 	}
+	
 
 	@PostMapping("/editBusiness")
-	public String saveEditedBusiness(@ModelAttribute BusinessModel businessModel, RedirectAttributes flash) {
+	public String saveEditedBusiness(@ModelAttribute BusinessModel businessModel, RedirectAttributes flash, @RequestParam("logoImagen")MultipartFile file
+			,@RequestParam("logo") String logoName) {
 	    if (businessModel.getId() > 0) {
 	        Business business = businessRepository.findById(businessModel.getId()).orElse(null);
 
@@ -136,7 +152,24 @@ public class BusinessController {
 	            business.setAddress(businessModel.getAddress());
 	            business.setEmail(businessModel.getEmail());
 	            business.setPhone(businessModel.getPhone());
-	            
+	            String projectDir = System.getProperty("user.dir");
+
+				
+				String uploadDir = projectDir + "/src/main/resources/static/imgs/business/";
+
+				try {
+					
+					File uploadDirFile = new File(uploadDir);
+					if (!uploadDirFile.exists()) {
+						uploadDirFile.mkdirs();
+					}
+
+					file.transferTo(new File(uploadDir + logoName));
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				business.setLogo(logoName);
 
 	            Business updatedBusiness = businessService.updateBusiness(business);
 

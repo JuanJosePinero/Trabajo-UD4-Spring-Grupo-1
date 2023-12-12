@@ -9,7 +9,9 @@
         crossorigin="anonymous">
     <link href="/css/styles.css" rel="stylesheet">
 </head>
-<body>
+<body class="bodyAuth">
+	<div th:replace="/main/CustomNavbar.html"></div>
+	<br><br><br>
 
     <br>
     <br>
@@ -17,8 +19,8 @@
     <br>
     <div class="container mt-5 login-container">
         <h2>Edit Business</h2>
-        <form id="businessForm" th:object="${businessModel}" method="post" th:action="@{/business/editBusiness}">
-            <!-- Agrega campos ocultos para otros atributos -->
+        <form id="businessForm" th:object="${businessModel}" method="post" th:action="@{/business/editBusiness}" enctype="multipart/form-data">
+            
             <input type="hidden" id="id" name="id" th:field="*{id}">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" th:field="*{name}" required> <br>
@@ -28,11 +30,25 @@
             <input type="email" id="email" name="email" th:field="*{email}" required> <br>
             <label for="phone">Phone:</label>
             <input type="text" id="phone" name="phone" th:field="*{phone}" required> <br>
-            <!-- Puedes añadir más campos según sea necesario -->
+            <label for="logo">Business Logo</label>
+				<input id="logoImagen" type="file" class="form-control-file" accept="image/*" name="logoImagen" />
+				<input type="hidden" id="logo" name="logo">
             <br>
             <button class="btn-save" type="submit">Save</button>
             <a class="btn-cancel" type="button" th:href="@{/business/list}">Cancel</a>
         </form>
     </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script>
+		
+		$(document).ready(function () {
+			$('#logoImagen').change(function () {
+				var fileName = $(this).val().split(/(\\|\/)/g).pop();
+				$('#logo').val(fileName);
+			});
+		});
+	</script>
 </body>
 </html>

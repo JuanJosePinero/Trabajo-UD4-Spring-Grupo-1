@@ -80,7 +80,7 @@ public class BusinessServiceImpl implements BusinessService {
         existingBusiness.setAddress(business.getAddress());
         existingBusiness.setEmail(business.getEmail());
         existingBusiness.setPhone(business.getPhone());
-        
+        existingBusiness.setLogo(business.getLogo());
 
         // Guarda el Business actualizado en el repositorio
         return businessRepository.save(existingBusiness);
@@ -94,7 +94,7 @@ public class BusinessServiceImpl implements BusinessService {
 	    business.setEmail(businessModel.getEmail());
 	    business.setPhone(businessModel.getPhone());
 
-	    business.setLogo(null);
+	    business.setLogo(businessModel.getLogo());
 	    
 
 	    return businessRepository.save(business);
