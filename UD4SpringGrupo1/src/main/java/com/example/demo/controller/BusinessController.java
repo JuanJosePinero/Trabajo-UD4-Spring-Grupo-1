@@ -142,38 +142,53 @@ public class BusinessController {
 	
 
 	@PostMapping("/editBusiness")
-	public String saveEditedBusiness(@ModelAttribute BusinessModel businessModel, RedirectAttributes flash, @RequestParam("logoImagen")MultipartFile file
-			,@RequestParam("logo") String logoName) {
+	public String saveEditedBusiness(@ModelAttribute BusinessModel businessModel,
+	                                 RedirectAttributes flash,
+	                                 @RequestParam("logoImagen") MultipartFile file,
+	                                 @RequestParam("logo") String logoName) {
 	    if (businessModel.getId() > 0) {
 	        Business business = businessRepository.findById(businessModel.getId()).orElse(null);
 
 	        if (business != null) {
+	           
+	            String oldLogoName = business.getLogo();
+
 	            business.setName(businessModel.getName());
 	            business.setAddress(businessModel.getAddress());
 	            business.setEmail(businessModel.getEmail());
 	            business.setPhone(businessModel.getPhone());
+
 	            String projectDir = System.getProperty("user.dir");
+	            String uploadDir = projectDir + "/src/main/resources/static/imgs/business/";
 
-				
-				String uploadDir = projectDir + "/src/main/resources/static/imgs/business/";
+	            try {
+	                File uploadDirFile = new File(uploadDir);
+	                if (!uploadDirFile.exists()) {
+	                    uploadDirFile.mkdirs();
+	                }
 
-				try {
-					
-					File uploadDirFile = new File(uploadDir);
-					if (!uploadDirFile.exists()) {
-						uploadDirFile.mkdirs();
-					}
+	               
+	                file.transferTo(new File(uploadDir + logoName));
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
 
-					file.transferTo(new File(uploadDir + logoName));
-					
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				business.setLogo(logoName);
+	           
+	            business.setLogo(logoName);
 
+	            
 	            Business updatedBusiness = businessService.updateBusiness(business);
 
 	            if (updatedBusiness != null) {
+	                
+	                if (oldLogoName != null && !oldLogoName.equals(logoName)) {
+	                    String oldLogoPath = uploadDir + oldLogoName;
+	                    File oldLogoFile = new File(oldLogoPath);
+	                    if (oldLogoFile.exists()) {
+	                        oldLogoFile.delete();
+	                    }
+	                }
+
 	                flash.addFlashAttribute("success", "Business updated successfully!");
 	                System.out.println("Success: Business updated. ID: " + updatedBusiness.getId() + ", Name: " + updatedBusiness.getName());
 	            } else {
@@ -192,12 +207,36 @@ public class BusinessController {
 	    return "redirect:/business/list";
 	}
 
+
 	@PostMapping("/deleteBusiness/{businessId}")
-	public String delete(@PathVariable("businessId") int businessId, Model model) {
-		businessService.deleteBusiness(businessId);
-	    
-	    return "redirect:/business/list";
+	public String delete(@PathVariable("businessId") int businessId, Model model,RedirectAttributes flash) {
+	    Business business = businessService.getBusinessById(businessId);
+
+	    if (business != null) {
+	        
+	        String imageName = business.getLogo();
+
+	        
+	        businessService.deleteBusiness(businessId);
+
+	        
+	        if (imageName != null && !imageName.isEmpty()) {
+	            String projectDir = System.getProperty("user.dir");
+	            String imagePath = projectDir + "/src/main/resources/static/imgs/business/" + imageName;
+	            File imageFile = new File(imagePath);
+
+	            if (imageFile.exists()) {
+	                imageFile.delete();
+	            }
+	        }
+	        flash.addFlashAttribute("success", "Business updated successfully!");
+	        return "redirect:/business/list";
+	    } else {
+	        
+	        return "redirect:/business/list";
+	    }
 	}
+
 	
 	
 	@GetMapping("/home")
