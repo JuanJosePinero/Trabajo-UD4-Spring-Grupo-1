@@ -22,11 +22,19 @@
   </div>
 
   <div class="info-container2">
-  <div class="info-block-head">
+    <div class="info-block-head">
       <h3>Your Services</h3>
     </div>
     <div class="info-block2">
-      <p align="right">Desplegable va aqui</p>
+      <p align="right">
+        <label for="filterBy">Filtrar por:</label>
+        <select id="filterBy" name="filterBy">
+          <option value="familia_profesional">Familia Profesional del Servicio</option>
+          <option value="realizados">Servicios Realizados</option>
+          <option value="asignados_no_realizados">Servicios Asignados pero no Realizados</option>
+          <option value="no_asignados">Servicios No Asignados</option>
+        </select>
+      </p>
       <table class="tableBusiness">
         <thead>
           <tr class="tableBusiness">
