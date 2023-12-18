@@ -245,5 +245,25 @@ public class BusinessController {
         model.addAttribute("servicio", servicios);
 	    return BUSINESS_HOME_VIEW;
 	}
+	
+//	@GetMapping("/home")
+//	public String Business(@RequestParam(name = "filterBy", required = false, defaultValue = "familia_profesional") String filterBy,
+//            @RequestParam(name = "proFamilyId", required = false, defaultValue = "0") int proFamilyId,
+//            Model model) {
+//		List<Servicio> servicios = servicioService.getAllServicios();
+//		 if ("familia_profesional".equals(filterBy)) {
+//		        if (proFamilyId != 0) {
+//		            servicios = servicioService.getServiciosByProFamilyId(proFamilyId);
+//		        } else {
+//		            servicios = servicioService.getAllServicios();
+//		        }
+//		    } else {
+//		        servicios = servicioService.getAllServicios();
+//		    }
+//
+//		    model.addAttribute("servicio", servicios);
+//		    model.addAttribute("filterBy", filterBy);
+//		    return BUSINESS_HOME_VIEW;
+//	}	
 
 }

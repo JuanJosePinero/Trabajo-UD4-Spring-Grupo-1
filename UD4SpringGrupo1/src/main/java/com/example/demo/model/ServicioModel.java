@@ -12,7 +12,7 @@ import lombok.Data;
 public class ServicioModel {
 	
 
-	private long id;
+	private int id;
 	
 	private String title;
 	
@@ -32,14 +32,14 @@ public class ServicioModel {
 	
 	private int valoration;
 	
-	private boolean finished;
+	private int finished;
 	
 	private String comment;
 	
-	public long getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getTitle() {
@@ -90,10 +90,10 @@ public class ServicioModel {
 	public void setValoration(int valoration) {
 		this.valoration = valoration;
 	}
-	public boolean isFinished() {
+	public int isFinished() {
 		return finished;
 	}
-	public void setFinished(boolean finished) {
+	public void setFinished(int finished) {
 		this.finished = finished;
 	}
 	public String getComment() {
@@ -102,8 +102,8 @@ public class ServicioModel {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	public ServicioModel(long id, String title, String description, Date registerDate, Date happeningDate, Student studentId,
-			Business businessId, ProFamily profesionalFamilyId, int valoration, boolean finished, String comment) {
+	public ServicioModel(int id, String title, String description, Date registerDate, Date happeningDate, Student studentId,
+			Business businessId, ProFamily profesionalFamilyId, int valoration, int finished, String comment) {
 		super();
 		this.id = id;
 		this.title = title;

@@ -7,6 +7,8 @@ import com.example.demo.entity.Servicio;
 public interface ServicioService {
 
 	List<Servicio> getAllServicios();
+
+//	List<Servicio> getServiciosByProFamilyId(int proFamilyId);
 	
 //	 List<Servicio> findByBusinessId(Long businessId);
 

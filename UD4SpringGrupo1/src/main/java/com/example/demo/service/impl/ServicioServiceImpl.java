@@ -40,6 +40,12 @@ public class ServicioServiceImpl implements ServicioService {
 		return servicioRepository.findAll();
 	}
 	
+//	@Override
+//	public List<Servicio> getServiciosByProFamilyId(int proFamilyId) {
+//	    return servicioRepository.findByProFamilyId(proFamilyId);
+//	}
+
+	
 //    @Override
 //    public List<Servicio> findByBusinessId(Long businessId) {
 //        return servicioRepository.findByBusinessId(businessId);
