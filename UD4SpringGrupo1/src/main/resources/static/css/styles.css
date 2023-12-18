@@ -76,6 +76,16 @@ h1{
     cursor: pointer;
 }
 
+.btn-add {
+    padding: 8px 16px; /* Ajusta el padding según tus preferencias */
+    min-width: auto; /* Permite que el ancho se ajuste automáticamente al contenido */
+    background-color: #0179fe; /* Cambia "blue" al color azul que desees */
+    color: white; /* Establece el color del texto dentro del botón */
+    border: none; /* Elimina el borde del botón si lo deseas */
+    border-radius: 5px; /* Elimina el borde del botón si lo deseas */
+    cursor: pointer;
+}
+
 .btn-cancel {
     padding: 8px 16px; /* Ajusta el padding según tus preferencias */
     min-width: auto; 

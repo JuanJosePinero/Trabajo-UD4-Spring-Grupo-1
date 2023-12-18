@@ -36,6 +36,8 @@ public class ServicioModel {
 	
 	private String comment;
 	
+	private int deleted;
+	
 	public int getId() {
 		return id;
 	}
@@ -102,8 +104,14 @@ public class ServicioModel {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	public int getDeleted() {
+		return deleted;
+	}
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
+	}
 	public ServicioModel(int id, String title, String description, Date registerDate, Date happeningDate, Student studentId,
-			Business businessId, ProFamily profesionalFamilyId, int valoration, int finished, String comment) {
+			Business businessId, ProFamily profesionalFamilyId, int valoration, int finished, String comment, int deleted) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -116,6 +124,7 @@ public class ServicioModel {
 		this.valoration = valoration;
 		this.finished = finished;
 		this.comment = comment;
+		this.deleted = deleted;
 	}
 	public ServicioModel() {
 		super();
