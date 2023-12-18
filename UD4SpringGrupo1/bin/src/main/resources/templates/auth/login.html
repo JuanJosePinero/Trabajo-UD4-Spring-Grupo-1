@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>Log in with your account - Colegio Salesiano</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="/css/styles.css" rel="stylesheet">
+</head>
+
+<body class="bodyAuth">
+    <div th:replace="/main/CustomNavbar.html"></div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="container mt-5 login-container">
+
+        <form class="form-signin" th:object="${student}" method="POST" th:action="@{/auth/login}">
+            <h2 class="form-heading text-center">Log in</h2>
+            <div class="form-group">
+
+                <input id="username" name="username" type="text" th:field="*{username}" class="form-control"
+                    placeholder="Email" autofocus="true" /> <input id="password" name="password" type="password"
+                    th:field="*{password}" class="form-control" placeholder="Password" />
+                
+                <div th:if="${error}">
+                    <p th:if="${error == 'notActivated'}" style="color: red;">Your account is not activated. Please wait for admin approval.</p>
+                    <p th:if="${error == 'badCredentials'}" style="color: red;">Invalid credentials. Check your fields.</p>
+                </div>
+        
+                <input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button class="btn btn-lg btn-primary btn-block" th:href="@{/auth/login}" type="submit">Log In</button>
+                <h6 class="text-center mt-3">
+                    You don't have an account?<br>
+                    <a th:href="@{/auth/register}">Create an account</a>
+                </h6>
+            </div>
+            <input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        </form>
+    </div>
+    
+</body>
+
+</html>

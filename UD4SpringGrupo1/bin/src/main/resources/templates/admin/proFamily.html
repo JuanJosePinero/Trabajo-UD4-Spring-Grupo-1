@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ProFamily Screen - Colegio Salesiano</title>
+    <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+        crossorigin="anonymous">
+</head>
+
+<body>
+    <div th:replace="/main/CustomNavbar.html"></div>
+    <div class="container mt-5">
+
+        <a th:href="@{/proFamily/addProFamily}" class="btn btn-primary mb-2">Add ProFamily</a>
+        
+        <h2 class="text-center">List of Profesional Families</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="profesionalFamily : ${profesionalFamilies}" th:unless="${profesionalFamily.deleted eq 1}">
+                    <td hidden="id" th:text="${profesionalFamily.id}"></td>
+                    <td th:text="${profesionalFamily.name}"></td>
+                    <td>
+                        <form th:action="@{'/proFamily/editProFamily/' + ${profesionalFamily.id}}"
+                            method="get">
+                            <button type="submit" class="btn btn-link p-0 m-0">
+                                <img src="/imgs/edit.png" alt="Edit img" width="30px">
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <form th:action="@{'/proFamily/deleteProFamily/' + ${profesionalFamily.id}}"
+                            method="post"
+                            onsubmit="return confirm('¿Estás seguro que quieres cambiar su estado?');">
+                            <button type="submit" class="btn btn-link p-0 m-0">
+                                <img src="/imgs/delete.png" alt="Edit img" width="30px">
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
