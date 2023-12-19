@@ -55,7 +55,7 @@ public class ProFamilyController {
 	
 	@GetMapping("/editProFamily/{proFamilyId}")
 	public String editProFamily(@PathVariable("proFamilyId") int proFamilyId, Model model) {
-	    ProFamily proFamily = proFamilyRepository.findById(proFamilyId).orElse(null);
+	    ProFamily proFamily = proFamilyRepository.findById(proFamilyId);
 
 	    if (proFamily != null) {
 	        ProFamilyModel proFamilyModel = new ProFamilyModel();
@@ -70,7 +70,7 @@ public class ProFamilyController {
 	@PostMapping("/editProFamily")
 	public String saveEditedProFamily(@ModelAttribute ProFamilyModel proFamilyModel, RedirectAttributes flash) {
 	    if (proFamilyModel.getId() > 0) {
-	        ProFamily proFamily = proFamilyRepository.findById(proFamilyModel.getId()).orElse(null);
+	        ProFamily proFamily = proFamilyRepository.findById(proFamilyModel.getId());
 
 	        if (proFamily != null) {
 	            proFamily.setName(proFamilyModel.getName());
