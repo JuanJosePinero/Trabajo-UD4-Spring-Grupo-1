@@ -2,14 +2,12 @@ package com.example.demo.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,24 +15,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.Business;
-import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Servicio;
-import com.example.demo.entity.Student;
 import com.example.demo.model.BusinessModel;
-import com.example.demo.model.StudentModel;
 import com.example.demo.repository.BusinessRepository;
+import com.example.demo.repository.ServicioRepository;
 import com.example.demo.repository.StudentRepository;
 import com.example.demo.service.BusinessService;
 import com.example.demo.service.FilesStorageService;
 import com.example.demo.service.ServicioService;
 import com.example.demo.service.StudentService;
-
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("business")
@@ -56,6 +48,10 @@ public class BusinessController {
 	@Autowired
 	@Qualifier("servicioService")
 	 private ServicioService servicioService;
+	
+	@Autowired
+	@Qualifier("servicioRepository")
+	 private ServicioRepository servicioRepository;
 	
 	@Autowired
 	@Qualifier("studentRepository")
@@ -241,7 +237,7 @@ public class BusinessController {
 	
 	@GetMapping("/home")
 	public String Business(Model model) {
-		List<Servicio> servicios = servicioService.getAllServicios();
+		List<Servicio> servicios = servicioRepository.findAll();
         model.addAttribute("servicio", servicios);
 	    return BUSINESS_HOME_VIEW;
 	}

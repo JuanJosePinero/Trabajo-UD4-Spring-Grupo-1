@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.ProFamily;
 import com.example.demo.model.StudentModel;
+import com.example.demo.repository.ProFamilyRepository;
 import com.example.demo.service.ProFamilyService;
 import com.example.demo.service.StudentService;
 
@@ -25,13 +27,17 @@ public class RegisterController {
 	
 	 @Autowired
 	 private StudentService studentService;
+	 
+	 @Autowired
+	 @Qualifier("proFamilyRepository")
+	 private ProFamilyRepository proFamilyRepository;
 	
 	 @Autowired
 	    private ProFamilyService proFamilyService;
 
 	    @GetMapping("/auth/register")
 	    public String registerForm(@ModelAttribute("studentModel") StudentModel studentModel, Model model) {
-	        List<ProFamily> profesionalFamilies = proFamilyService.getAllProfesionalFamilies();
+	        List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
 	        model.addAttribute("profesionalFamilies", profesionalFamilies);
 
 	        return REGISTER_VIEW;

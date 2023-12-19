@@ -53,18 +53,19 @@ public class StudentController {
 	@Autowired
 	@Qualifier("studentService")
 	private StudentService studentService;
+	
 	@Autowired
-	@Qualifier("StudentRepository")
+	@Qualifier("studentRepository")
 	private StudentRepository studentRepository;
 	
 	
 	//Llamo a todos los servicios que sean de la misma familia profesional que el alumno que haya hecho login.
-	@GetMapping("/viewServices/{proFamilyId}")
-	public String student(@PathVariable("proFamilyId") int proFamilyId, Model model) {
-		List<Servicio> serviceList = servicioRepository.findByProfesionalFamilyId(proFamilyId);
-		model.addAttribute("serviceList", serviceList);
-	    return STUDENT_SERVICES;
-	}
+//	@GetMapping("/viewServices/{proFamilyId}")
+//	public String student(@PathVariable("proFamilyId") int proFamilyId, Model model) {
+//		List<Servicio> serviceList = servicioRepository.findByProfesionalFamilyId(proFamilyId);
+//		model.addAttribute("serviceList", serviceList);
+//	    return STUDENT_SERVICES;
+//	}
 	
 	
 }

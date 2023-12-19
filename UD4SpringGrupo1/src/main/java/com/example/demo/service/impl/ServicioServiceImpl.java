@@ -1,19 +1,14 @@
 package com.example.demo.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.Business;
 import com.example.demo.entity.Servicio;
-import com.example.demo.entity.Student;
-import com.example.demo.model.BusinessModel;
 import com.example.demo.model.ServicioModel;
-import com.example.demo.model.StudentModel;
 import com.example.demo.repository.ServicioRepository;
 import com.example.demo.service.ServicioService;
 
@@ -38,11 +33,6 @@ public class ServicioServiceImpl implements ServicioService {
 		return mapper.map(servicio, ServicioModel.class);
 	}
 	
-	@Override
-	public List<Servicio> getAllServicios() {
-		return servicioRepository.findAll();
-	}
-
 	@Override
 	public Servicio addServicio(ServicioModel servicioModel) {
 		Servicio servicio = model2entity(servicioModel);
@@ -90,16 +80,4 @@ public class ServicioServiceImpl implements ServicioService {
 		servicio.setFinished(servicioModel.getFinished());
 		return servicioRepository.save(servicio);
 	}
-
-	
-//	@Override
-//	public List<Servicio> getServiciosByProFamilyId(int proFamilyId) {
-//	    return servicioRepository.findByProFamilyId(proFamilyId);
-//	}
-
-	
-//    @Override
-//    public List<Servicio> findByBusinessId(Long businessId) {
-//        return servicioRepository.findByBusinessId(businessId);
-//    }
 }
