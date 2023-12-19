@@ -1,7 +1,6 @@
 package com.example.demo.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.ProFamily;
-import com.example.demo.entity.Student;
 import com.example.demo.model.ProFamilyModel;
-import com.example.demo.model.StudentModel;
 import com.example.demo.repository.ProFamilyRepository;
 import com.example.demo.service.ProFamilyService;
 
@@ -43,8 +40,8 @@ public class ProFamilyServiceImpl implements ProFamilyService {
 
     @Override
     public ProFamily getProFamilyById(int id) {
-        Optional<ProFamily> optionalProFamily = proFamilyRepository.findById(id);
-        return optionalProFamily.orElse(null);
+        ProFamily proFamily = proFamilyRepository.findById(id);
+        return proFamily;
     }
 
     @Override
@@ -54,26 +51,17 @@ public class ProFamilyServiceImpl implements ProFamilyService {
 
     @Override
 	public int deleteProFamily(int id) {
-		Optional<ProFamily> optionalProFamily = proFamilyRepository.findById(id);
-
-        if (optionalProFamily.isPresent()) {
-        	ProFamily proFamily = optionalProFamily.get();
+		ProFamily optionalProFamily = proFamilyRepository.findById(id);
+        	ProFamily proFamily = optionalProFamily;
         	proFamily.setDeleted(1);
             proFamilyRepository.save(proFamily);
             return 1;
-        } else
-            return 0;
     }
 
     @Override
     public ProFamily updateProFamily(ProFamily proFamilyM) {
-        ProFamily proFamily = proFamilyRepository.findById(proFamilyM.getId())
-                .orElseThrow(() -> new RuntimeException("Profesional Family not found"));
-
-        // Actualiza los campos necesarios, por ejemplo, el nombre
+        ProFamily proFamily = proFamilyRepository.findById(proFamilyM.getId());
         proFamily.setName(proFamilyM.getName());
-
-        // Guarda el ProFamily actualizado en el repositorio
         return proFamilyRepository.save(proFamily);
     }
 

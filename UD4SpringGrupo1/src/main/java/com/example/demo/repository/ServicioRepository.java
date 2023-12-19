@@ -13,6 +13,7 @@ import com.example.demo.entity.Servicio;
 public interface ServicioRepository  extends JpaRepository<Servicio, Serializable>{
 	
 	public abstract Servicio findByTitle(String title);
-	List<Servicio> findByProfesionalFamilyId(ProFamily proFamilyId);
+	List<Servicio> findByProfesionalFamilyId(int proFamilyId);
+	Servicio findById(int id);
 
 }

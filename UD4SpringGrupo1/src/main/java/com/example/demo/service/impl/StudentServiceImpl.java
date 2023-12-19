@@ -96,7 +96,7 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 		 student.setName(studentModel.getName());
 		 student.setSurname(studentModel.getSurname());
 		 student.setEmail(studentModel.getEmail()); 
-		 student.setProfesionalFamily(proFamilyRepository.findById(studentModel.getProfesionalFamily().getId()).orElseThrow(() -> new RuntimeException("ProfesionalFamily not found"))); 
+		 student.setProfesionalFamily(proFamilyRepository.findById(studentModel.getProfesionalFamily().getId())); 
 		 return studentRepository.save(student);
 	 }
 
