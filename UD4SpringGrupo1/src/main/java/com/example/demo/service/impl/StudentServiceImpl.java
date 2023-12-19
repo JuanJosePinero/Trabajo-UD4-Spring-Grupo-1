@@ -3,7 +3,6 @@ package com.example.demo.service.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -79,20 +78,15 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 
 	@Override
 	public int deleteStudent(int id) {
-		Optional<Student> optionalStudent = studentRepository.findById(id);
-
-        if (optionalStudent.isPresent()) {
-            Student student = optionalStudent.get();
-            student.setDeleted(1);
-            studentRepository.save(student);
-            return 1;
-        } else
-            return 0;
+		Student student = studentRepository.findById(id);
+    	student.setDeleted(1);
+    	studentRepository.save(student);
+    	return 1;
     }
 
 	@Override
 	public Student updateStudent(StudentModel studentModel) {
-		 Student student = studentRepository.findById(studentModel.getId()) .orElseThrow(() -> new RuntimeException("Student not found"));
+		 Student student = studentRepository.findById(studentModel.getId());
 		 student.setName(studentModel.getName());
 		 student.setSurname(studentModel.getSurname());
 		 student.setEmail(studentModel.getEmail()); 
@@ -151,31 +145,21 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 
 	@Override
 	public StudentModel getStudentById(int id) {
-		Optional<Student> optionalStudent = studentRepository.findById(id);
-		if (optionalStudent.isPresent()) {
-			Student student = optionalStudent.get();
-			return entity2model(student);
-		}
-		 throw new IllegalArgumentException("Alumno no encontrado con ID: " + id);
+		Student student = studentRepository.findById(id);
+		return entity2model(student);
 	}
 
 	@Override
 	public int enableStudent(int studentId) {
-	    Optional<Student> optionalStudent = studentRepository.findById(studentId);
-
-	    if (optionalStudent.isPresent()) {
-	        Student student = optionalStudent.get();
+	    Student student = studentRepository.findById(studentId);
 	        student.setEnabled(student.getEnabled() == 0 ? 1 : 0);
 	        studentRepository.save(student);
 	        return student.getEnabled();
-	    } else
-	        return 0;
 	}
 
 
 	@Override
 	public List<StudentModel> listAllEnabledOrDisabledStudents() {
-		
 		List<Student> allStudents = studentRepository.findAllByEnabledIn(Arrays.asList(0, 1));
 	    List<StudentModel> studentModels = allStudents.stream()
 	            .map(this::entity2model)
