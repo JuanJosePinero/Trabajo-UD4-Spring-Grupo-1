@@ -59,7 +59,13 @@
             <td th:text="${service.finished}"></td>
             <td th:text="${service.title}"></td>
             <td th:text="${service.valoration}"></td>
-            <td>Edit</td>
+            <td>
+            	<form th:action="@{'/servicio/editServicio/' + ${service.id}}" method="get">
+                    <button type="submit" class="btn btn-link p-0 m-0">
+                        <img src="/imgs/edit.png" alt="Edit img" width="30px">
+                    </button>
+                </form>
+            </td>
             <td>
                 <form th:action="@{'/servicio/deleteServicio/' + ${service.id}}" method="post"
                       onsubmit="return confirm('¿Estás seguro que quieres cambiar su estado?');">
@@ -79,7 +85,13 @@
             <td th:text="${service.finished}"></td>
             <td th:text="${service.title}"></td>
             <td th:text="${service.valoration}"></td>
-            <td>Edit</td>
+            <td>
+            	<form th:action="@{'/servicio/editServicio/' + ${service.id}}" method="get">
+                    <button type="submit" class="btn btn-link p-0 m-0">
+                        <img src="/imgs/edit.png" alt="Edit img" width="30px">
+                    </button>
+                </form>
+            </td>
             <td>
                 <form th:action="@{'/servicio/deleteServicio/' + ${service.id}}" method="post"
                       onsubmit="return confirm('¿Estás seguro que quieres cambiar su estado?');">
@@ -99,7 +111,13 @@
             <td th:text="${service.finished}"></td>
             <td th:text="${service.title}"></td>
             <td th:text="${service.valoration}"></td>
-            <td>Edit</td>
+            <td>
+            	<form th:action="@{'/servicio/editServicio/' + ${service.id}}" method="get">
+                    <button type="submit" class="btn btn-link p-0 m-0">
+                        <img src="/imgs/edit.png" alt="Edit img" width="30px">
+                    </button>
+                </form>
+            </td>
             <td>
                 <form th:action="@{'/servicio/deleteServicio/' + ${service.id}}" method="post"
                       onsubmit="return confirm('¿Estás seguro que quieres cambiar su estado?');">
@@ -119,7 +137,13 @@
             <td th:text="${service.finished}"></td>
             <td th:text="${service.title}"></td>
             <td th:text="${service.valoration}"></td>
-            <td>Edit</td>
+            <td>
+            	<form th:action="@{'/servicio/editServicio/' + ${service.id}}" method="get">
+                    <button type="submit" class="btn btn-link p-0 m-0">
+                        <img src="/imgs/edit.png" alt="Edit img" width="30px">
+                    </button>
+                </form>
+            </td>
             <td>
                 <form th:action="@{'/servicio/deleteServicio/' + ${service.id}}" method="post"
                       onsubmit="return confirm('¿Estás seguro que quieres cambiar su estado?');">

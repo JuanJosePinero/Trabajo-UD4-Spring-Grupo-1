@@ -13,6 +13,7 @@ import com.example.demo.entity.Servicio;
 import com.example.demo.entity.Student;
 import com.example.demo.model.BusinessModel;
 import com.example.demo.model.ServicioModel;
+import com.example.demo.model.StudentModel;
 import com.example.demo.repository.ServicioRepository;
 import com.example.demo.service.ServicioService;
 
@@ -62,10 +63,9 @@ public class ServicioServiceImpl implements ServicioService {
 
 	@Override
 	public int deleteServicio(int id) {
-		Optional<Servicio> optionalServicio = servicioRepository.findById(id);
+		Servicio servicio = servicioRepository.findById(id);
 
-        if (optionalServicio.isPresent()) {
-        	Servicio servicio = optionalServicio.get();
+        if (servicio.getDeleted() == 0) {
         	servicio.setDeleted(1);
         	servicioRepository.save(servicio);
             return 1;
@@ -75,14 +75,22 @@ public class ServicioServiceImpl implements ServicioService {
 
 	@Override
 	public Servicio updateServicio(ServicioModel servicioModel) {
-//		Student student = studentRepository.findById(studentModel.getId()) .orElseThrow(() -> new RuntimeException("Student not found"));
-//		 student.setName(studentModel.getName());
-//		 student.setSurname(studentModel.getSurname());
-//		 student.setEmail(studentModel.getEmail()); 
-//		 student.setProfesionalFamily(proFamilyRepository.findById(studentModel.getProfesionalFamily().getId()).orElseThrow(() -> new RuntimeException("ProfesionalFamily not found"))); 
-//		 return studentRepository.save(student);
-		return null;
+		Servicio servicio = servicioRepository.findById(servicioModel.getId());
+		servicio.setTitle(servicioModel.getTitle());
+		servicio.setDescription(servicioModel.getDescription());
+		servicio.setHappeningDate(servicioModel.getHappeningDate());
+		servicio.setRegisterDate(servicioModel.getRegisterDate());
+		servicio.setId(servicioModel.getId());
+		servicio.setBusinessId(servicioModel.getBusinessId());
+		servicio.setProfesionalFamilyId(servicioModel.getProfesionalFamilyId());
+		servicio.setStudentId(servicioModel.getStudentId());
+		servicio.setValoration(servicioModel.getValoration());
+		servicio.setComment(servicioModel.getComment());
+		servicio.setDeleted(0);
+		servicio.setFinished(servicioModel.getFinished());
+		return servicioRepository.save(servicio);
 	}
+
 	
 //	@Override
 //	public List<Servicio> getServiciosByProFamilyId(int proFamilyId) {

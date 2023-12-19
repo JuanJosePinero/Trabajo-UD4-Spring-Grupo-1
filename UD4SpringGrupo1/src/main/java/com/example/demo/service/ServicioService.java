@@ -17,8 +17,10 @@ public interface ServicioService {
 	
 	Servicio updateServicio(ServicioModel servicioModel);
 
-//	List<Servicio> getServiciosByProFamilyId(int proFamilyId);
-	
-//	 List<Servicio> findByBusinessId(Long businessId);
+//	ServicioModel getServicioById(int id);
+//
+////	List<Servicio> getServiciosByProFamilyId(int proFamilyId);
+//	
+////	 List<Servicio> findByBusinessId(Long businessId);
 
 }
