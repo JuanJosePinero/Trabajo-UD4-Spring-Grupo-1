@@ -2,9 +2,6 @@ package com.example.demo.service;
 
 import java.util.List;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
 import com.example.demo.entity.Student;
 import com.example.demo.model.StudentModel;
 

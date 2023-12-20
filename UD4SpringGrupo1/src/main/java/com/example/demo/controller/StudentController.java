@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Servicio;
 import com.example.demo.repository.BusinessRepository;
 import com.example.demo.repository.ProFamilyRepository;
@@ -60,12 +61,13 @@ public class StudentController {
 	
 	
 	//Llamo a todos los servicios que sean de la misma familia profesional que el alumno que haya hecho login.
-//	@GetMapping("/viewServices/{proFamilyId}")
-//	public String student(@PathVariable("proFamilyId") int proFamilyId, Model model) {
-//		List<Servicio> serviceList = servicioRepository.findByProfesionalFamilyId(proFamilyId);
-//		model.addAttribute("serviceList", serviceList);
-//	    return STUDENT_SERVICES;
-//	}
+	@GetMapping("/viewServices/{studentId}")
+	public String student(@PathVariable("studentId") int st, Model model) {
+		ProFamily proFamily = studentRepository.findById(st).getProfesionalFamily();
+		List<Servicio> serviceList = servicioRepository.findByProfesionalFamilyId(proFamily);
+		model.addAttribute("serviceList", serviceList);
+	    return STUDENT_SERVICES;
+	}
 	
 	
 }
