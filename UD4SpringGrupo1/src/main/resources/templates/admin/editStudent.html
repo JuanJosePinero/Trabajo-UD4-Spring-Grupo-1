@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit a student</title>
+    <title>Edit Student</title>
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
@@ -16,23 +16,24 @@
     <h2>Edit Student</h2>
     <form id="studentForm" th:object="${student}" method="post" th:action="@{/admin/editStudent}">
        <input type="hidden" id="id" name="id" th:field="*{id}">
+       
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" th:field="*{name}" required>
+        <input type="text" id="name" name="name" th:field="*{name}" class="form-control" required>
 
         <label for="surname">Surname:</label>
-        <input type="text" id="surname" name="surname" th:field="*{surname}" required>
+        <input type="text" id="surname" name="surname" th:field="*{surname}" class="form-control" required>
 
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" th:field="*{email}" required>
+        <input type="email" id="email" name="email" th:field="*{email}" class="form-control" required>
 
-        <label for="profesionalFamily">Profesional Family:</label><br>
-        <select name="profesionalFamily.id" style="width: 100%;">
+        <label for="profesionalFamily.id">Profesional Family:</label><br>
+        <select id="profesionalFamily.id" name="profesionalFamily.id" th:field="*{profesionalFamily.id}" style="width: 100%;">
             <option th:each="proFamily : ${profesionalFamilies}" th:value="${proFamily.id}" th:text="${proFamily.name}"></option>
         </select>
         <br><br>
-			<button class="btn-save" type="submit">Save</button>
-			<a class="btn-cancel" type="button" th:href="@{/admin/adminScreen}">Cancel</a>
-		</form>
-	</div>
+        <button class="btn-save" type="submit">Save</button>
+        <a class="btn btn-cancel" type="button" th:href="@{/admin/adminScreen}">Cancel</a>
+    </form>
+</div>
 </body>
 </html>

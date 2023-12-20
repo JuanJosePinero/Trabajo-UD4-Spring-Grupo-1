@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,18 +47,27 @@ public class ServicioController {
 	
 	@GetMapping("/addServicio")
 	public String addServicio(Model model) {
-		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
-		model.addAttribute("servicioModel", new ServicioModel());
-		model.addAttribute("profesionalFamilies", profesionalFamilies);
-		return ADD_SERVICIO_VIEW;
+	    List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
+	    model.addAttribute("servicioModel", new ServicioModel());
+	    model.addAttribute("profesionalFamilies", profesionalFamilies);
+	    // Puedes configurar la fecha actual aquí antes de mostrar el formulario
+//	    LocalDate currentDate = LocalDate.now();
+//	    model.addAttribute("currentDate", currentDate);
+	    return ADD_SERVICIO_VIEW;
 	}
-	
+
 	@PostMapping("/addServicio")
-	public String addServicioPost(Model model, ServicioModel servicioModel) {
-		model.addAttribute("servicioModel", new ServicioModel());
-		servicioService.addServicio(servicioModel);
-		return ADD_SERVICIO_VIEW;
+	public String addServicioPost(@ModelAttribute ServicioModel servicioModel, Model model) {
+	    // Puedes configurar la fecha actual antes de guardarla en la base de datos
+//	    servicioModel.setRegisterDate(new Date(System.currentTimeMillis()));
+//	    servicioService.addServicio(servicioModel);
+		 model.addAttribute("servicioModel", new ServicioModel());
+		 servicioService.addServicio(servicioModel);
+	    return "redirect:/business/home"; // Redirige a donde sea necesario después de guardar
 	}
+
+
+
 	
 	@GetMapping("/editServicio/{servicioId}")
 	public String editStudent(@PathVariable("servicioId") int servicioId, Model model) {

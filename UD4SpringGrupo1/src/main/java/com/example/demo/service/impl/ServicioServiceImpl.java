@@ -48,7 +48,7 @@ public class ServicioServiceImpl implements ServicioService {
 		servicio.setComment(null);
 		servicio.setDeleted(0);
 		servicio.setFinished(0);
-		return servicioRepository.save(servicio);
+		return servicioRepository.save(servicio);	
 	}
 
 	@Override

@@ -22,10 +22,8 @@
                 <input type="text" id="description" name="description" th:field="*{description}" class="form-control" required>
             
                 <label for="registerDate">Register Date:</label>
-                <input type="date" id="registerDate" name="registerDate" th:field="*{registerDate}" class="form-control" required>
-            
-                <label for="happeningDate">Happening Date:</label>
-                <input type="date" id="happeningDate" name="happeningDate" th:field="*{happeningDate}" class="form-control" required>
+				<input id="registerDate" type="date" class="form-control" th:field="*{registerDate}" required />
+
                 
                 <label for="profesionalFamily">Profesional Family:</label><br>
         <select name="profesionalFamily.id" style="width: 100%;">
@@ -40,5 +38,16 @@
             <a class="btn btn-cancel" th:href="@{/business/home}">Cancel</a>
         </form>
     </div>
+    
+    <script>
+				    // Obtener la fecha actual
+				    var currentDate = new Date();
+				    
+				    // Formatear la fecha como "YYYY-MM-DD"
+				    var formattedDate = currentDate.toISOString().split('T')[0];
+				    
+				    // Establecer el valor en el campo "Register Date"
+				    document.getElementById("registerDate").value = formattedDate;
+				</script>
 </body>
 </html>
