@@ -47,6 +47,11 @@ public class ServicioController {
 	
 	@GetMapping("/addServicio")
 	public String addServicio(Model model) {
+		
+//		org.springframework.security.core.Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String username = authentication.getName();
+//        int userId = obtenerIdUsuarioPorNombre(username);
+//        List<Servicio> servicios = servicioService.obtenerServiciosPorUsuario(userId);
 	    List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
 	    model.addAttribute("servicioModel", new ServicioModel());
 	    model.addAttribute("profesionalFamilies", profesionalFamilies);

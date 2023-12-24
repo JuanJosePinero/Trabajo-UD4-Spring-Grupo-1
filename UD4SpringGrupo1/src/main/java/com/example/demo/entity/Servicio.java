@@ -1,6 +1,8 @@
 package com.example.demo.entity;
 
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import lombok.Data;
 
 @Data
@@ -110,6 +113,11 @@ public class Servicio {
 	public void setDeleted(int deleted) {
 		this.deleted = deleted;
 	}
+	@PrePersist
+    protected void onCreate() {
+        LocalDate currentDate = LocalDate.now();
+        registerDate = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
 	public Servicio(int id, String title, String description, Date registerDate, Date happeningDate, Student studentId,
 			Business businessId, ProFamily profesionalFamilyId, int valoration, int finished, String comment, int deleted) {
 		super();

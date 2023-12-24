@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -32,6 +33,24 @@ public class ServicioServiceImpl implements ServicioService {
 		ModelMapper mapper = new ModelMapper();
 		return mapper.map(servicio, ServicioModel.class);
 	}
+	
+//	 @Override
+//	    public List<ServicioModel> obtenerServiciosPorUsuario(int userId) {
+//	        List<ServicioModel> serviciosDelUsuario = new ArrayList<>();
+//
+//	        // Obtener todos los servicios
+//	        List<Servicio> todosLosServicios = servicioRepository.findAll();
+//
+//	        // Recorrer todos los servicios y agregar los del usuario al resultado
+//	        for (Servicio servicio : todosLosServicios) {
+//	        	if (servicio.getId() == userId) {
+//	        	    serviciosDelUsuario.add(servicio);
+//	        	}
+//
+//	        }
+//
+//	        return serviciosDelUsuario;
+//	    }
 	
 	@Override
 	public Servicio addServicio(ServicioModel servicioModel) {
@@ -77,7 +96,7 @@ public class ServicioServiceImpl implements ServicioService {
 		servicio.setValoration(servicioModel.getValoration());
 		servicio.setComment(servicioModel.getComment());
 		servicio.setDeleted(0);
-//		servicio.setFinished(servicioModel.getFinished());
+		servicio.setFinished(servicioModel.getFinished());
 		return servicioRepository.save(servicio);
 	}
 }

@@ -21,13 +21,14 @@
             	<input th:field="*{description}" type="text" class="form-control" placeholder="Description" autofocus="true" />
                 <input th:field="*{comment}" type="hidden" class="form-control" placeholder="Comment" autofocus="true" />
                 <input th:field="*{finished}" type="hidden" class="form-control" placeholder="Finished" autofocus="true" />
-                <input th:field="*{registerDate}" type="date" class="form-control" placeholder="Register Date" />
-                <input th:field="*{happeningDate}" type="date" class="form-control" placeholder="Happening Date" />
-                <label for="profesionalFamily">Profesional Family:</label> <select name="ProfesionalFamily"
-					class="form-control">
-					<option th:each="proFamily : ${profesionalFamilies}" th:value="${proFamily.id}"
-						th:text="${proFamily.name}"></option>
-				</select>
+
+
+
+
+               <label for="profesionalFamily">Profesional Family:</label> <select name="profesionalFamilyId" class="form-control">
+    <option th:each="proFamily : ${profesionalFamilies}" th:value="${proFamily.id}" th:text="${proFamily.name}"></option>
+</select>
+
                 <!-- Aquí debes agregar los campos para studentId, businessId, profesionalFamilyId, valoration, finished, y comment -->
             </div>
 

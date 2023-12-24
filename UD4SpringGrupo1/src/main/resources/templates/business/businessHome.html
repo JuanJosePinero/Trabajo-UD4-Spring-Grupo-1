@@ -1,64 +1,71 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  <meta charset="UTF-8">
-  <title>Your business</title>
-  <link rel="stylesheet"
-        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-        crossorigin="anonymous">
-  <link href="/css/styles.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Your business</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+          crossorigin="anonymous">
+    <link href="/css/styles.css" rel="stylesheet">
 </head>
-
 <body class="bodyBusiness">
-  <div th:replace="/main/CustomNavbar.html"></div>
+    <div th:replace="/main/CustomNavbar.html"></div>
 
-  <div class="info-container">
-    <div class="info-block-head">
-      <h3>Your Business Information</h3>
+    <div class="info-container">
+        <div class="info-block-head">
+            <h3>Your Business Information</h3>
+        </div>
+        <div class="info-block-head">Information Here<br>Information Here<br>Information Here<br>Information Here<br></div>
     </div>
-    <div class="info-block-head">Information Here<br>Information Here<br>Information Here<br>Information Here<br></div>
-  </div>
 
-  <div class="info-container2">
-    <div class="info-block-head">
-      <h3>Your Services</h3>
-    </div>
-    <div class="info-block2">
-      <a th:href="@{/servicio/addServicio}" class="btn-add">Add Servicio</a>
-      <p align="right">
-        <label for="filterBy">Filtrar por:</label>
-        <select id="filterBy" name="filterBy">
-          <option value="familia_profesional">Familia Profesional del Servicio</option>
-          <option value="realizados">Servicios Realizados</option>
-          <option value="asignados_no_realizados">Servicios Asignados pero no Realizados</option>
-          <option value="no_asignados">Servicios No Asignados</option>
-        </select>
-
-      </p>
-      <table class="tableBusiness">
-        <table class="tableBusiness">
-    <thead>
-        <tr class="tableBusiness">
-            <th>Comment</th>
-            <th>Description</th>
-            <th>Finished</th>
-            <th>Title</th>
-            <th>Valoration</th>
-            <th>Edit</th>
-            <th>Delete</th>
-        </tr>
-    </thead>
+    <div class="info-container2">
+        <div class="info-block-head">
+            <h3>Your Services</h3>
+        </div>
+        <div class="info-block2">
+            <a th:href="@{/servicio/addServicio}" class="btn-add">Add Servicio</a>
+            <p align="right">
+                <label for="filterBy">Filtrar por:</label>
+                <select id="filterBy" name="filterBy">
+                    <option value="all">Todos los Servicios</option>
+                    <option value="familia_profesional">Familia Profesional del Servicio</option>
+                    <option value="realizados">Servicios Realizados</option>
+                    <option value="asignados_no_realizados">Servicios Asignados pero no Realizados</option>
+                    <option value="no_asignados">Servicios No Asignados</option>
+                </select>
+                <br>
+                <label for="filterByProFamily">Filtrar por Familia Profesional:</label>
+                <select id="filterByProFamily" name="filterByProFamily">
+                    <option value="all">Pro families</option>
+                    <option value="all">Pro families</option>
+                    <option value="all">Pro families</option>
+                    <option value="all">Pro families</option>
+                </select>
+            </p>
+            <table class="tableBusiness">
+                <thead>
+                    <tr>
+                    	<th>Title</th>
+                    	<th>Description</th>
+                    	<th>ProFamily</th>
+                        <th>Comment</th>
+                        <th>Valoration</th>
+                        <th>Finished</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
     <!-- FAMILIA PROFESIONAL DEL SERVICIO -->
-    <tbody id="serviceTableBody">
+    <tbody id="serviceTableBody" th:if="${filterBy == 'all'}">
         <tr th:each="service : ${servicio}">
-            <td th:hidden="${service.id}"></td>
-            <td th:text="${service.comment}"></td>
-            <td th:text="${service.description}"></td>
-            <td th:text="${service.finished}"></td>
-            <td th:text="${service.title}"></td>
-            <td th:text="${service.valoration}"></td>
+        <td th:hidden="${service.id}"></td>
+        <td th:text="${service.title}"></td>
+        <td th:text="${service.description}"></td>
+        <td th:text="${service.proFamilyId.name}"></td>
+        <td th:text="${service.comment}"></td>
+        <td th:text="${service.valoration}"></td>
+        <td th:text="${service.finished == 1 ? 'Sí' : 'No'}"></td>
             <td>
             	<form th:action="@{'/servicio/editServicio/' + ${service.id}}" method="get">
                     <button type="submit" class="btn btn-link p-0 m-0">
@@ -79,13 +86,13 @@
     <!-- SERVICIOS REALIZADOS -->
     <tbody id="serviceTableBody" th:if="${filterBy == 'realizados'}">
         <tr th:each="service : ${servicio}" th:if="${service.finished == 1}">
-            <td th:hidden="${service.id}"></td>
-            <td th:text="${service.comment}"></td>
-            <td th:text="${service.description}"></td>
-            <td th:text="${service.finished}"></td>
-            <td th:text="${service.title}"></td>
-            <td th:text="${service.valoration}"></td>
-            <td>
+        <td th:hidden="${service.id}"></td>
+        <td th:text="${service.title}"></td>
+        <td th:text="${service.description}"></td>
+        <td th:text="${service.proFamilyId.name}"></td>
+        <td th:text="${service.comment}"></td>
+        <td th:text="${service.valoration}"></td>
+        <td th:text="${service.finished == 1 ? 'Sí' : 'No'}"></td>
             	<form th:action="@{'/servicio/editServicio/' + ${service.id}}" method="get">
                     <button type="submit" class="btn btn-link p-0 m-0">
                         <img src="/imgs/edit.png" alt="Edit img" width="30px">
@@ -105,12 +112,13 @@
     <!-- ASIGNADOS PERO NO REALIZADOS -->
     <tbody id="serviceTableBody" th:if="${filterBy == 'asignados_no_realizados'}">
         <tr th:each="service : ${servicio}" th:if="${service.studentId != null} && ${service.student}" >
-            <td th:hidden="${service.id}"></td>
-            <td th:text="${service.comment}"></td>
-            <td th:text="${service.description}"></td>
-            <td th:text="${service.finished}"></td>
-            <td th:text="${service.title}"></td>
-            <td th:text="${service.valoration}"></td>
+        <td th:hidden="${service.id}"></td>
+        <td th:text="${service.title}"></td>
+        <td th:text="${service.description}"></td>
+        <td>hola</td>
+        <td th:text="${service.comment}"></td>
+        <td th:text="${service.valoration}"></td>
+        <td th:text="${service.finished == 1 ? 'Sí' : 'No'}"></td>
             <td>
             	<form th:action="@{'/servicio/editServicio/' + ${service.id}}" method="get">
                     <button type="submit" class="btn btn-link p-0 m-0">
@@ -132,11 +140,12 @@
     <tbody id="serviceTableBody">
         <tr th:each="service : ${servicio}" th:if="${service.studentId == null}">
             <td th:hidden="${service.id}"></td>
-            <td th:text="${service.comment}"></td>
-            <td th:text="${service.description}"></td>
-            <td th:text="${service.finished}"></td>
             <td th:text="${service.title}"></td>
+            <td th:text="${service.description}"></td>
+             <td>hola</td>
+            <td th:text="${service.comment}"></td>
             <td th:text="${service.valoration}"></td>
+            <td th:text="${service.finished}"></td>
             <td>
             	<form th:action="@{'/servicio/editServicio/' + ${service.id}}" method="get">
                     <button type="submit" class="btn btn-link p-0 m-0">
@@ -161,7 +170,6 @@
     </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
-
 </html>
