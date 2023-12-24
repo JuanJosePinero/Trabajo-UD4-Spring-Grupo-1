@@ -52,6 +52,7 @@
                         <th>Comment</th>
                         <th>Valoration</th>
                         <th>Finished</th>
+                        <th>Rate</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
@@ -66,6 +67,13 @@
         <td th:text="${service.comment}"></td>
         <td th:text="${service.valoration}"></td>
         <td th:text="${service.finished == 1 ? 'Sí' : 'No'}"></td>
+        <td>
+            	<form th:action="@{'/servicio/rateServicio/' + ${service.id}}" method="get">
+                    <button type="submit" class="btn btn-link p-0 m-0">
+                        <img src="/imgs/estrella.png" alt="Star img" width="30px">
+                    </button>
+                </form>
+            </td>
             <td>
             	<form th:action="@{'/servicio/editServicio/' + ${service.id}}" method="get">
                     <button type="submit" class="btn btn-link p-0 m-0">
@@ -93,6 +101,14 @@
         <td th:text="${service.comment}"></td>
         <td th:text="${service.valoration}"></td>
         <td th:text="${service.finished == 1 ? 'Sí' : 'No'}"></td>
+        <td>
+            	<form th:action="@{'/servicio/rateServicio/' + ${service.id}}" method="get">
+                    <button type="submit" class="btn btn-link p-0 m-0">
+                        <img src="/imgs/estrella.png" alt="Star img" width="30px">
+                    </button>
+                </form>
+            </td>
+            <td>
             	<form th:action="@{'/servicio/editServicio/' + ${service.id}}" method="get">
                     <button type="submit" class="btn btn-link p-0 m-0">
                         <img src="/imgs/edit.png" alt="Edit img" width="30px">
@@ -119,6 +135,13 @@
         <td th:text="${service.comment}"></td>
         <td th:text="${service.valoration}"></td>
         <td th:text="${service.finished == 1 ? 'Sí' : 'No'}"></td>
+        <td>
+            	<form th:action="@{'/servicio/rateServicio/' + ${service.id}}" method="get">
+                    <button type="submit" class="btn btn-link p-0 m-0">
+                        <img src="/imgs/estrella.png" alt="Star img" width="30px">
+                    </button>
+                </form>
+            </td>
             <td>
             	<form th:action="@{'/servicio/editServicio/' + ${service.id}}" method="get">
                     <button type="submit" class="btn btn-link p-0 m-0">
@@ -142,10 +165,20 @@
             <td th:hidden="${service.id}"></td>
             <td th:text="${service.title}"></td>
             <td th:text="${service.description}"></td>
-             <td>hola</td>
+            <td>hola</td>
             <td th:text="${service.comment}"></td>
             <td th:text="${service.valoration}"></td>
-            <td th:text="${service.finished}"></td>
+             <td>
+			    <img th:if="${service.finished == 1}" src="/imgs/tick.png" alt="Sí" width="30px" />
+			    <img th:if="${service.finished != 1}" src="/imgs/cross.png" alt="No" width="30px" />
+			</td>
+            <td>
+            	<form th:action="@{'/servicio/rateServicio/' + ${service.id}}" method="get">
+                    <button type="submit" class="btn btn-link p-0 m-0">
+                        <img src="/imgs/estrella.png" alt="Star img" width="30px">
+                    </button>
+                </form>
+            </td>
             <td>
             	<form th:action="@{'/servicio/editServicio/' + ${service.id}}" method="get">
                     <button type="submit" class="btn btn-link p-0 m-0">

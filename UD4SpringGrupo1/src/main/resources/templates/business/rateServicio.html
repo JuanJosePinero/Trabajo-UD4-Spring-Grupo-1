@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rating a service</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body class="bodyAuth">
+    <h1>Rate the Service</h1>
+    <br><br><br><br><br><br>
+    <center>
+	    <form method="POST" th:action="@{/servicio/rateServicio}" th:object="${servicioModel}">
+	        <input type="hidden" name="servicioId" th:value="${servicio.id}" />
+	        <img id="valorationImage" src="jpeg" alt="Estrella" width="400px"/>
+	        <br><br>
+	        <label for="valoration">Valoración:</label>
+	        <input type="range" name="valoration" min="0" max="5" step="0.5" oninput="updateValoration(this.value)" />
+	        <span id="valorationSpan">0</span>
+	        
+	        <br>
+	        <button type="submit">Guardar Valoración</button>
+	    </form>
+    </center>
+
+    <script>
+    function updateValoration(value) {
+        // Calcula el nombre del archivo de imagen en función del valor
+        let imageName = "/imgs/stars/estrella" + value.replace(".", "_") + ".jpeg";
+        
+        // Actualiza la imagen
+        document.getElementById("valorationImage").src = imageName;
+
+        // Actualiza el valor en el span
+        document.getElementById("valorationSpan").textContent = value;
+    }
+
+    // Llama a la función inicialmente con un valor de 0
+    updateValoration("0");
+
+    </script>
+</body>
+</html>

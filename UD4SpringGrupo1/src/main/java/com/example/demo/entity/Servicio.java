@@ -37,7 +37,7 @@ public class Servicio {
     @JoinColumn(name = "profesionalFamilyId")
     private ProFamily profesionalFamilyId;
 
-    private int valoration;
+    private float valoration;
     private int finished;
     private String comment;
     private int deleted;
@@ -89,10 +89,10 @@ public class Servicio {
 	public void setProfesionalFamilyId(ProFamily profesionalFamilyId) {
 		this.profesionalFamilyId = profesionalFamilyId;
 	}
-	public int getValoration() {
+	public float getValoration() {
 		return valoration;
 	}
-	public void setValoration(int valoration) {
+	public void setValoration(float valoration) {
 		this.valoration = valoration;
 	}
 	public int isFinished() {
@@ -119,7 +119,7 @@ public class Servicio {
         registerDate = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 	public Servicio(int id, String title, String description, Date registerDate, Date happeningDate, Student studentId,
-			Business businessId, ProFamily profesionalFamilyId, int valoration, int finished, String comment, int deleted) {
+			Business businessId, ProFamily profesionalFamilyId, float valoration, int finished, String comment, int deleted) {
 		super();
 		this.id = id;
 		this.title = title;

@@ -1,7 +1,5 @@
 package com.example.demo.controller;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Servicio;
@@ -28,6 +27,7 @@ public class ServicioController {
 
 	private static final String ADD_SERVICIO_VIEW = "business/addServicio";
 	private static final String EDIT_SERVICIO_VIEW = "business/editServicio";
+	private static final String RATE_SERVICIO_VIEW = "business/rateServicio";
 	
 	@Autowired
 	@Qualifier("servicioService")
@@ -68,16 +68,25 @@ public class ServicioController {
 //	    servicioService.addServicio(servicioModel);
 		 model.addAttribute("servicioModel", new ServicioModel());
 		 servicioService.addServicio(servicioModel);
-	    return "redirect:/business/home"; // Redirige a donde sea necesario después de guardar
+	    return "redirect:/business/home";
 	}
 
+	@GetMapping("/rateServicio/{servicioId}")
+	public String rateStudent(@PathVariable("servicioId") int servicioId, Model model) {
+	    Servicio servicio = servicioRepository.findById(servicioId);
+	    model.addAttribute("servicio", servicio);
+	    model.addAttribute("servicioId", servicioId);
+	    return RATE_SERVICIO_VIEW;
+	}
 
-
+	@PostMapping("/rateServicio")
+	public String saveRatedServicio(@ModelAttribute("servicioId") int servicioId, @ModelAttribute("valoration") float valoration) {
+	    servicioService.rateServicio(servicioId, valoration);
+	    return "redirect:/business/home";
+	}
 	
 	@GetMapping("/editServicio/{servicioId}")
 	public String editStudent(@PathVariable("servicioId") int servicioId, Model model) {
-		List<ProFamily> proFamilyList = proFamilyRepository.findAll();
-		model.addAttribute("profesionalFamilies", proFamilyList); 
 		Servicio servicio = servicioRepository.findById(servicioId);
 		model.addAttribute("servicio", servicio); 
 	    return EDIT_SERVICIO_VIEW;

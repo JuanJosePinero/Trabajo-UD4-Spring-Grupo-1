@@ -13,6 +13,8 @@ public interface ServicioService {
 	
 	Servicio updateServicio(ServicioModel servicioModel);
 	
+	Servicio rateServicio(int servicioId, float valoration);
+	
 //	List<ServicioModel> obtenerServiciosPorUsuario(int userId);
 
 }

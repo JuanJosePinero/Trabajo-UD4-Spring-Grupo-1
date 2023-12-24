@@ -99,4 +99,11 @@ public class ServicioServiceImpl implements ServicioService {
 		servicio.setFinished(servicioModel.getFinished());
 		return servicioRepository.save(servicio);
 	}
+
+	@Override
+	public Servicio rateServicio(int servicioId, float valoracion) {
+	    Servicio servicio = servicioRepository.findById(servicioId);
+	    servicio.setValoration(valoracion);
+	    return servicioRepository.save(servicio);
+	}
 }
