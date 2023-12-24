@@ -77,7 +77,7 @@ public class ServicioServiceImpl implements ServicioService {
 		servicio.setValoration(servicioModel.getValoration());
 		servicio.setComment(servicioModel.getComment());
 		servicio.setDeleted(0);
-		servicio.setFinished(servicioModel.getFinished());
+//		servicio.setFinished(servicioModel.getFinished());
 		return servicioRepository.save(servicio);
 	}
 }

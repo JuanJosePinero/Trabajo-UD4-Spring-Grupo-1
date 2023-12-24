@@ -19,7 +19,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.Business;
 import com.example.demo.entity.Servicio;
+import com.example.demo.entity.Student;
 import com.example.demo.model.BusinessModel;
+import com.example.demo.model.StudentModel;
 import com.example.demo.repository.BusinessRepository;
 import com.example.demo.repository.ServicioRepository;
 import com.example.demo.repository.StudentRepository;
@@ -75,6 +77,8 @@ public class BusinessController {
 	@GetMapping("/addBusiness")
 	public String addBusiness(Model model) {
 	    model.addAttribute("businessModel", new BusinessModel());
+	    List<Student> studentEmails = studentRepository.findAll();
+        model.addAttribute("studentEmails", studentEmails);
 	    return ADD_BUSINESS_VIEW;
 	}
 	
@@ -107,22 +111,19 @@ public class BusinessController {
 					if (!uploadDirFile.exists()) {
 						uploadDirFile.mkdirs();
 					}
-
-					file.transferTo(new File(uploadDir + logoName));
-					
+					file.transferTo(new File(uploadDir + logoName));					
 				} catch (IOException e) {
 					e.printStackTrace();
-				}
-
-//				Student student = studentRepository.findByUsername(empresa.getEmail());
-//				StudentModel studentBusiness = studentService.entity2model(student);
-//				studentBusiness.setEnabled(1);
-//				studentBusiness.setRole("ROL_EMPRESA");
-//				studentService.updateStudent(studentBusiness);
-
+				}			    
+				Student student = studentRepository.findByEmail(business.getEmail());
+				if (student != null) {
+			        student.setRole("ROLE_BUSINESS");
+			        student.setEnabled(1);
+			        student.setDeleted(0);
+			        StudentModel studentBusiness = studentService.entity2model(student);
+					studentService.updateStudent(studentBusiness);
+			    }
 				business.setLogo(logoName);
-				
-				businessService.addBusiness(business);
 				flash.addFlashAttribute("success", "Business created succesfully");
 			}
 		}
