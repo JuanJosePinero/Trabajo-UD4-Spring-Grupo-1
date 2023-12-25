@@ -8,35 +8,33 @@
     <link href="/css/styles.css" rel="stylesheet">
 </head>
 <body class="bodyAuth">
-    <h1>Rate the Service</h1>
-    <br><br><br><br><br><br>
-    <center>
+<div th:replace="/main/CustomNavbar.html"></div>
+
+     <h1 style="color: black; background-color: rgba(255, 255, 255, 0.5);">Rate the Service</h1>
+    <br><br><br>
+    <div class="container mt-5">
 	    <form method="POST" th:action="@{/servicio/rateServicio}" th:object="${servicioModel}">
 	        <input type="hidden" name="servicioId" th:value="${servicio.id}" />
-	        <img id="valorationImage" src="jpeg" alt="Estrella" width="400px"/>
+	        <img id="valorationImage" src="jpeg" alt="Estrella" width="250px"/>
 	        <br><br>
-	        <label for="valoration">Valoración:</label>
-	        <input type="range" name="valoration" min="0" max="5" step="0.5" oninput="updateValoration(this.value)" />
-	        <span id="valorationSpan">0</span>
-	        
-	        <br>
-	        <button type="submit">Guardar Valoración</button>
+	        <label for="valoration">Valoration=</label><span id="valorationSpan">0</span>
+	        <input type="range" name="valoration" min="0" max="5" step="0.5" value="0" oninput="updateValoration(this.value)" />
+	        <br><br>
+	        <button type="submit" class="btn-add">Save Valoration</button>
+	        <button type="submit" class="btn-cancel">Cancel</button>
 	    </form>
-    </center>
+	    </div>
+
 
     <script>
     function updateValoration(value) {
-        // Calcula el nombre del archivo de imagen en función del valor
-        let imageName = "/imgs/stars/estrella" + value.replace(".", "_") + ".jpeg";
+        let imageName = "/imgs/stars/e" + value.replace(".", "_") + ".jpeg";
         
-        // Actualiza la imagen
         document.getElementById("valorationImage").src = imageName;
 
-        // Actualiza el valor en el span
         document.getElementById("valorationSpan").textContent = value;
     }
 
-    // Llama a la función inicialmente con un valor de 0
     updateValoration("0");
 
     </script>
