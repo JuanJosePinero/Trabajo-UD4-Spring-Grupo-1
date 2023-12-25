@@ -26,22 +26,23 @@
         <div class="info-block2">
             <a th:href="@{/servicio/addServicio}" class="btn-add">Add Servicio</a>
             <p align="right">
-                <label for="filterBy">Filtrar por:</label>
-                <select id="filterBy" name="filterBy">
-                    <option value="all">Todos los Servicios</option>
-                    <option value="familia_profesional">Familia Profesional del Servicio</option>
-                    <option value="realizados">Servicios Realizados</option>
-                    <option value="asignados_no_realizados">Servicios Asignados pero no Realizados</option>
-                    <option value="no_asignados">Servicios No Asignados</option>
-                </select>
+                <label for="filterBy">Filter by:</label>
+				<select id="filterBy" name="filterBy">
+				    <option value="all">All Services</option>
+				    <option value="realizados">Completed Services</option>
+				    <option value="asignados_no_realizados">Assigned but Uncompleted Services</option>
+				    <option value="no_asignados">Unassigned Services</option>
+				</select>
+
                 <br>
-                <label for="filterByProFamily">Filtrar por Familia Profesional:</label>
-                <select id="filterByProFamily" name="filterByProFamily">
-                    <option value="all">Pro families</option>
-                    <option value="all">Pro families</option>
-                    <option value="all">Pro families</option>
-                    <option value="all">Pro families</option>
-                </select>
+                <label for="filterByProFamily">Filter by Profesional Family:</label>
+				<select id="filterByProFamily" name="filterByProFamily">
+				    <option value="none">None</option>
+				    <th:block th:each="family : ${profesionalFamilies}">
+				        <option th:value="${family.id}" th:text="${family.name}">Family Name</option>
+				    </th:block>
+				</select>
+
             </p>
             <table class="tableBusiness">
                 <thead>
@@ -57,40 +58,6 @@
                         <th>Delete</th>
                     </tr>
                 </thead>
-    <!-- FAMILIA PROFESIONAL DEL SERVICIO -->
-    <tbody id="serviceTableBody" th:if="${filterBy == 'all'}">
-        <tr th:each="service : ${servicio}">
-        <td th:hidden="${service.id}"></td>
-        <td th:text="${service.title}"></td>
-        <td th:text="${service.description}"></td>
-        <td th:text="${service.proFamilyId.name}"></td>
-        <td th:text="${service.comment}"></td>
-        <td th:text="${service.valoration}"></td>
-        <td th:text="${service.finished == 1 ? 'Sí' : 'No'}"></td>
-        <td>
-            	<form th:action="@{'/servicio/rateServicio/' + ${service.id}}" method="get">
-                    <button type="submit" class="btn btn-link p-0 m-0">
-                        <img src="/imgs/estrella.png" alt="Star img" width="30px">
-                    </button>
-                </form>
-            </td>
-            <td>
-            	<form th:action="@{'/servicio/editServicio/' + ${service.id}}" method="get">
-                    <button type="submit" class="btn btn-link p-0 m-0">
-                        <img src="/imgs/edit.png" alt="Edit img" width="30px">
-                    </button>
-                </form>
-            </td>
-            <td>
-                <form th:action="@{'/servicio/deleteServicio/' + ${service.id}}" method="post"
-                      onsubmit="return confirm('¿Estás seguro que quieres cambiar su estado?');">
-                    <button type="submit" class="btn btn-link p-0 m-0">
-                        <img src="/imgs/delete.png" alt="Edit img" width="30px">
-                    </button>
-                </form>
-            </td>
-        </tr>
-    </tbody>
     <!-- SERVICIOS REALIZADOS -->
     <tbody id="serviceTableBody" th:if="${filterBy == 'realizados'}">
         <tr th:each="service : ${servicio}" th:if="${service.finished == 1}">
@@ -131,7 +98,7 @@
         <td th:hidden="${service.id}"></td>
         <td th:text="${service.title}"></td>
         <td th:text="${service.description}"></td>
-        <td>hola</td>
+        <td th:text="${service.profesionalFamilyId.name}"></td>
         <td th:text="${service.comment}"></td>
         <td th:text="${service.valoration}"></td>
         <td th:text="${service.finished == 1 ? 'Sí' : 'No'}"></td>
@@ -165,7 +132,7 @@
             <td th:hidden="${service.id}"></td>
             <td th:text="${service.title}"></td>
             <td th:text="${service.description}"></td>
-            <td>hola</td>
+            <td th:text="${service.profesionalFamilyId.name}"></td>
             <td th:text="${service.comment}"></td>
             <td th:text="${service.valoration}"></td>
              <td>

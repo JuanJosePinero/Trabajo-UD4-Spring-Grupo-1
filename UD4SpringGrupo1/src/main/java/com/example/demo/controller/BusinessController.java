@@ -18,11 +18,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.Business;
+import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Servicio;
 import com.example.demo.entity.Student;
 import com.example.demo.model.BusinessModel;
 import com.example.demo.model.StudentModel;
 import com.example.demo.repository.BusinessRepository;
+import com.example.demo.repository.ProFamilyRepository;
 import com.example.demo.repository.ServicioRepository;
 import com.example.demo.repository.StudentRepository;
 import com.example.demo.service.BusinessService;
@@ -54,6 +56,10 @@ public class BusinessController {
 	@Autowired
 	@Qualifier("servicioRepository")
 	 private ServicioRepository servicioRepository;
+	
+	@Autowired
+	@Qualifier("proFamilyRepository")
+	 private ProFamilyRepository proFamilyRepository;
 	
 	@Autowired
 	@Qualifier("studentRepository")
@@ -239,7 +245,9 @@ public class BusinessController {
 	@GetMapping("/home")
 	public String Business(Model model) {
 		List<Servicio> servicios = servicioRepository.findAll();
+		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
         model.addAttribute("servicio", servicios);
+        model.addAttribute("profesionalFamilies", profesionalFamilies);
 	    return BUSINESS_HOME_VIEW;
 	}
 	
