@@ -9,15 +9,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Business;
-import com.example.demo.entity.ProFamily;
 import com.example.demo.model.BusinessModel;
 import com.example.demo.repository.BusinessRepository;
 import com.example.demo.service.BusinessService;
-import org.springframework.web.multipart.MultipartFile;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.Files;
-import java.io.IOException;
 
 @Configuration
 @Service("businessService")
@@ -31,12 +25,14 @@ public class BusinessServiceImpl implements BusinessService {
         this.businessRepository = businessRepository;
     }
     
-    private Business model2entity(BusinessModel businessModel) {
+    @Override
+    public Business model2entity(BusinessModel businessModel) {
 		ModelMapper mapper = new ModelMapper();
 		return mapper.map(businessModel, Business.class);
 	}
-
-	private BusinessModel entity2model(Business business) {
+    
+    @Override
+	public BusinessModel entity2model(Business business) {
 		ModelMapper mapper = new ModelMapper();
 		return mapper.map(business, BusinessModel.class);
 	}

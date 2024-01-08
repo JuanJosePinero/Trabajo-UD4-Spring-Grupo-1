@@ -96,12 +96,12 @@ public class BusinessController {
 //	}
 	
 	@PostMapping("/addBusiness")
-	public String addEmpresa(@ModelAttribute("empresa") BusinessModel business,
+	public String addEmpresa(@ModelAttribute("empresa") BusinessModel businessModel,
 			@RequestParam("logoImagen") MultipartFile file, @RequestParam("logo") String logoName,
 			RedirectAttributes flash) {
 
-		if (business != null) {
-			if (business.getName().isEmpty() || business.getAddress().isEmpty() || business.getEmail().isEmpty() || business.getPhone().isEmpty()) {
+		if (businessModel != null) {
+			if (businessModel.getName().isEmpty() || businessModel.getAddress().isEmpty() || businessModel.getEmail().isEmpty() || businessModel.getPhone().isEmpty()) {
 				flash.addFlashAttribute("error", "Some fields are empty");
 				return "redirect:/business/addBusiness";
 			} else {
@@ -121,7 +121,7 @@ public class BusinessController {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}			    
-				Student student = studentRepository.findByEmail(business.getEmail());
+				Student student = studentRepository.findByEmail(businessModel.getEmail());
 				if (student != null) {
 			        student.setRole("ROLE_BUSINESS");
 			        student.setEnabled(1);
@@ -129,7 +129,10 @@ public class BusinessController {
 			        StudentModel studentBusiness = studentService.entity2model(student);
 					studentService.updateStudent(studentBusiness);
 			    }
-				business.setLogo(logoName);
+				businessModel.setLogo(logoName);
+				
+				 Business business = businessService.model2entity(businessModel);
+				 businessService.saveBusiness(business);
 				flash.addFlashAttribute("success", "Business created succesfully");
 			}
 		}
