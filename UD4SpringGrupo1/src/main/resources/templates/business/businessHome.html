@@ -2,133 +2,141 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <title>Your business</title>
-    <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-          crossorigin="anonymous">
-    <link href="/css/styles.css" rel="stylesheet">
+<meta charset="UTF-8">
+<title>Your business</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+	crossorigin="anonymous">
+<link href="/css/styles.css" rel="stylesheet">
 </head>
 
 <body class="bodyBusiness">
-    <div th:replace="/main/CustomNavbar.html"></div>
+	<div th:replace="/main/CustomNavbar.html"></div>
 
-    <div class="info-container2">
-        <div class="info-block-head">
-            <h3>Your Services</h3>
-        </div>
-        <div class="info-block2">
-            <a th:href="@{/servicio/addServicio}" class="btn-add">Add Servicio</a>
-            <p align="right">
-                <label for="filterBy">Filter by:</label>
-                <select id="filterBy" name="filterBy">
-                    <option value="all">All Services</option>
-                    <option value="realizados">Completed Services</option>
-                    <option value="asignados_no_realizados">Assigned but Uncompleted Services</option>
-                    <option value="no_asignados">Unassigned Services</option>
-                </select>
+	<div class="info-container2">
+		<div class="info-block-head">
+			<h3>Your Services</h3>
+		</div>
+		<div class="info-block2">
+			<a th:href="@{/servicio/addServicio}" class="btn-add">Add
+				Servicio</a>
+			<p align="right">
+				<label for="filterBy">Filter by:</label> <select id="filterBy"
+					name="filterBy">
+					<option value="all">All Services</option>
+					<option value="realizados">Completed Services</option>
+					<option value="asignados_no_realizados">Assigned but
+						Uncompleted Services</option>
+					<option value="no_asignados">Unassigned Services</option>
+				</select> <br> <label for="filterByProFamily">Filter by
+					Profesional Family:</label> <select id="filterByProFamily"
+					name="filterByProFamily">
+					<option value="none">None</option>
+					<th:block th:each="family : ${profesionalFamilies}">
+						<option th:value="${family.name}" th:text="${family.name}"></option>
+					</th:block>
+				</select>
 
-                <br>
-                <label for="filterByProFamily">Filter by Profesional Family:</label>
-                <select id="filterByProFamily" name="filterByProFamily">
-                    <option value="none">None</option>
-                    <th:block th:each="family : ${profesionalFamilies}">
-                        <option th:value="${family.name}" th:text="${family.name}"></option>
-                    </th:block>
-                </select>
+			</p>
+			<table class="tableBusiness">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Description</th>
+						<th>ProFamily</th>
+						<th>Comment</th>
+						<th>Valoration</th>
+						<th>Finished</th>
+						<th>Rate</th>
+						<th>Comment</th>
+						<th>Edit</th>
+						<th>Delete</th>
+					</tr>
+				</thead>
+				<tbody id="serviceTableBody" th:each="service : ${servicio}">
+					<tr data-family-name="${service.profesionalFamilyId.name}"
+						th:if="${service.deleted != 1}">
+						<td th:hidden="${service.id}"></td>
+						<td th:text="${service.title}"></td>
+						<td th:text="${service.description}"></td>
+						<td th:text="${service.profesionalFamilyId.name}"></td>
+						<td th:text="${service.comment}"></td>
+						<td th:text="${service.valoration}"></td>
+						<td><img th:if="${service.finished == 1}"
+							src="/imgs/tick.png" alt="Sí" width="30px" /> <img
+							th:if="${service.finished != 1}" src="/imgs/cross.png" alt="No"
+							width="30px" /></td>
+						<td>
+							<form th:action="@{'/servicio/rateServicio/' + ${service.id}}"
+								method="get">
+								<button type="submit" class="btn btn-link p-0 m-0">
+									<img src="/imgs/estrella.png" alt="Star img" width="30px">
+								</button>
+							</form>
+						</td>
+						<td><a href="javascript:void(0);"
+							onclick="showCommentPopup()"> <img
+								th:if="${service.comment == null}" src="/imgs/coment.png"
+								alt="Comment img" width="30px"> <img
+								th:if="${service.comment != null}" src="/imgs/comentDone.png"
+								alt="Comment Done img" width="30px">
+						</a></td>
+						<td>
+							<form th:action="@{'/servicio/editServicio/' + ${service.id}}"
+								method="get">
+								<button type="submit" class="btn btn-link p-0 m-0">
+									<img src="/imgs/edit.png" alt="Edit img" width="30px">
+								</button>
+							</form>
+						</td>
+						<td>
+							<form th:action="@{'/servicio/deleteServicio/' + ${service.id}}"
+								method="post"
+								onsubmit="return confirm('¿Estás seguro que quieres cambiar su estado?');">
+								<button type="submit" class="btn btn-link p-0 m-0">
+									<img src="/imgs/delete.png" alt="Edit img" width="30px">
+								</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		$(document).ready(
+				function() {
+					// Función para actualizar la tabla según la familia profesional seleccionada
+					$("#filterByProFamily").change(
+							function() {
+								var selectedFamilyName = $(this).val();
+								var serviceTableBody = $("#serviceTableBody");
 
-            </p>
-            <table class="tableBusiness">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>ProFamily</th>
-                        <th>Comment</th>
-                        <th>Valoration</th>
-                        <th>Finished</th>
-                        <th>Rate</th>
-                        <th>Comment</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-                <tbody id="serviceTableBody" th:each="service : ${servicio}">
-                    <tr data-family-name="${service.profesionalFamilyId.name}" th:if="${service.deleted != 1}">
-                        <td th:hidden="${service.id}"></td>
-                        <td th:text="${service.title}"></td>
-                        <td th:text="${service.description}"></td>
-                        <td th:text="${service.profesionalFamilyId.name}"></td>
-                        <td th:text="${service.comment}"></td>
-                        <td th:text="${service.valoration}"></td>
-                        <td>
-                            <img th:if="${service.finished == 1}" src="/imgs/tick.png" alt="Sí" width="30px" />
-                            <img th:if="${service.finished != 1}" src="/imgs/cross.png" alt="No" width="30px" />
-                        </td>
-                        <td>
-                            <form th:action="@{'/servicio/rateServicio/' + ${service.id}}" method="get">
-                                <button type="submit" class="btn btn-link p-0 m-0">
-                                    <img src="/imgs/estrella.png" alt="Star img" width="30px">
-                                </button>
-                            </form>
-                        </td>
-                        <td>
-    <a href="javascript:void(0);" onclick="showCommentPopup()">
-        <img th:if="${service.comment == null}" src="/imgs/coment.png" alt="Comment img" width="30px">
-        <img th:if="${service.comment != null}" src="/imgs/comentDone.png" alt="Comment Done img" width="30px">
-    </a>
-</td>
+								// Mostrar todas las filas de la tabla inicialmente
+								serviceTableBody.find("tr").show();
 
-                        
-                        <td>
-                            <form th:action="@{'/servicio/editServicio/' + ${service.id}}" method="get">
-                                <button type="submit" class="btn btn-link p-0 m-0">
-                                    <img src="/imgs/edit.png" alt="Edit img" width="30px">
-                                </button>
-                            </form>
-                        </td>
-                        <td>
-                            <form th:action="@{'/servicio/deleteServicio/' + ${service.id}}" method="post"
-                                  onsubmit="return confirm('¿Estás seguro que quieres cambiar su estado?');">
-                                <button type="submit" class="btn btn-link p-0 m-0">
-                                    <img src="/imgs/delete.png" alt="Edit img" width="30px">
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-    $(document).ready(function() {
-        // Función para actualizar la tabla según la familia profesional seleccionada
-        $("#filterByProFamily").change(function() {
-            var selectedFamilyName = $(this).val();
-            var serviceTableBody = $("#serviceTableBody");
+								// Si se ha seleccionado una familia profesional, ocultar las filas que no la tienen
+								if (selectedFamilyName !== "none") {
+									serviceTableBody.find(
+											"tr:not([data-family-name='"
+													+ selectedFamilyName
+													+ "'])").hide();
+								}
+							});
+				});
+	</script>
+	<script>
+		function showCommentPopup() {
+			var comment = prompt("Escribe un comentario:", "");
 
-            // Mostrar todas las filas de la tabla inicialmente
-            serviceTableBody.find("tr").show();
-
-            // Si se ha seleccionado una familia profesional, ocultar las filas que no la tienen
-            if (selectedFamilyName !== "none") {
-                serviceTableBody.find("tr:not([data-family-name='" + selectedFamilyName + "'])").hide();
-            }
-        });
-    });
-</script>
-<script>
-    function showCommentPopup() {
-        var comment = prompt("Escribe un comentario:", "");
-
-        if (comment !== null) {
-            // Aquí puedes hacer algo con el comentario, como enviarlo al servidor o actualizar la vista
-            // Por ejemplo, puedes enviarlo a través de una solicitud AJAX
-        }
-    }
-</script>
+			if (comment !== null) {
+				// Aquí puedes hacer algo con el comentario, como enviarlo al servidor o actualizar la vista
+				// Por ejemplo, puedes enviarlo a través de una solicitud AJAX
+			}
+		}
+	</script>
 
 </body>
 

@@ -94,7 +94,7 @@ public class ServicioServiceImpl implements ServicioService {
 		servicio.setProfesionalFamilyId(servicioModel.getProfesionalFamilyId());
 		servicio.setStudentId(servicioModel.getStudentId());
 		servicio.setValoration(servicioModel.getValoration());
-		servicio.setComment(servicioModel.getComment());
+		servicio.setComment(null);
 		servicio.setDeleted(0);
 		servicio.setFinished(servicioModel.getFinished());
 		return servicioRepository.save(servicio);
