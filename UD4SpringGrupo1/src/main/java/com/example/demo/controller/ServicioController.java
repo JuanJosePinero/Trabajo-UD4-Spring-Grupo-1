@@ -88,6 +88,8 @@ public class ServicioController {
 	@GetMapping("/editServicio/{servicioId}")
 	public String editStudent(@PathVariable("servicioId") int servicioId, Model model) {
 		Servicio servicio = servicioRepository.findById(servicioId);
+		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
+	    model.addAttribute("profesionalFamilies", profesionalFamilies);
 		model.addAttribute("servicio", servicio); 
 	    return EDIT_SERVICIO_VIEW;
 	}

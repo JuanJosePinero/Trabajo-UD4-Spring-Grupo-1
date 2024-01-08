@@ -15,23 +15,20 @@
         <form id="servicioForm" th:object="${servicio}" method="post" th:action="@{/servicio/editServicio}">
             <input type="hidden" id="id" name="id" th:field="*{id}">
             
-                <label for="title">Title:</label>
-                <input type="text" id="title" name="title" th:field="*{title}" class="form-control" required>
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" th:field="*{title}" class="form-control" required>
             
-                <label for="description">Description:</label>
-                <input type="text" id="description" name="description" th:field="*{description}" class="form-control" required>
+            <label for="description">Description:</label>
+            <input type="text" id="description" name="description" th:field="*{description}" class="form-control" required>
             
-                <label for="registerDate">Register Date:</label>
-				<input id="registerDate" type="date" class="form-control" th:field="*{registerDate}" required />
-
-                
-                <label for="profesionalFamily">Profesional Family:</label><br>
-        <select name="profesionalFamily.id" style="width: 100%;">
-            <option th:each="proFamily : ${profesionalFamilies}" th:value="${proFamily.id}" th:text="${proFamily.name}"></option>
-        </select>
+           <label for="profesionalFamily">Profesional Family:</label> <select name="profesionalFamilyId" class="form-control">
+    <option th:each="proFamily : ${profesionalFamilies}" th:value="${proFamily.id}" th:text="${proFamily.name}"></option>
+</select>
             
             <!-- Agrega los campos para studentId, businessId, valoration, finished, y comment aquí -->
-
+            <input type="hidden" name="comment" th:field="*{comment}" />
+            <input type="hidden" name="finished" th:field="*{finished}" />
+            
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             <br><br>
             <button class="btn-add" type="submit">Save</button>
@@ -40,14 +37,14 @@
     </div>
     
     <script>
-				    // Obtener la fecha actual
-				    var currentDate = new Date();
-				    
-				    // Formatear la fecha como "YYYY-MM-DD"
-				    var formattedDate = currentDate.toISOString().split('T')[0];
-				    
-				    // Establecer el valor en el campo "Register Date"
-				    document.getElementById("registerDate").value = formattedDate;
-				</script>
+        // Obtener la fecha actual
+        var currentDate = new Date();
+        
+        // Formatear la fecha como "YYYY-MM-DD"
+        var formattedDate = currentDate.toISOString().split('T')[0];
+        
+        // Establecer el valor en el campo "Register Date"
+        document.getElementById("registerDate").value = formattedDate;
+    </script>
 </body>
 </html>

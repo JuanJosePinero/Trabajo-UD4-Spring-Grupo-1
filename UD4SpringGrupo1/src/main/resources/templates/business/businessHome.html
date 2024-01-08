@@ -55,7 +55,7 @@
                     </tr>
                 </thead>
                 <tbody id="serviceTableBody" th:each="service : ${servicio}">
-                    <tr data-family-name="${service.profesionalFamilyId.name}">
+                    <tr data-family-name="${service.profesionalFamilyId.name}" th:if="${service.deleted != 1}">
                         <td th:hidden="${service.id}"></td>
                         <td th:text="${service.title}"></td>
                         <td th:text="${service.description}"></td>
