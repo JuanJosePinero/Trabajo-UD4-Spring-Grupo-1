@@ -9,73 +9,95 @@
         crossorigin="anonymous">
   <link href="/css/styles.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Mis Servicios</h1>
+<body class="bodyBusiness">
+    <div th:replace="/main/CustomNavbar.html"></div>
 
-    <h2>Servicios en los que apuntarse</h2>
-    <table class="services-table">
-        <thead>
-            <tr>
-                <th>Nombre del Servicio</th>
-                <th>Descripción</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Filas de servicios en los que apuntarse -->
-            <tr>
-                <td>Servicio 1</td>
-                <td>Descripción del Servicio 1</td>
-            </tr>
-            <tr>
-                <td>Servicio 2</td>
-                <td>Descripción del Servicio 2</td>
-            </tr>
-            <!-- Agrega más filas según sea necesario -->
-        </tbody>
-    </table>
+    <div class="info-container2">
+        <div class="info-block-head">
+            <h3>Your Services</h3>
+        </div>
+        <div class="info-block2">
+            <a th:href="@{/servicio/addServicio}" class="btn-add">Add Servicio</a>
+            <p align="right">
+                <label for="filterBy">Filter by:</label>
+                <select id="filterBy" name="filterBy">
+                    <option value="all">All Services</option>
+                    <option value="realizados">Completed Services</option>
+                    <option value="asignados_no_realizados">Assigned but Uncompleted Services</option>
+                    <option value="no_asignados">Unassigned Services</option>
+                </select>
 
-    <h2>Servicios que estoy realizando</h2>
-    <table class="services-table">
-        <thead>
-            <tr>
-                <th>Nombre del Servicio</th>
-                <th>Descripción</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Filas de servicios que estás realizando -->
-            <tr>
-                <td>Servicio 3</td>
-                <td>Descripción del Servicio 3</td>
-            </tr>
-            <tr>
-                <td>Servicio 4</td>
-                <td>Descripción del Servicio 4</td>
-            </tr>
-            <!-- Agrega más filas según sea necesario -->
-        </tbody>
-    </table>
+                <br>
+                <label for="filterByProFamily">Filter by Profesional Family:</label>
+                <select id="filterByProFamily" name="filterByProFamily">
+                    <option value="none">None</option>
+                    <th:block th:each="family : ${profesionalFamilies}">
+                        <option th:value="${family.name}" th:text="${family.name}"></option>
+                    </th:block>
+                </select>
 
-    <h2>Servicios que he finalizado</h2>
-    <table class="services-table">
-        <thead>
-            <tr>
-                <th>Nombre del Servicio</th>
-                <th>Descripción</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Filas de servicios que has finalizado -->
-            <tr>
-                <td>Servicio 5</td>
-                <td>Descripción del Servicio 5</td>
-            </tr>
-            <tr>
-                <td>Servicio 6</td>
-                <td>Descripción del Servicio 6</td>
-            </tr>
-            <!-- Agrega más filas según sea necesario -->
-        </tbody>
-    </table>
+            </p>
+            <table class="tableBusiness">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>ProFamily</th>
+                        <th>Comment</th>
+                        <th>Valoration</th>
+                        <th>Finished</th>
+                        <th>Rate</th>
+                        <th>Comment</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody id="serviceTableBody" th:each="service : ${servicio}">
+                    <tr data-family-name="${service.profesionalFamilyId.name}">
+                        <td th:hidden="${service.id}"></td>
+                        <td th:text="${service.title}"></td>
+                        <td th:text="${service.description}"></td>
+                        <td th:text="${service.profesionalFamilyId.name}"></td>
+                        <td th:text="${service.comment}"></td>
+                        <td th:text="${service.valoration}"></td>
+                        <td>
+                            <img th:if="${service.finished == 1}" src="/imgs/tick.png" alt="Sí" width="30px" />
+                            <img th:if="${service.finished != 1}" src="/imgs/cross.png" alt="No" width="30px" />
+                        </td>
+                        <td>
+                            <form th:action="@{'/servicio/rateServicio/' + ${service.id}}" method="get">
+                                <button type="submit" class="btn btn-link p-0 m-0">
+                                    <img src="/imgs/estrella.png" alt="Star img" width="30px">
+                                </button>
+                            </form>
+                        </td>
+                        <td>
+                            <form th:action="@{'/servicio/rateServicio/' + ${service.id}}" method="get">
+                                <button type="submit" class="btn btn-link p-0 m-0">
+                                    <img src="/imgs/comment.png" alt="Comment img" width="30px">
+                                </button>
+                            </form>
+                        </td>
+                        
+                        <td>
+                            <form th:action="@{'/servicio/editServicio/' + ${service.id}}" method="get">
+                                <button type="submit" class="btn btn-link p-0 m-0">
+                                    <img src="/imgs/edit.png" alt="Edit img" width="30px">
+                                </button>
+                            </form>
+                        </td>
+                        <td>
+                            <form th:action="@{'/servicio/deleteServicio/' + ${service.id}}" method="post"
+                                  onsubmit="return confirm('¿Estás seguro que quieres cambiar su estado?');">
+                                <button type="submit" class="btn btn-link p-0 m-0">
+                                    <img src="/imgs/delete.png" alt="Edit img" width="30px">
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 </html>
