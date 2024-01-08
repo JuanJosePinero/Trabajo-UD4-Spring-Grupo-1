@@ -74,12 +74,12 @@
                             </form>
                         </td>
                         <td>
-                            <form th:action="@{'/servicio/rateServicio/' + ${service.id}}" method="get">
-                                <button type="submit" class="btn btn-link p-0 m-0">
-                                    <img src="/imgs/comment.png" alt="Comment img" width="30px">
-                                </button>
-                            </form>
-                        </td>
+    <a href="javascript:void(0);" onclick="showCommentPopup()">
+        <img th:if="${service.comment == null}" src="/imgs/coment.png" alt="Comment img" width="30px">
+        <img th:if="${service.comment != null}" src="/imgs/comentDone.png" alt="Comment Done img" width="30px">
+    </a>
+</td>
+
                         
                         <td>
                             <form th:action="@{'/servicio/editServicio/' + ${service.id}}" method="get">
@@ -119,6 +119,17 @@
         });
     });
 </script>
+<script>
+    function showCommentPopup() {
+        var comment = prompt("Escribe un comentario:", "");
+
+        if (comment !== null) {
+            // Aquí puedes hacer algo con el comentario, como enviarlo al servidor o actualizar la vista
+            // Por ejemplo, puedes enviarlo a través de una solicitud AJAX
+        }
+    }
+</script>
+
 </body>
 
 </html>
