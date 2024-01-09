@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>Your reports</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+	crossorigin="anonymous">
+<link href="/css/styles.css" rel="stylesheet">
+</head>
+
+<body class="bodyBusiness">
+	<div th:replace="/main/CustomNavbar.html"></div>
+
+	<div class="info-container2">
+		<div class="info-block-head">
+			<h3>Your Reports</h3>
+		</div>
+		<div class="info-block2">
+			<div style="display: flex; justify-content: space-between;">
+				<span>Table with all your reports</span> <span> <label for="filterByProFamily">Filter by Profesional Family:</label>
+<select id="filterByProFamily" name="filterByProFamily">
+    <option value="none">None</option>
+    <th:block th:each="family : ${profesionalFamilies}">
+        <option th:value="${family.name}" th:text="${family.name}"></option>
+    </th:block>
+</select>
+
+				</span>
+			</div>
+
+			<table class="tableBusiness">
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>Service Name</th>
+						<th>Report</th>
+						<th>Student Name</th>
+						<th>Service Time</th>
+					</tr>
+				</thead>
+				<tbody id="reportTableBody" th:each="reports : ${report}">
+					<tr data-family-name="${reports.profesionalFamilyId.name}">
+						<td th:hidden="${reports.id}"></td>
+						<td th:text="${reports.fullDate}"></td>
+						<td th:text="${reports.servicioId.title}"></td>
+						<td th:text="${reports.report}"></td>
+						<td th:text="${reports.studentId.name}"></td>
+						<td th:text="${reports.serviceTime} + _hours"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+	$("#filterByProFamily").change(function() {
+	    var selectedFamilyName = $(this).val();
+
+	    if (selectedFamilyName === "none") {
+	        // Si se selecciona "None", mostrar todas las filas
+	        $("#reportTableBody tr").show();
+	    } else {
+	        // Ocultar todas las filas y luego mostrar solo las que coinciden con la familia seleccionada
+	        $("#reportTableBody tr").hide();
+	        $("#reportTableBody tr[data-family-name='" + selectedFamilyName + "']").show();
+	    }
+	});
+	</script>
+
+</body>
+
+</html>

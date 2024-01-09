@@ -30,8 +30,10 @@
     		<li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"><a th:href="@{/proFamily/list}" class="nav-link">Professional Family</a></li>
        
         	<li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"><a th:href="@{/business/list}" class="nav-link">Businesses</a></li>
-        	<li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_BUSINESS'')')}"><a th:href="@{/business/home}" class="nav-link">Your Business</a></li>
-
+        	<li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_BUSINESS'')')}"><a th:href="@{/business/home}" class="nav-link">Your Services</a></li>
+        	<li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_BUSINESS'')')}"><a th:href="@{/business/reports}" class="nav-link">Reports</a></li>
+        	<li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_BUSINESS'')')}"><a th:href="@{/business/ratedServicios}" class="nav-link">Rated Services</a></li>
+        	
         </ul>
          <div th:if="${param.logout}">
             <p th:text="${logoutMessage}"></p>

@@ -19,12 +19,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.Business;
 import com.example.demo.entity.ProFamily;
+import com.example.demo.entity.Report;
 import com.example.demo.entity.Servicio;
 import com.example.demo.entity.Student;
 import com.example.demo.model.BusinessModel;
 import com.example.demo.model.StudentModel;
 import com.example.demo.repository.BusinessRepository;
 import com.example.demo.repository.ProFamilyRepository;
+import com.example.demo.repository.ReportRepository;
 import com.example.demo.repository.ServicioRepository;
 import com.example.demo.repository.StudentRepository;
 import com.example.demo.service.BusinessService;
@@ -40,6 +42,8 @@ public class BusinessController {
 	private static final String EDIT_BUSINESS_VIEW = "admin/editBusiness";
 	private static final String ADD_BUSINESS_VIEW = "admin/addBusiness";
 	private static final String BUSINESS_HOME_VIEW = "/business/businessHome";
+	private static final String BUSINESS_REPORT_VIEW = "/business/businessReport";
+	private static final String BUSINESS_RATED_SERVICES_VIEW = "/business/ratedServices";
 	
 	@Autowired
 	@Qualifier("businessService")
@@ -64,6 +68,10 @@ public class BusinessController {
 	@Autowired
 	@Qualifier("studentRepository")
 	private StudentRepository studentRepository;
+	
+	@Autowired
+	@Qualifier("reportRepository")
+	private ReportRepository reportRepository;
 	
 	@Autowired
 	@Qualifier("studentService")
@@ -243,8 +251,6 @@ public class BusinessController {
 	    }
 	}
 
-	
-	
 	@GetMapping("/home")
 	public String Business(Model model) {
 		List<Servicio> servicios = servicioRepository.findAll();
@@ -254,24 +260,22 @@ public class BusinessController {
 	    return BUSINESS_HOME_VIEW;
 	}
 	
-//	@GetMapping("/home")
-//	public String Business(@RequestParam(name = "filterBy", required = false, defaultValue = "familia_profesional") String filterBy,
-//            @RequestParam(name = "proFamilyId", required = false, defaultValue = "0") int proFamilyId,
-//            Model model) {
-//		List<Servicio> servicios = servicioService.getAllServicios();
-//		 if ("familia_profesional".equals(filterBy)) {
-//		        if (proFamilyId != 0) {
-//		            servicios = servicioService.getServiciosByProFamilyId(proFamilyId);
-//		        } else {
-//		            servicios = servicioService.getAllServicios();
-//		        }
-//		    } else {
-//		        servicios = servicioService.getAllServicios();
-//		    }
-//
-//		    model.addAttribute("servicio", servicios);
-//		    model.addAttribute("filterBy", filterBy);
-//		    return BUSINESS_HOME_VIEW;
-//	}	
+	@GetMapping("/reports")
+	public String Reports(Model model) {
+		List<Report> reports = reportRepository.findAll();
+		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
+        model.addAttribute("report", reports);
+        model.addAttribute("profesionalFamilies", profesionalFamilies);
+	    return BUSINESS_REPORT_VIEW;
+	}
+	
+	@GetMapping("/ratedServicios")
+	public String ratedServicios(Model model) {
+		List<Report> reports = reportRepository.findAll();
+		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
+        model.addAttribute("report", reports);
+        model.addAttribute("profesionalFamilies", profesionalFamilies);
+	    return BUSINESS_RATED_SERVICES_VIEW;
+	}
 
 }
