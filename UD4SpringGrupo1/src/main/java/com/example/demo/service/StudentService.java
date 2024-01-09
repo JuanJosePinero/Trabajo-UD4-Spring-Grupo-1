@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.List;
 
 import com.example.demo.entity.Student;
+import com.example.demo.model.ServicioModel;
 import com.example.demo.model.StudentModel;
 
 public interface StudentService {
@@ -31,4 +32,6 @@ public interface StudentService {
 	public StudentModel entity2model(Student student);
 	
 	public StudentModel getStudentByName(String name);
+	
+	public List<ServicioModel> getServiceByStudentId(int id);
 }

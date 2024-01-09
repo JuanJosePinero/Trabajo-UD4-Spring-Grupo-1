@@ -23,7 +23,7 @@
                 Salesianos School
             </li>
             <li class="nav-item"><a th:href="@{/home}" class="nav-link">Home</a></li>            
-            <a th:href="@{/student/viewServices(studentUsername=${#authentication.principal})}" class="nav-link">Services</a>
+            <li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_STUDENT'')')}"><a th:href="@{/student/viewServices(studentUsername=${#authentication.principal.getUsername()})}" class="nav-link">Services</a></li>
 
 
 			<!-- Sustituir ID predeterminado de usuario porque no recoge. Sustituir '1' por {studentId}(studentId=${studentId})  -->	

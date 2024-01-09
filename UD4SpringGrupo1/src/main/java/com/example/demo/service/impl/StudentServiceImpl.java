@@ -20,10 +20,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entity.Servicio;
 import com.example.demo.entity.Student;
+import com.example.demo.model.ServicioModel;
 import com.example.demo.model.StudentModel;
 import com.example.demo.repository.ProFamilyRepository;
+import com.example.demo.repository.ServicioRepository;
 import com.example.demo.repository.StudentRepository;
+import com.example.demo.service.ServicioService;
 import com.example.demo.service.StudentService;
 
 @Configuration
@@ -37,6 +41,14 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 	@Autowired
 	@Qualifier("proFamilyRepository")
 	private ProFamilyRepository proFamilyRepository;
+	
+	@Autowired
+	@Qualifier("servicioRepository")
+	private ServicioRepository servicioRepository;
+	
+	@Autowired
+	@Qualifier("servicioService")
+	private ServicioServiceImpl servicioService;
 
 	private Student model2entity(StudentModel studentModel) {
 		ModelMapper mapper = new ModelMapper();
@@ -186,6 +198,16 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 	public StudentModel getStudentByName(String name) {
 		Student student=studentRepository.findByName(name);
 		return entity2model(student);
+	}
+	@Override
+	public List<ServicioModel> getServiceByStudentId(int id) {
+		Student student=studentRepository.findById(id);
+		List<ServicioModel>servicioLista=new ArrayList<>();
+		List<Servicio>services=servicioRepository.findByStudentId(student);
+		for(Servicio servicio: services) {
+			servicioLista.add(servicioService.entity2model(servicio));
+		}
+		return servicioLista;
 	}
 	
 

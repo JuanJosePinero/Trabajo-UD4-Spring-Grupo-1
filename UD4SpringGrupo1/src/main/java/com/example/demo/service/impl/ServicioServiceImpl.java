@@ -29,7 +29,7 @@ public class ServicioServiceImpl implements ServicioService {
 		return mapper.map(servicioModel, Servicio.class);
 	}
 
-	private ServicioModel entity2model(Servicio servicio) {
+	public ServicioModel entity2model(Servicio servicio) {
 		ModelMapper mapper = new ModelMapper();
 		return mapper.map(servicio, ServicioModel.class);
 	}

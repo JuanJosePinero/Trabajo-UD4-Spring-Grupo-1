@@ -28,72 +28,31 @@
                 </select>
 
                 <br>
-                <label for="filterByProFamily">Filter by Profesional Family:</label>
-                <select id="filterByProFamily" name="filterByProFamily">
-                    <option value="none">None</option>
-                    <th:block th:each="family : ${profesionalFamilies}">
-                        <option th:value="${family.name}" th:text="${family.name}"></option>
-                    </th:block>
-                </select>
-
+               
             </p>
             <table class="tableBusiness">
                 <thead>
                     <tr>
                         <th>Title</th>
                         <th>Description</th>
-                        <th>ProFamily</th>
                         <th>Comment</th>
                         <th>Valoration</th>
                         <th>Finished</th>
-                        <th>Rate</th>
-                        <th>Comment</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
                     </tr>
                 </thead>
-                <tbody id="serviceTableBody" th:each="service : ${servicio}">
+                <tbody id="serviceTableBody" th:each="service : ${serviceList}">
                     <tr data-family-name="${service.profesionalFamilyId.name}">
                         <td th:hidden="${service.id}"></td>
                         <td th:text="${service.title}"></td>
                         <td th:text="${service.description}"></td>
-                        <td th:text="${service.profesionalFamilyId.name}"></td>
                         <td th:text="${service.comment}"></td>
                         <td th:text="${service.valoration}"></td>
                         <td>
                             <img th:if="${service.finished == 1}" src="/imgs/tick.png" alt="Sí" width="30px" />
                             <img th:if="${service.finished != 1}" src="/imgs/cross.png" alt="No" width="30px" />
                         </td>
-                        <td>
-                            <form th:action="@{'/servicio/rateServicio/' + ${service.id}}" method="get">
-                                <button type="submit" class="btn btn-link p-0 m-0">
-                                    <img src="/imgs/estrella.png" alt="Star img" width="30px">
-                                </button>
-                            </form>
-                        </td>
-                        <td>
-                            <form th:action="@{'/servicio/rateServicio/' + ${service.id}}" method="get">
-                                <button type="submit" class="btn btn-link p-0 m-0">
-                                    <img src="/imgs/comment.png" alt="Comment img" width="30px">
-                                </button>
-                            </form>
-                        </td>
                         
-                        <td>
-                            <form th:action="@{'/servicio/editServicio/' + ${service.id}}" method="get">
-                                <button type="submit" class="btn btn-link p-0 m-0">
-                                    <img src="/imgs/edit.png" alt="Edit img" width="30px">
-                                </button>
-                            </form>
-                        </td>
-                        <td>
-                            <form th:action="@{'/servicio/deleteServicio/' + ${service.id}}" method="post"
-                                  onsubmit="return confirm('¿Estás seguro que quieres cambiar su estado?');">
-                                <button type="submit" class="btn btn-link p-0 m-0">
-                                    <img src="/imgs/delete.png" alt="Edit img" width="30px">
-                                </button>
-                            </form>
-                        </td>
+                        
                     </tr>
                 </tbody>
             </table>

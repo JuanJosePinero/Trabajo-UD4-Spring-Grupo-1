@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Servicio;
 import com.example.demo.entity.Student;
+import com.example.demo.model.ServicioModel;
+import com.example.demo.model.StudentModel;
 import com.example.demo.repository.BusinessRepository;
 import com.example.demo.repository.ProFamilyRepository;
 import com.example.demo.repository.ServicioRepository;
@@ -67,23 +71,21 @@ public class StudentController {
 	public String student(@RequestParam("studentUsername") String name, Model model) {
 	    System.out.println("Nombre: " + name);
 
-	    // Aquí deberías verificar si el estudiante existe antes de intentar acceder a su familia profesional.
-	    // Esto es para evitar NullPointerException si no se encuentra el estudiante en el repositorio.
-	    Student student = studentRepository.findByName(name);
-	    if (student != null) {
-	        ProFamily proFamily = student.getProfesionalFamily();
-	        if (proFamily != null) {
-	            List<Servicio> serviceList = servicioRepository.findByProfesionalFamilyId(proFamily);
-	            model.addAttribute("serviceList", serviceList);
-	        } else {
-	            // Manejar el caso en el que el estudiante no tiene una familia profesional asignada.
-	            // Puedes agregar un mensaje al modelo o manejarlo de alguna otra manera según tus necesidades.
-	            model.addAttribute("error", "Student does not have a professional family assigned.");
-	        }
-	    } else {
-	        // Manejar el caso en el que el estudiante no se encuentra en el repositorio.
-	        model.addAttribute("error", "Student not found.");
-	    }
+	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    String nameStudent = ((UserDetails) principal).getUsername();
+	       
+        StudentModel student=studentService.getStudentByName(nameStudent);
+        
+        int id=student.getId();
+        
+	   
+	    ProFamily proFamily = student.getProfesionalFamily();
+		if (proFamily != null) {
+		    List<ServicioModel> serviceList = studentService.getServiceByStudentId(id);
+		    model.addAttribute("serviceList", serviceList);
+		} else {
+		    model.addAttribute("error", "Student does not have any services.");
+		}
 
 	    return STUDENT_SERVICES;
 	}

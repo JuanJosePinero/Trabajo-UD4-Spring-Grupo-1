@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Servicio;
+import com.example.demo.entity.Student;
 
 @Repository("servicioRepository")
 public interface ServicioRepository  extends JpaRepository<Servicio, Serializable>{
@@ -18,8 +19,8 @@ public interface ServicioRepository  extends JpaRepository<Servicio, Serializabl
 	List<Servicio> findByProfesionalFamilyId(ProFamily proFamilyId);
 	Servicio findById(int id);
 	List<Servicio> findByFinished(int finished);
-	
-//	 @Query("SELECT s FROM Servicio s WHERE s.profesionalFamilyId.name = :familyName")
-//	 List<Servicio> findServiciosByProFamilyName(@Param("familyName") String familyName);
+	List<Servicio>findByStudentId(Student id);
+	public abstract List<Servicio> findByStudentIdIsNull();
+	public abstract List<Servicio> findByStudentIdIsNotNullAndFinishedIsNot(int i);
 
 }
