@@ -264,9 +264,49 @@ public class BusinessController {
 	@GetMapping("/home/finishedServices")
 	public String getFinishedServices(Model model) {
 	    List<ServicioModel> finishedServices = servicioService.getFinishedServicios();
+	    List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
 	    model.addAttribute("servicio", finishedServices);
+	    model.addAttribute("profesionalFamilies", profesionalFamilies);
 	    return BUSINESS_HOME_VIEW;
 	}
+	
+	@GetMapping("/home/unassignedServices")
+	public String getUnassignedServices(Model model) {
+	    List<ServicioModel> finishedServices = servicioService.getUnassignedServicios();
+	    List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
+	    model.addAttribute("servicio", finishedServices);
+	    model.addAttribute("profesionalFamilies", profesionalFamilies);
+	    return BUSINESS_HOME_VIEW;
+	}
+	
+	@GetMapping("/home/assignedButUncompletedServices")
+	public String getAssignedButUncompletedServices(Model model) {
+	    List<ServicioModel> finishedServices = servicioService.getAssignedButUncompletedServices();
+	    List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
+	    model.addAttribute("servicio", finishedServices);
+	    model.addAttribute("profesionalFamilies", profesionalFamilies);
+	    return BUSINESS_HOME_VIEW;
+	}
+	
+//	@GetMapping("/home")
+//	public String business(@RequestParam(name = "filterBy", required = false) String filterBy, Model model) {
+//	    List<ServicioModel> servicios;
+//	    List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
+//
+//	    if ("finishedServices".equals(filterBy)) {
+//	        servicios = servicioService.getFinishedServicios();
+//	    } else if ("unassignedServices".equals(filterBy)) {
+//	        servicios = servicioService.getUnassignedServicios();
+//	    } else if ("assignedButUncompletedServices".equals(filterBy)) {
+//	        servicios = servicioService.getAssignedButUncompletedServices();
+//	    } else {
+//	        servicios = servicioRepository.findAll(); // Cargar todos los servicios
+//	    }
+//
+//	    model.addAttribute("servicio", servicios);
+//	    model.addAttribute("profesionalFamilies", profesionalFamilies);
+//	    return BUSINESS_HOME_VIEW;
+//	}
 
 	
 	@GetMapping("/reports")

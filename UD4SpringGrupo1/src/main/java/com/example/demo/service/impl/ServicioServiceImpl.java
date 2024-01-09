@@ -124,9 +124,35 @@ public class ServicioServiceImpl implements ServicioService {
 	        servicioModels.add(servicioModel);
 	    }
 
-	    System.out.println("Finished Servicios: " + servicioModels);
 	    return servicioModels;
 	}
+	
+	@Override
+	public List<ServicioModel> getUnassignedServicios() {
+	    List<Servicio> unassignedServicios = servicioRepository.findByStudentIdIsNull();
+	    List<ServicioModel> servicioModels = new ArrayList<>();
+
+	    for (Servicio servicio : unassignedServicios) {
+	        ServicioModel servicioModel = entity2model(servicio);
+	        servicioModels.add(servicioModel);
+	    }
+
+	    return servicioModels;
+	}
+	
+	@Override
+	public List<ServicioModel> getAssignedButUncompletedServices() {
+	    List<Servicio> assignedButUncompletedServices = servicioRepository.findByStudentIdIsNotNullAndFinishedIsNot(1);
+	    List<ServicioModel> servicioModels = new ArrayList<>();
+
+	    for (Servicio servicio : assignedButUncompletedServices) {
+	        ServicioModel servicioModel = entity2model(servicio);
+	        servicioModels.add(servicioModel);
+	    }
+
+	    return servicioModels;
+	}
+
 
 	
 //	public List<Servicio> findServiciosByProFamily(String familyName) {

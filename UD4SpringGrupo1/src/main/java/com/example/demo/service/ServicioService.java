@@ -17,6 +17,10 @@ public interface ServicioService {
 	Servicio commentServicio(int servicioId, String comment);
 	
 	public List<ServicioModel> getFinishedServicios();
+
+	List<ServicioModel> getUnassignedServicios();
+
+	List<ServicioModel> getAssignedButUncompletedServices();
 	
 //	List<ServicioModel> obtenerServiciosPorUsuario(int userId);
 

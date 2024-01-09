@@ -47,6 +47,7 @@
 					<tr>
 						<th>Title</th>
 						<th>Description</th>
+						<th>Student</th>
 						<th>ProFamily</th>
 						<th>Comments</th>
 						<th>Valoration</th>
@@ -62,6 +63,7 @@
 						<td th:hidden="${service.id}"></td>
 						<td th:text="${service.title}"></td>
 						<td th:text="${service.description}"></td>
+						<td th:text="${service.studentId != null ? service.studentId.name : '--No student--'}"></td>
 						<td th:text="${service.profesionalFamilyId.name}"></td>
 						<td th:text="${service.comment}"></td>
 						<td th:text="${service.valoration}"></td>
@@ -117,17 +119,12 @@
 	function filterServicesByProFamily(selectedValue) {
 	    if (selectedValue === 'finishedServices') {
 	    	 window.location.href = '/business/home/finishedServices';
-	        $.ajax({
-	            type: "GET",
-	            url: "/home/finishedServices",
-	            success: function (data) {
-	                console.log("Data received: " + data);
-	                $("#serviceTableBody").html(data);
-	                // Actualiza el contenido del div con el valor seleccionado
-	                $("#selectedValue").text("Selected Value: " + selectedValue);
-	            }
-	        });
-	        
+	    }else if(selectedValue === 'no_asignados') {
+	    	 window.location.href = '/business/home/unassignedServices';
+	    }else if(selectedValue === 'asignados_no_realizados') {
+	    	 window.location.href = '/business/home/assignedButUncompletedServices';
+	    }else if(selectedValue === 'all') {
+	    	window.location.href = '/business/home';
 	    }
 	}
 	</script>
