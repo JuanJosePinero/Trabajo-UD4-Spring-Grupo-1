@@ -79,18 +79,12 @@
 								</button>
 							</form>
 						</td>
-						<td><a>
-								<form
-									th:action="@{'/servicio/commentServicio/' + ${service.id}}"
-									method="get">
-									<button type="submit" class="btn btn-link p-0 m-0">
-										<img th:if="${service.comment == null}" src="/imgs/coment.png"
-											alt="Comment img" width="30px"> <img
-											th:if="${service.comment != null}" src="/imgs/comentDone.png"
-											alt="Comment Done img" width="30px">
-									</button>
-								</form>
-						</a></td>
+						<td>
+							<a th:href="@{'/servicio/commentServicio/' + ${service.id}}" class="btn btn-link p-0 m-0">
+							    <img th:if="${service.comment != null && !service.comment.equalsIgnoreCase('')}" src="/imgs/comentDone.png" alt="Comment Done img" width="30px">
+							    <img th:unless="${service.comment != null && !service.comment.equalsIgnoreCase('')}" src="/imgs/coment.png" alt="Comment img" width="30px">
+							</a>
+						</td>
 						<td>
 							<form th:action="@{'/servicio/editServicio/' + ${service.id}}"
 								method="get">

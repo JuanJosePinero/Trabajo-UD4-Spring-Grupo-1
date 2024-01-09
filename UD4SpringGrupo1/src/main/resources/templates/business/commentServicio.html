@@ -14,14 +14,14 @@
     <br><br><br>
     <div class="container mt-5">
 	    <form method="POST" th:action="@{/servicio/commentServicio}" th:object="${servicioModel}">
-	        <input type="hidden" name="servicioId" th:value="${servicio.id}" />   
-	        <br>
-	        <label for="comment">Comment=</label>
-	        <input type="text" name="comment"/>
-	        <br><br>
-	        <button type="submit" class="btn-add">Save Comment</button>
-	        <button type="submit" class="btn-cancel">Cancel</button>
-	    </form>
-	    </div>
+		    <input type="hidden" name="servicioId" th:value="${servicio.id}" />
+		    <br>
+		    <label for="comment">Comment:</label>
+		    <textarea name="comment" rows="4" cols="32" th:text="${servicio.comment}"></textarea>
+		    <br><br>
+		    <button type="submit" class="btn-add">Save Comment</button>
+		    <a th:href="@{/business/home}" class="btn-cancel">Cancel</a>
+		</form>
+	</div>
 </body>
 </html>
