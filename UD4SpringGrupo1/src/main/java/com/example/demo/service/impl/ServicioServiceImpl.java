@@ -113,4 +113,23 @@ public class ServicioServiceImpl implements ServicioService {
 	    servicio.setComment(comment);
 	    return servicioRepository.save(servicio);
 	}
+	
+	@Override
+	public List<ServicioModel> getFinishedServicios() {
+	    List<Servicio> finishedServicios = servicioRepository.findByFinished(1);
+	    List<ServicioModel> servicioModels = new ArrayList<>();
+
+	    for (Servicio servicio : finishedServicios) {
+	        ServicioModel servicioModel = entity2model(servicio);
+	        servicioModels.add(servicioModel);
+	    }
+
+	    System.out.println("Finished Servicios: " + servicioModels);
+	    return servicioModels;
+	}
+
+	
+//	public List<Servicio> findServiciosByProFamily(String familyName) {
+//        return servicioRepository.findServiciosByProFamilyName(familyName);
+//    }
 }

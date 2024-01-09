@@ -23,6 +23,7 @@ import com.example.demo.entity.Report;
 import com.example.demo.entity.Servicio;
 import com.example.demo.entity.Student;
 import com.example.demo.model.BusinessModel;
+import com.example.demo.model.ServicioModel;
 import com.example.demo.model.StudentModel;
 import com.example.demo.repository.BusinessRepository;
 import com.example.demo.repository.ProFamilyRepository;
@@ -259,6 +260,14 @@ public class BusinessController {
         model.addAttribute("profesionalFamilies", profesionalFamilies);
 	    return BUSINESS_HOME_VIEW;
 	}
+	
+	@GetMapping("/home/finishedServices")
+	public String getFinishedServices(Model model) {
+	    List<ServicioModel> finishedServices = servicioService.getFinishedServicios();
+	    model.addAttribute("servicio", finishedServices);
+	    return BUSINESS_HOME_VIEW;
+	}
+
 	
 	@GetMapping("/reports")
 	public String Reports(Model model) {

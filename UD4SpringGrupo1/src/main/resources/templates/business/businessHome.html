@@ -23,20 +23,23 @@
 				Servicio</a>
 			<p align="right">
 				<label for="filterBy">Filter by:</label> <select id="filterBy"
-					name="filterBy">
+					name="filterBy" onchange="filterServicesByProFamily(this.value)">
 					<option value="all">All Services</option>
-					<option value="realizados">Completed Services</option>
+					<option value="finishedServices">Completed Services</option>
 					<option value="asignados_no_realizados">Assigned but
 						Uncompleted Services</option>
 					<option value="no_asignados">Unassigned Services</option>
 				</select> <br> <label for="filterByProFamily">Filter by
 					Profesional Family:</label> <select id="filterByProFamily"
-					name="filterByProFamily">
+					name="familyName" onchange="filterServicesByProFamily(this.value)">
 					<option value="none">None</option>
 					<th:block th:each="family : ${profesionalFamilies}">
 						<option th:value="${family.name}" th:text="${family.name}"></option>
 					</th:block>
 				</select>
+
+
+
 
 			</p>
 			<table class="tableBusiness">
@@ -45,7 +48,7 @@
 						<th>Title</th>
 						<th>Description</th>
 						<th>ProFamily</th>
-						<th>Comment</th>
+						<th>Comments</th>
 						<th>Valoration</th>
 						<th>Finished</th>
 						<th>Rate</th>
@@ -54,9 +57,8 @@
 						<th>Delete</th>
 					</tr>
 				</thead>
-				<tbody id="serviceTableBody" th:each="service : ${servicio}">
-					<tr data-family-name="${service.profesionalFamilyId.name}"
-						th:if="${service.deleted != 1}">
+				<tbody id="serviceTableBody">
+					<tr th:each="service : ${servicio}" th:if="${service.deleted != 1}">
 						<td th:hidden="${service.id}"></td>
 						<td th:text="${service.title}"></td>
 						<td th:text="${service.description}"></td>
@@ -75,21 +77,18 @@
 								</button>
 							</form>
 						</td>
-						<td>
-						<a>
-							<form th:action="@{'/servicio/commentServicio/' + ${service.id}}"
-								method="get">
-								<button type="submit" class="btn btn-link p-0 m-0">
-									<img
-										th:if="${service.comment == null}" src="/imgs/coment.png"
-										alt="Comment img" width="30px"> 
-									<img
-										th:if="${service.comment != null}" src="/imgs/comentDone.png"
-										alt="Comment Done img" width="30px">
-								</button>
-							</form>
-							</a>  
-						</td>
+						<td><a>
+								<form
+									th:action="@{'/servicio/commentServicio/' + ${service.id}}"
+									method="get">
+									<button type="submit" class="btn btn-link p-0 m-0">
+										<img th:if="${service.comment == null}" src="/imgs/coment.png"
+											alt="Comment img" width="30px"> <img
+											th:if="${service.comment != null}" src="/imgs/comentDone.png"
+											alt="Comment Done img" width="30px">
+									</button>
+								</form>
+						</a></td>
 						<td>
 							<form th:action="@{'/servicio/editServicio/' + ${service.id}}"
 								method="get">
@@ -112,29 +111,29 @@
 			</table>
 		</div>
 	</div>
+	<div id="selectedValue"></div>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-		$(document).ready(
-				function() {
-					// Función para actualizar la tabla según la familia profesional seleccionada
-					$("#filterByProFamily").change(
-							function() {
-								var selectedFamilyName = $(this).val();
-								var serviceTableBody = $("#serviceTableBody");
-
-								// Mostrar todas las filas de la tabla inicialmente
-								serviceTableBody.find("tr").show();
-
-								// Si se ha seleccionado una familia profesional, ocultar las filas que no la tienen
-								if (selectedFamilyName !== "none") {
-									serviceTableBody.find(
-											"tr:not([data-family-name='"
-													+ selectedFamilyName
-													+ "'])").hide();
-								}
-							});
-				});
+	function filterServicesByProFamily(selectedValue) {
+	    if (selectedValue === 'finishedServices') {
+	    	 window.location.href = '/business/home/finishedServices';
+	        $.ajax({
+	            type: "GET",
+	            url: "/home/finishedServices",
+	            success: function (data) {
+	                console.log("Data received: " + data);
+	                $("#serviceTableBody").html(data);
+	                // Actualiza el contenido del div con el valor seleccionado
+	                $("#selectedValue").text("Selected Value: " + selectedValue);
+	            }
+	        });
+	        
+	    }
+	}
 	</script>
+
+
+
 </body>
 
 </html>

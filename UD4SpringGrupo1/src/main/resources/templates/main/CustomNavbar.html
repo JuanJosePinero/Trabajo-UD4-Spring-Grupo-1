@@ -23,7 +23,7 @@
                 Salesianos School
             </li>
             <li class="nav-item"><a th:href="@{/home}" class="nav-link">Home</a></li>            
-            <a th:href="@{/student/viewServices(studentUsername=${#authentication.principal.username})}" class="nav-link">Services</a>
+            <a th:href="@{/student/viewServices(studentUsername=${#authentication.principal})}" class="nav-link">Services</a>
 
 
 			<!-- Sustituir ID predeterminado de usuario porque no recoge. Sustituir '1' por {studentId}(studentId=${studentId})  -->	
