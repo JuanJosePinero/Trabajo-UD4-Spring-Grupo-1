@@ -17,11 +17,11 @@
 	        <input type="hidden" name="servicioId" th:value="${servicio.id}" />
 	        <img id="valorationImage" src="jpeg" alt="Estrella" width="250px"/>
 	        <br><br>
-	        <label for="valoration">Valoration=</label><span id="valorationSpan">0</span>
-	        <input type="range" name="valoration" min="0" max="5" step="0.5" value="0" oninput="updateValoration(this.value)" />
+	        <label for="valoration">Valoration=</label><span id="valorationSpan"></span>
+			<input type="range" name="valoration" min="0" max="5" step="0.5" th:value="${servicio.valoration}" oninput="updateValoration(this.value)" />
 	        <br><br>
 	        <button type="submit" class="btn-add">Save Valoration</button>
-	        <button type="submit" class="btn-cancel">Cancel</button>
+	        <a th:href="@{/business/home}" class="btn-cancel">Cancel</a>
 	    </form>
 	    </div>
 

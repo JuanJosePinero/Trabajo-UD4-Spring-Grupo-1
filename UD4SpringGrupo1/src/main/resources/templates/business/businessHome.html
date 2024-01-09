@@ -72,12 +72,9 @@
 							th:if="${service.finished != 1}" src="/imgs/cross.png" alt="No"
 							width="30px" /></td>
 						<td>
-							<form th:action="@{'/servicio/rateServicio/' + ${service.id}}"
-								method="get">
-								<button type="submit" class="btn btn-link p-0 m-0">
+							<a th:href="@{'/servicio/rateServicio/' + ${service.id}}" class="btn btn-link p-0 m-0">
 									<img src="/imgs/estrella.png" alt="Star img" width="30px">
-								</button>
-							</form>
+							</a>
 						</td>
 						<td>
 							<a th:href="@{'/servicio/commentServicio/' + ${service.id}}" class="btn btn-link p-0 m-0">
