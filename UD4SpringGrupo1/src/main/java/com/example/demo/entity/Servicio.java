@@ -11,9 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
-import lombok.Data;
 
-@Data
 @Entity
 public class Servicio {
 
@@ -137,6 +135,26 @@ public class Servicio {
 	public Servicio() {
 		super();
 	}
+	public int getFinished() {
+		return finished;
+	}
+	@Override
+	public String toString() {
+	    return "Servicio [id=" + id +
+	            ", title=" + title +
+	            ", description=" + description +
+	            ", registerDate=" + registerDate +
+	            ", happeningDate=" + (happeningDate != null ? happeningDate.toString() : "N/A") +
+	            ", studentId=" + studentId +
+	            ", businessId=" + businessId +
+	            ", profesionalFamilyId=" + profesionalFamilyId +
+	            ", valoration=" + valoration +
+	            ", finished=" + finished +
+	            ", comment=" + comment +
+	            ", deleted=" + deleted +
+	            "]";
+	}
+
     
     
 }

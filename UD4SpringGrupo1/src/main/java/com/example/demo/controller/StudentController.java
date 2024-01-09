@@ -9,9 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Servicio;
+import com.example.demo.entity.Student;
 import com.example.demo.repository.BusinessRepository;
 import com.example.demo.repository.ProFamilyRepository;
 import com.example.demo.repository.ServicioRepository;
@@ -61,13 +63,32 @@ public class StudentController {
 	
 	
 	//Llamo a todos los servicios que sean de la misma familia profesional que el alumno que haya hecho login.
-	@GetMapping("/viewServices/{studentId}")
-	public String student(@PathVariable("studentId") int st, Model model) {
-		ProFamily proFamily = studentRepository.findById(st).getProfesionalFamily();
-		List<Servicio> serviceList = servicioRepository.findByProfesionalFamilyId(proFamily);
-		model.addAttribute("serviceList", serviceList);
+	@GetMapping("/viewServices")
+	public String student(@RequestParam("studentUsername") String name, Model model) {
+	    System.out.println("Nombre: " + name);
+
+	    // Aquí deberías verificar si el estudiante existe antes de intentar acceder a su familia profesional.
+	    // Esto es para evitar NullPointerException si no se encuentra el estudiante en el repositorio.
+	    Student student = studentRepository.findByName(name);
+	    if (student != null) {
+	        ProFamily proFamily = student.getProfesionalFamily();
+	        if (proFamily != null) {
+	            List<Servicio> serviceList = servicioRepository.findByProfesionalFamilyId(proFamily);
+	            model.addAttribute("serviceList", serviceList);
+	        } else {
+	            // Manejar el caso en el que el estudiante no tiene una familia profesional asignada.
+	            // Puedes agregar un mensaje al modelo o manejarlo de alguna otra manera según tus necesidades.
+	            model.addAttribute("error", "Student does not have a professional family assigned.");
+	        }
+	    } else {
+	        // Manejar el caso en el que el estudiante no se encuentra en el repositorio.
+	        model.addAttribute("error", "Student not found.");
+	    }
+
 	    return STUDENT_SERVICES;
 	}
+
+
 	
 	
 }

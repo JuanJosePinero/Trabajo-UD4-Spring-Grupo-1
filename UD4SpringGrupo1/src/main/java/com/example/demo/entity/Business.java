@@ -83,6 +83,12 @@ public class Business extends User{
 	public Business() {
 		super();
 	}
+
+	@Override
+	public String toString() {
+		return "Business [name=" + name + ", address=" + address + ", phone=" + phone + ", logo=" + logo + ", deleted="
+				+ deleted + "]";
+	}
 	
 	
 	

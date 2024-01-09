@@ -158,7 +158,7 @@ public class Student extends User implements UserDetails{
 	public String toString() {
 		return "Student [enabled=" + enabled + ", deleted=" + deleted + ", name=" + name + ", surname=" + surname
 				+ ", password=" + password + ", role=" + role + ", profesionalFamily=" + profesionalFamily
-				+ ", servicios=" + servicios + ", getId()=" + getId() + ", getEmail()=" + getEmail() + "]";
+				+ ", getId()=" + getId() + ", getEmail()=" + getEmail() + "]";
 	}
     
 }

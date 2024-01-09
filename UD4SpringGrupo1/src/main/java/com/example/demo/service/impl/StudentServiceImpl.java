@@ -128,7 +128,7 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 		return builder.build();
 	}
 	
-
+	
 	public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
 		com.example.demo.entity.Student student = studentRepository.findByEmail(email);
 		UserBuilder builder = null;
@@ -181,6 +181,11 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 	public boolean isMailValid(String mail) {
 		String mailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 		return mail.matches(mailRegex);
+	}
+	@Override
+	public StudentModel getStudentByName(String name) {
+		Student student=studentRepository.findByName(name);
+		return entity2model(student);
 	}
 	
 
