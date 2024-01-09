@@ -28,7 +28,7 @@ public class ServicioController {
 	private static final String ADD_SERVICIO_VIEW = "business/addServicio";
 	private static final String EDIT_SERVICIO_VIEW = "business/editServicio";
 	private static final String RATE_SERVICIO_VIEW = "business/rateServicio";
-	
+	private static final String COMMENT_SERVICIO_VIEW = "business/commentServicio";
 	@Autowired
 	@Qualifier("servicioService")
 	 private ServicioService servicioService;
@@ -85,6 +85,19 @@ public class ServicioController {
 	    return "redirect:/business/home";
 	}
 	
+	@GetMapping("/commentServicio/{servicioId}")
+	public String commentServicio(@PathVariable("servicioId") int servicioId, Model model) {
+	    Servicio servicio = servicioRepository.findById(servicioId);
+	    model.addAttribute("servicio", servicio);
+	    model.addAttribute("servicioId", servicioId);
+	    return COMMENT_SERVICIO_VIEW;
+	}
+
+	@PostMapping("/commentServicio")
+	public String saveCommentServicio(@ModelAttribute("servicioId") int servicioId, @ModelAttribute("comment") String comment) {
+	    servicioService.commentServicio(servicioId, comment);
+	    return "redirect:/business/home";
+	}
 	@GetMapping("/editServicio/{servicioId}")
 	public String editStudent(@PathVariable("servicioId") int servicioId, Model model) {
 		Servicio servicio = servicioRepository.findById(servicioId);

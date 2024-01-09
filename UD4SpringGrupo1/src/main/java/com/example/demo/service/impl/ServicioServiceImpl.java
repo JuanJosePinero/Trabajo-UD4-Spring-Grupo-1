@@ -106,4 +106,11 @@ public class ServicioServiceImpl implements ServicioService {
 	    servicio.setValoration(valoracion);
 	    return servicioRepository.save(servicio);
 	}
+	
+	@Override
+	public Servicio commentServicio(int servicioId, String comment) {
+	    Servicio servicio = servicioRepository.findById(servicioId);
+	    servicio.setComment(comment);
+	    return servicioRepository.save(servicio);
+	}
 }

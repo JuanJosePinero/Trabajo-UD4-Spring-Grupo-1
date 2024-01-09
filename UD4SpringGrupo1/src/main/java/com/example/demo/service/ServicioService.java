@@ -14,6 +14,7 @@ public interface ServicioService {
 	Servicio updateServicio(ServicioModel servicioModel);
 	
 	Servicio rateServicio(int servicioId, float valoration);
+	Servicio commentServicio(int servicioId, String comment);
 	
 //	List<ServicioModel> obtenerServiciosPorUsuario(int userId);
 
