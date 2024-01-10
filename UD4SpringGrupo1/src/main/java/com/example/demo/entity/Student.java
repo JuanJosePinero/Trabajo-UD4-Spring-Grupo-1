@@ -22,6 +22,7 @@ public class Student extends User implements UserDetails{
    
     private int enabled;
     private int deleted;
+    private int idStudent;
     
     private String name, surname, password, role;
    
@@ -104,6 +105,7 @@ public class Student extends User implements UserDetails{
 	public Student(int id, String name, String surname, String email, String password, String role,
 			ProFamily profesionalFamily, List<Servicio> servicios, int enabled, int deleted) {
 		super(id , email);
+		idStudent=id;
 		this.name = name;
 		this.surname = surname;
 		this.password = password;

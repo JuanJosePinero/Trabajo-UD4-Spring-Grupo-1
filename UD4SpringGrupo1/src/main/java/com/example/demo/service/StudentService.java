@@ -33,5 +33,5 @@ public interface StudentService {
 	
 	public StudentModel getStudentByName(String name);
 	
-	public List<ServicioModel> getServiceByStudentId(int id);
+	public List<ServicioModel> getServiceByStudentProfesionalFamily(int id);
 }

@@ -200,10 +200,10 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 		return entity2model(student);
 	}
 	@Override
-	public List<ServicioModel> getServiceByStudentId(int id) {
+	public List<ServicioModel> getServiceByStudentProfesionalFamily(int id) {
 		Student student=studentRepository.findById(id);
 		List<ServicioModel>servicioLista=new ArrayList<>();
-		List<Servicio>services=servicioRepository.findByStudentId(student);
+		List<Servicio>services=servicioRepository.findByProfesionalFamilyId(student.getProfesionalFamily());
 		for(Servicio servicio: services) {
 			servicioLista.add(servicioService.entity2model(servicio));
 		}

@@ -76,13 +76,16 @@ public class StudentController {
 	       
         StudentModel student=studentService.getStudentByName(nameStudent);
         
-        int id=student.getId();
+        int idStudent=student.getId();
         
 	   
 	    ProFamily proFamily = student.getProfesionalFamily();
+	    System.out.println("famlia: "+proFamily);
 		if (proFamily != null) {
-		    List<ServicioModel> serviceList = studentService.getServiceByStudentId(id);
+		    List<ServicioModel> serviceList = studentService.getServiceByStudentProfesionalFamily(idStudent);
+		    
 		    model.addAttribute("serviceList", serviceList);
+		    model.addAttribute("idStudent",idStudent);
 		} else {
 		    model.addAttribute("error", "Student does not have any services.");
 		}

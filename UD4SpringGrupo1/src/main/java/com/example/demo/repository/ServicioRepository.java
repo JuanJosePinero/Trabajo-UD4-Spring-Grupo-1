@@ -16,10 +16,9 @@ import com.example.demo.entity.Student;
 public interface ServicioRepository  extends JpaRepository<Servicio, Serializable>{
 	
 	public abstract Servicio findByTitle(String title);
-	List<Servicio> findByProfesionalFamilyId(ProFamily proFamilyId);
 	Servicio findById(int id);
 	List<Servicio> findByFinished(int finished);
-	List<Servicio>findByStudentId(Student id);
+	List<Servicio>findByProfesionalFamilyId(ProFamily proFamilyId);
 	public abstract List<Servicio> findByStudentIdIsNull();
 	public abstract List<Servicio> findByStudentIdIsNotNullAndFinishedIsNot(int i);
 

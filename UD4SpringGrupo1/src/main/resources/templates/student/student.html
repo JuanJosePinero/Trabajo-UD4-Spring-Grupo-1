@@ -38,10 +38,11 @@
                         <th>Comment</th>
                         <th>Valoration</th>
                         <th>Finished</th>
+                        <th>Assigned</th>
                     </tr>
                 </thead>
                 <tbody id="serviceTableBody" th:each="service : ${serviceList}">
-                    <tr data-family-name="${service.profesionalFamilyId.name}">
+                    <tr data-family-name="${service.profesionalFamilyId.name}")>
                         <td th:hidden="${service.id}"></td>
                         <td th:text="${service.title}"></td>
                         <td th:text="${service.description}"></td>
@@ -51,8 +52,10 @@
                             <img th:if="${service.finished == 1}" src="/imgs/tick.png" alt="Sí" width="30px" />
                             <img th:if="${service.finished != 1}" src="/imgs/cross.png" alt="No" width="30px" />
                         </td>
+                        <td th:if="${service.studentId}" th:text="${service.studentId.name}"></td>
                         
-                        
+
+						<td th:unless="${service.studentId}" th:text="'Not assigned'"></td>
                     </tr>
                 </tbody>
             </table>

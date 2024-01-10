@@ -19,10 +19,12 @@ public class StudentModel extends UserModel {
 	private int deleted;
 	private ProFamily profesionalFamily;
 	private List<Servicio> servicios;
+	private int idStudent;
 	
 	public StudentModel(int id, String name, String surname, String email, String password, String role,
 			ProFamily profesionalFamily, List<Servicio> servicios, int enabled, int deleted) {
 		super(id, email);
+		idStudent=id;
 		this.name = name;
 		this.surname = surname;
 		this.password = password;
