@@ -27,7 +27,7 @@ public class Student extends User implements UserDetails{
    
     @ManyToOne
     @JoinColumn(name = "profesionalFamilyId")
-    private ProFamily profesionalFamily;
+    private int profesionalFamily;
 
     @OneToMany(mappedBy = "studentId")
     private List<Servicio> servicios;
@@ -69,11 +69,11 @@ public class Student extends User implements UserDetails{
 		this.role = role;
 	}
 
-	public ProFamily getProfesionalFamily() {
+	public int getProfesionalFamily() {
 		return profesionalFamily;
 	}
 
-	public void setProfesionalFamily(ProFamily profesionalFamily) {
+	public void setProfesionalFamily(int profesionalFamily) {
 		this.profesionalFamily = profesionalFamily;
 	}
 
@@ -102,7 +102,7 @@ public class Student extends User implements UserDetails{
 	}
 
 	public Student(int id, String name, String surname, String email, String password, String role,
-			ProFamily profesionalFamily, List<Servicio> servicios, int enabled, int deleted) {
+			int profesionalFamily, List<Servicio> servicios, int enabled, int deleted) {
 		super(id , email);
 		this.name = name;
 		this.surname = surname;

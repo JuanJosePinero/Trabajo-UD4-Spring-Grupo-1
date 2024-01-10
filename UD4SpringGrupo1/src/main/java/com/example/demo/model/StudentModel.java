@@ -17,11 +17,11 @@ public class StudentModel extends UserModel {
 	private String name, surname, password, role;
 	private int enabled;
 	private int deleted;
-	private ProFamily profesionalFamily;
+	private int profesionalFamily;
 	private List<Servicio> servicios;
 	
 	public StudentModel(int id, String name, String surname, String email, String password, String role,
-			ProFamily profesionalFamily, List<Servicio> servicios, int enabled, int deleted) {
+			int profesionalFamily, List<Servicio> servicios, int enabled, int deleted) {
 		super(id, email);
 		this.name = name;
 		this.surname = surname;
@@ -69,11 +69,11 @@ public class StudentModel extends UserModel {
 		this.role = role;
 	}
 
-	public ProFamily getProfesionalFamily() {
+	public int getProfesionalFamily() {
 		return profesionalFamily;
 	}
 
-	public void setProfesionalFamily(ProFamily profesionalFamily) {
+	public void setProfesionalFamily(int profesionalFamily) {
 		this.profesionalFamily = profesionalFamily;
 	}
 

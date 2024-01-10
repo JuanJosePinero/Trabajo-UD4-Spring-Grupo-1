@@ -79,8 +79,8 @@ public class StudentController {
         int id=student.getId();
         
 	   
-	    ProFamily proFamily = student.getProfesionalFamily();
-		if (proFamily != null) {
+	    int proFamily = student.getProfesionalFamily();
+		if (proFamily != -1) {
 		    List<ServicioModel> serviceList = studentService.getServiceByStudentId(id);
 		    model.addAttribute("serviceList", serviceList);
 		} else {

@@ -14,8 +14,8 @@ public class ReportModel {
 	private Date fullDate;
 	private int serviceTime;
 	private String report;
-	private Student studentId;
-	private Servicio servicioId;
+	private int studentId;
+	private int servicioId;
 	public int getId() {
 		return id;
 	}
@@ -48,23 +48,23 @@ public class ReportModel {
 		this.report = report;
 	}
 
-	public Student getStudentId() {
+	public int getStudentId() {
 		return studentId;
 	}
 
-	public void setStudentId(Student studentId) {
+	public void setStudentId(int studentId) {
 		this.studentId = studentId;
 	}
 
-	public Servicio getServicioId() {
+	public int getServicioId() {
 		return servicioId;
 	}
 
-	public void setServicioId(Servicio servicioId) {
+	public void setServicioId(int servicioId) {
 		this.servicioId = servicioId;
 	}
 
-	public ReportModel(int id, Date fullDate, int serviceTime, String report, Student studentId, Servicio servicioId) {
+	public ReportModel(int id, Date fullDate, int serviceTime, String report, int studentId, int servicioId) {
 		super();
 		this.id = id;
 		this.fullDate = fullDate;

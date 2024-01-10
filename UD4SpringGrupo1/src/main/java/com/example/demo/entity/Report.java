@@ -25,11 +25,11 @@ public class Report {
 
     @ManyToOne
     @JoinColumn(name = "studentId")
-    private Student studentId;
+    private int studentId;
 
     @OneToOne
     @JoinColumn(name = "servicioId")
-    private Servicio servicioId;
+    private int servicioId;
 
 	public int getId() {
 		return id;
@@ -63,23 +63,23 @@ public class Report {
 		this.report = report;
 	}
 
-	public Student getStudentId() {
+	public int getStudentId() {
 		return studentId;
 	}
 
-	public void setStudentId(Student studentId) {
+	public void setStudentId(int studentId) {
 		this.studentId = studentId;
 	}
 
-	public Servicio getServicioId() {
+	public int getServicioId() {
 		return servicioId;
 	}
 
-	public void setServicioId(Servicio servicioId) {
+	public void setServicioId(int servicioId) {
 		this.servicioId = servicioId;
 	}
 
-	public Report(int id, Date fullDate, int serviceTime, String report, Student studentId, Servicio servicioId) {
+	public Report(int id, Date fullDate, int serviceTime, String report, int studentId, int servicioId) {
 		super();
 		this.id = id;
 		this.fullDate = fullDate;

@@ -25,15 +25,15 @@ public class Servicio {
 
     @ManyToOne
     @JoinColumn(name = "studentId")
-    private Student studentId;
+    private int studentId;
 
     @ManyToOne
     @JoinColumn(name = "businessId")
-    private Business businessId;
+    private int businessId;
 
     @ManyToOne
     @JoinColumn(name = "profesionalFamilyId")
-    private ProFamily profesionalFamilyId;
+    private int profesionalFamilyId;
 
     private float valoration;
     private int finished;
@@ -69,22 +69,22 @@ public class Servicio {
 	public void setHappeningDate(Date happeningDate) {
 		this.happeningDate = happeningDate;
 	}
-	public Student getStudentId() {
+	public int getStudentId() {
 		return studentId;
 	}
-	public void setStudentId(Student studentId) {
+	public void setStudentId(int studentId) {
 		this.studentId = studentId;
 	}
-	public Business getBusinessId() {
+	public int getBusinessId() {
 		return businessId;
 	}
-	public void setBusinessId(Business businessId) {
+	public void setBusinessId(int businessId) {
 		this.businessId = businessId;
 	}
-	public ProFamily getProfesionalFamilyId() {
+	public int getProfesionalFamilyId() {
 		return profesionalFamilyId;
 	}
-	public void setProfesionalFamilyId(ProFamily profesionalFamilyId) {
+	public void setProfesionalFamilyId(int profesionalFamilyId) {
 		this.profesionalFamilyId = profesionalFamilyId;
 	}
 	public float getValoration() {
@@ -116,8 +116,8 @@ public class Servicio {
         LocalDate currentDate = LocalDate.now();
         registerDate = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
-	public Servicio(int id, String title, String description, Date registerDate, Date happeningDate, Student studentId,
-			Business businessId, ProFamily profesionalFamilyId, float valoration, int finished, String comment, int deleted) {
+	public Servicio(int id, String title, String description, Date registerDate, Date happeningDate, int studentId,
+			int businessId, int profesionalFamilyId, float valoration, int finished, String comment, int deleted) {
 		super();
 		this.id = id;
 		this.title = title;
