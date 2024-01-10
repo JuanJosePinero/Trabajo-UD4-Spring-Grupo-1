@@ -337,9 +337,9 @@ public class BusinessController {
 	
 	@GetMapping("/ratedServicios")
 	public String ratedServicios(Model model) {
-		List<Report> reports = reportRepository.findAll();
+		List<Servicio> servicios = servicioRepository.findAll();
 		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
-        model.addAttribute("report", reports);
+        model.addAttribute("servicio", servicios);
         model.addAttribute("profesionalFamilies", profesionalFamilies);
 	    return BUSINESS_RATED_SERVICES_VIEW;
 	}

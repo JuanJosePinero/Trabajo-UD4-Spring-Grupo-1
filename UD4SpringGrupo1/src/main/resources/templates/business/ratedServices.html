@@ -1,12 +1,5 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Services Rated</title>
-</head>
-<body>
-<!DOCTYPE html>
-<html>
 
 <head>
 <meta charset="UTF-8">
@@ -16,6 +9,13 @@
 	integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
 	crossorigin="anonymous">
 <link href="/css/styles.css" rel="stylesheet">
+<style>
+.tableBusiness {
+	font-size: 14px; /* Tamaño de fuente */
+	width: 80%; /* Ancho de la tabla */
+	margin: 0 auto; /* Centrar la tabla horizontalmente */
+}
+</style>
 </head>
 
 <body class="bodyBusiness">
@@ -27,59 +27,73 @@
 		</div>
 		<div class="info-block2">
 			<div style="display: flex; justify-content: space-between;">
-				<span>Table with all your services rated</span> <span> <label for="filterByProFamily">Filter by Profesional Family:</label>
-<select id="filterByProFamily" name="filterByProFamily">
-    <option value="none">None</option>
-    <th:block th:each="family : ${profesionalFamilies}">
-        <option th:value="${family.name}" th:text="${family.name}"></option>
-    </th:block>
-</select>
+
+				<span>Table with all your rated services</span> <span> <label
+					for="filterByServiceTitle">Filter by Service Title:</label> <select
+					id="filterByServiceTitle" name="filterByServiceTitle">
+						<option value="none">None</option>
+						<th:block th:each="service : ${servicio}" th:if="${service.deleted != 1 and service.studentId != null and service.finished == 1}">>
+							<option th:value="${service.title}" th:text="${service.title}"></option>
+						</th:block>
+				</select> <br>
+				<label for="filterByProFamily">Filter by Profesional Family:</label>
+					<select id="filterByProFamily" name="filterByProFamily">
+						<option value="none">None</option>
+						<th:block th:each="family : ${profesionalFamilies}">
+							<option th:value="${family.name}" th:text="${family.name}"></option>
+						</th:block>
+				</select>
 
 				</span>
 			</div>
 
-			<table class="tableBusiness">
+			<table class="table tableBusiness">
 				<thead>
 					<tr>
-						<th>Date</th>
-						<th>Service Name</th>
-						<th>Report</th>
-						<th>Student Name</th>
-						<th>Service Time</th>
+						<th>Service Title</th>
+						<th>Student</th>
+						<th>ProF</th>
+						<th>Valoration</th>
 					</tr>
 				</thead>
-				<tbody id="reportTableBody" th:each="reports : ${report}">
-					<tr data-family-name="${reports.profesionalFamilyId.name}">
-						<td th:hidden="${reports.id}"></td>
-						<td th:text="${reports.fullDate}"></td>
-						<td th:text="${reports.servicioId.title}"></td>
-						<td th:text="${reports.report}"></td>
-						<td th:text="${reports.studentId.name}"></td>
-						<td th:text="${reports.serviceTime} + _hours"></td>
+				<tbody id="serviceTableBody">
+					<tr th:each="service : ${servicio}"
+						th:if="${service.deleted != 1 and service.studentId != null and service.finished == 1}">
+						<td th:hidden="${service.id}"></td>
+						<td th:text="${service.title}"></td>
+						<td
+							th:text="${service.studentId != null ? service.studentId.name : 'Not assigned'}"></td>
+						<td th:text="${service.profesionalFamilyId.name}"></td>
+						<td><img
+							th:src="@{'/imgs/stars/e' + ${service.valoration.toString().replace('.', '_')} + '.jpeg'}"
+							alt="Estrella" width="250px" /></td>
+
+
 					</tr>
 				</tbody>
+
 			</table>
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-	$("#filterByProFamily").change(function() {
-	    var selectedFamilyName = $(this).val();
+		$("#filterByProFamily").change(
+				function() {
+					var selectedFamilyName = $(this).val();
 
-	    if (selectedFamilyName === "none") {
-	        // Si se selecciona "None", mostrar todas las filas
-	        $("#reportTableBody tr").show();
-	    } else {
-	        // Ocultar todas las filas y luego mostrar solo las que coinciden con la familia seleccionada
-	        $("#reportTableBody tr").hide();
-	        $("#reportTableBody tr[data-family-name='" + selectedFamilyName + "']").show();
-	    }
-	});
+					if (selectedFamilyName === "none") {
+						// Si se selecciona "None", mostrar todas las filas
+						$("#serviceTableBody tr").show();
+					} else {
+						// Ocultar todas las filas y luego mostrar solo las que coinciden con la familia seleccionada
+						$("#serviceTableBody tr").hide();
+						$(
+								"#serviceTableBody tr[data-family-name='"
+										+ selectedFamilyName + "']").show();
+					}
+				});
 	</script>
 
 </body>
 
-</html>
-
-</body>
 </html>
