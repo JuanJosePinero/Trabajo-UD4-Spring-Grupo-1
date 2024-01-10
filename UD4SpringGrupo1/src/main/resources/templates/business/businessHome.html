@@ -49,8 +49,6 @@
 						<th>Description</th>
 						<th>Student</th>
 						<th>ProFamily</th>
-						<th>Comments</th>
-						<th>Valoration</th>
 						<th>Finished</th>
 						<th>Rate</th>
 						<th>Comment</th>
@@ -63,25 +61,40 @@
 						<td th:hidden="${service.id}"></td>
 						<td th:text="${service.title}"></td>
 						<td th:text="${service.description}"></td>
-						<td th:text="${service.studentId != null ? service.studentId.name : '--No student--'}"></td>
+						<td th:text="${service.studentId != null ? service.studentId.name : 'Not assigned'}"></td>
 						<td th:text="${service.profesionalFamilyId.name}"></td>
-						<td th:text="${service.comment}"></td>
-						<td th:text="${service.valoration}"></td>
 						<td><img th:if="${service.finished == 1}"
 							src="/imgs/tick.png" alt="Sí" width="30px" /> <img
 							th:if="${service.finished != 1}" src="/imgs/cross.png" alt="No"
 							width="30px" /></td>
 						<td>
-							<a th:href="@{'/servicio/rateServicio/' + ${service.id}}" class="btn btn-link p-0 m-0">
-									<img src="/imgs/estrella.png" alt="Star img" width="30px">
-							</a>
-						</td>
+    <a th:href="@{'/servicio/rateServicio/' + ${service.id}}"
+       class="btn btn-link p-0 m-0"
+       th:if="${service.finished == 1 and service.studentId != null}"
+    >
+        <img src="/imgs/estrella.png" alt="Star img" width="30px">
+    </a>
+    <a href="#" onclick="return showErrorMessage();"
+       th:unless="${service.finished == 1 and service.studentId != null}"
+    >
+        <img src="/imgs/estrellaVacia.png" alt="Empty Star img" width="30px">
+    </a>
+</td>
+
 						<td>
-							<a th:href="@{'/servicio/commentServicio/' + ${service.id}}" class="btn btn-link p-0 m-0">
-							    <img th:if="${service.comment != null && !service.comment.equalsIgnoreCase('')}" src="/imgs/comentDone.png" alt="Comment Done img" width="30px">
-							    <img th:unless="${service.comment != null && !service.comment.equalsIgnoreCase('')}" src="/imgs/coment.png" alt="Comment img" width="30px">
-							</a>
-						</td>
+    <a th:href="@{'/servicio/commentServicio/' + ${service.id}}"
+       class="btn btn-link p-0 m-0"
+       th:if="${service.comment != null and !service.comment.equalsIgnoreCase('')}"
+    >
+        <img src="/imgs/comentDone.png" alt="Comment Done img" width="30px">
+    </a>
+    <a href="#" onclick="return showCommentErrorMessage();"
+       th:unless="${service.comment != null and !service.comment.equalsIgnoreCase('')}"
+    >
+        <img src="/imgs/coment.png" alt="Comment img" width="30px">
+    </a>
+</td>
+
 						<td>
 							<form th:action="@{'/servicio/editServicio/' + ${service.id}}"
 								method="get">
@@ -127,13 +140,25 @@
         var tableRows = document.querySelectorAll("tbody#serviceTableBody tr");
 
         tableRows.forEach(function(row) {
-            var proFamilyCell = row.querySelector("td:nth-child(4)"); // Cambia el índice según la columna de ProFamily en tu tabla
+            var proFamilyCell = row.querySelector("td:nth-child(4)");
             if (proFamilyCell && proFamilyCell.textContent.trim() === selectedValue) {
-                row.style.display = ""; // Mostrar fila si coincide con el ProFamily seleccionado
+                row.style.display = "";
             } else {
-                row.style.display = "none"; // Ocultar fila si no coincide
+                row.style.display = "none";
             }
         });
+    }
+</script>
+<script>
+    function showErrorMessage() {
+        alert("You can't valorate because the service is unassigned or is not finished!");
+        return false;
+    }
+</script>
+<script>
+    function showCommentErrorMessage() {
+        alert("You can't comment because the service is unassigned or is not finished!");
+        return false;
     }
 </script>
 
