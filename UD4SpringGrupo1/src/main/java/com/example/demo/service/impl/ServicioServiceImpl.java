@@ -154,8 +154,32 @@ public class ServicioServiceImpl implements ServicioService {
 	}
 
 
-	
-//	public List<Servicio> findServiciosByProFamily(String familyName) {
-//        return servicioRepository.findServiciosByProFamilyName(familyName);
-//    }
+	@Override
+	public List<ServicioModel> findServiciosByProFamily(String familyName) {
+	    List<ServicioModel> servicioModels = new ArrayList<>();
+
+	    for (Servicio servicio : servicioRepository.findAll()) {
+	        if (servicio.getProfesionalFamilyId() != null && servicio.getProfesionalFamilyId().getName().equals(familyName)) {
+	            servicioModels.add(entity2model(servicio));
+	        }
+	    }
+
+	    return servicioModels;
+	}
+
+	@Override
+	public List<ServicioModel> getAllServicios() {
+	    List<Servicio> servicios = servicioRepository.findAll();
+	    List<ServicioModel> servicioModels = new ArrayList<>();
+
+	    for (Servicio servicio : servicios) {
+	        ServicioModel servicioModel = entity2model(servicio);
+	        servicioModels.add(servicioModel);
+	    }
+
+	    return servicioModels;
+	}
+
+
+
 }

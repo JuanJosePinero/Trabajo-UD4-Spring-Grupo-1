@@ -288,6 +288,23 @@ public class BusinessController {
 	    return BUSINESS_HOME_VIEW;
 	}
 	
+	@GetMapping("/home/findByProFamily")
+	public String getServiciosByProFamily(Model model, @RequestParam(name = "familyName", required = false) String familyName) {
+	    List<ServicioModel> servicios;
+
+	    if (familyName != null && !familyName.isEmpty()) {
+	        servicios = servicioService.findServiciosByProFamily(familyName);
+	    } else {
+	        servicios = servicioService.getAssignedButUncompletedServices();
+	    }
+
+	    List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
+	    model.addAttribute("servicio", servicios);
+	    model.addAttribute("profesionalFamilies", profesionalFamilies);
+	    return BUSINESS_HOME_VIEW;
+	}
+
+	
 //	@GetMapping("/home")
 //	public String business(@RequestParam(name = "filterBy", required = false) String filterBy, Model model) {
 //	    List<ServicioModel> servicios;

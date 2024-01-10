@@ -23,20 +23,20 @@
 				Servicio</a>
 			<p align="right">
 				<label for="filterBy">Filter by:</label> <select id="filterBy"
-					name="filterBy" onchange="filterServicesByProFamily(this.value)">
+					name="filterBy" onchange="filterServices(this.value)">
+					<option value="null">Select an option</option>
 					<option value="all">All Services</option>
 					<option value="finishedServices">Completed Services</option>
 					<option value="asignados_no_realizados">Assigned but
 						Uncompleted Services</option>
 					<option value="no_asignados">Unassigned Services</option>
-				</select> <br> <label for="filterByProFamily">Filter by
-					Profesional Family:</label> <select id="filterByProFamily"
-					name="familyName" onchange="filterServicesByProFamily(this.value)">
-					<option value="none">None</option>
-					<th:block th:each="family : ${profesionalFamilies}">
-						<option th:value="${family.name}" th:text="${family.name}"></option>
-					</th:block>
-				</select>
+				</select> <br> <label for="filterByProFamily">Filter by Profesional Family:</label>
+<select id="filterByProFamily" name="familyName" onchange="filterServicesByProFamily(this.value)">
+    <option value="none">None</option>
+    <th:block th:each="family : ${profesionalFamilies}">
+        <option th:value="${family.name}" th:text="${family.name}"></option>
+    </th:block>
+</select>
 
 
 
@@ -107,7 +107,7 @@
 	<div id="selectedValue"></div>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-	function filterServicesByProFamily(selectedValue) {
+	function filterServices(selectedValue) {
 	    if (selectedValue === 'finishedServices') {
 	    	 window.location.href = '/business/home/finishedServices';
 	    }else if(selectedValue === 'no_asignados') {
@@ -118,8 +118,24 @@
 	    	window.location.href = '/business/home';
 	    }
 	}
-	</script>
 
+	</script>
+	
+	
+<script>
+    function filterServicesByProFamily(selectedValue) {
+        var tableRows = document.querySelectorAll("tbody#serviceTableBody tr");
+
+        tableRows.forEach(function(row) {
+            var proFamilyCell = row.querySelector("td:nth-child(4)"); // Cambia el índice según la columna de ProFamily en tu tabla
+            if (proFamilyCell && proFamilyCell.textContent.trim() === selectedValue) {
+                row.style.display = ""; // Mostrar fila si coincide con el ProFamily seleccionado
+            } else {
+                row.style.display = "none"; // Ocultar fila si no coincide
+            }
+        });
+    }
+</script>
 
 
 </body>

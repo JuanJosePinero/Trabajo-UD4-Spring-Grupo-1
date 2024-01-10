@@ -21,6 +21,10 @@ public interface ServicioService {
 	List<ServicioModel> getUnassignedServicios();
 
 	List<ServicioModel> getAssignedButUncompletedServices();
+
+	List<ServicioModel> findServiciosByProFamily(String familyName);
+
+	List<ServicioModel> getAllServicios();
 	
 //	List<ServicioModel> obtenerServiciosPorUsuario(int userId);
 
