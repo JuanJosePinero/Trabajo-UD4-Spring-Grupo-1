@@ -24,6 +24,8 @@
             </li>
             <li class="nav-item"><a th:href="@{/home}" class="nav-link">Home</a></li>            
             <li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_STUDENT'')')}"><a th:href="@{/student/viewServices(studentUsername=${#authentication.principal.getUsername()})}" class="nav-link">Services</a></li>
+             <li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_STUDENT'')')}"><a th:href="@{/student/viewComments(studentUsername=${#authentication.principal.getUsername()})}" class="nav-link">Comments</a></li>
+              <li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_STUDENT'')')}"><a th:href="@{/student/viewValorations(studentUsername=${#authentication.principal.getUsername()})}" class="nav-link">Valorations</a></li>
 
 
 			<!-- Sustituir ID predeterminado de usuario porque no recoge. Sustituir '1' por {studentId}(studentId=${studentId})  -->	
@@ -32,9 +34,9 @@
     		<li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"><a th:href="@{/proFamily/list}" class="nav-link">Professional Family</a></li>
        
         	<li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"><a th:href="@{/business/list}" class="nav-link">Businesses</a></li>
-        	<li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_BUSINESS'')')}"><a th:href="@{/business/home}" class="nav-link">Your Services</a></li>
-        	<li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_BUSINESS'')')}"><a th:href="@{/business/reports}" class="nav-link">Reports</a></li>
-        	<li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_BUSINESS'')')}"><a th:href="@{/business/ratedServicios}" class="nav-link">Rated Services</a></li>
+        	<li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_BUSINESS'')')}"><a th:href="@{/business/home(studentUsername=${#authentication.principal.getUsername()})}" class="nav-link">Your Services</a></li>
+        	<li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_BUSINESS'')')}"><a th:href="@{/business/reports(studentUsername=${#authentication.principal.getUsername()})}" class="nav-link">Reports</a></li>
+        	<li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_BUSINESS'')')}"><a th:href="@{/business/ratedServicios(studentUsername=${#authentication.principal.getUsername()})}" class="nav-link">Rated Services</a></li>
         	
         </ul>
          <div th:if="${param.logout}">
