@@ -44,31 +44,41 @@
 				<tbody id="reportTableBody" th:each="reports : ${report}">
 					<tr data-family-name="${reports.profesionalFamilyId.name}">
 						<td th:hidden="${reports.id}"></td>
+						<td th:hidden="${reports.servicioId.profesionalFamilyId.name}"></td>
 						<td th:text="${reports.fullDate}"></td>
 						<td th:text="${reports.servicioId.title}"></td>
 						<td th:text="${reports.report}"></td>
 						<td th:text="${reports.studentId.name}"></td>
-						<td th:text="${reports.serviceTime} + _hours"></td>
+						<td th:text="'&#x231A; ' + ${reports.serviceTime} + ' hours'"></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script>
-	$("#filterByProFamily").change(function() {
-	    var selectedFamilyName = $(this).val();
+<script>
+$("#filterByProFamily").change(function() {
+    var selectedFamilyName = $(this).val();
+    var studentUsername = /* Obtén el valor de #authentication.principal.getUsername() aquí */;
 
-	    if (selectedFamilyName === "none") {
-	        // Si se selecciona "None", mostrar todas las filas
-	        $("#reportTableBody tr").show();
-	    } else {
-	        // Ocultar todas las filas y luego mostrar solo las que coinciden con la familia seleccionada
-	        $("#reportTableBody tr").hide();
-	        $("#reportTableBody tr[data-family-name='" + selectedFamilyName + "']").show();
-	    }
-	});
-	</script>
+    if (selectedFamilyName === "none") {
+        // Si se selecciona "None", redirigir a la página original con el parámetro studentUsername
+        window.location.href = "/reports?studentUsername=" + encodeURIComponent(studentUsername);
+    } else {
+        // Realizar una solicitud AJAX para obtener los informes filtrados
+        $.get("/reports/filter", { familyName: selectedFamilyName }, function(data) {
+            // Ocultar todas las filas y luego mostrar solo las que coinciden con la familia seleccionada
+            $("#reportTableBody tr").hide();
+            $.each(data, function(index, report) {
+                $("#reportTableBody tr[data-family-name='" + report.servicioId.profesionalFamilyId.name + "']").show();
+            });
+        });
+    }
+});
+</script>
+
+
+
 
 </body>
 

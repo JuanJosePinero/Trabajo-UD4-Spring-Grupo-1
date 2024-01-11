@@ -1,13 +1,21 @@
 package com.example.demo.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Report;
+import com.example.demo.entity.Servicio;
 import com.example.demo.model.ReportModel;
 import com.example.demo.repository.ReportRepository;
 import com.example.demo.service.ReportService;
 
+@Configuration
+@Service("reportService")
 public class ReportServiceImpl implements ReportService{
 	
 	private final ReportRepository reportRepository;
@@ -26,5 +34,21 @@ public class ReportServiceImpl implements ReportService{
 		ModelMapper mapper = new ModelMapper();
 		return mapper.map(report, ReportModel.class);
 	}
+	
+	@Override
+	public List<Report> findReportsByProFamily(String familyName) {
+	    List<Report> reports = new ArrayList<>();
+
+	    for (Report report : reportRepository.findAll()) {
+	        Servicio servicio = report.getServicioId();
+	        if (servicio != null && servicio.getProfesionalFamilyId() != null && servicio.getProfesionalFamilyId().getName().equals(familyName)) {
+	            reports.add(report);
+	        }
+	    }
+	    System.out.println(reports);
+	    
+	    return reports;
+	}
+
 
 }

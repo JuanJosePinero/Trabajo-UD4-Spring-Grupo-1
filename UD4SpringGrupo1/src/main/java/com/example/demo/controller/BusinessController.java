@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -32,6 +33,7 @@ import com.example.demo.repository.ServicioRepository;
 import com.example.demo.repository.StudentRepository;
 import com.example.demo.service.BusinessService;
 import com.example.demo.service.FilesStorageService;
+import com.example.demo.service.ReportService;
 import com.example.demo.service.ServicioService;
 import com.example.demo.service.StudentService;
 
@@ -49,6 +51,10 @@ public class BusinessController {
 	@Autowired
 	@Qualifier("businessService")
 	 private BusinessService businessService;
+	
+	@Autowired
+	@Qualifier("reportService")
+	 private ReportService reportService;
 	
 	@Autowired
 	@Qualifier("businessRepository")
@@ -334,6 +340,13 @@ public class BusinessController {
         model.addAttribute("profesionalFamilies", profesionalFamilies);
 	    return BUSINESS_REPORT_VIEW;
 	}
+	
+	@GetMapping("/reports/filter")
+	@ResponseBody
+	public List<Report> filterReportsByProFamily(@RequestParam String familyName) {
+	    return reportService.findReportsByProFamily(familyName);
+	}
+
 	
 	@GetMapping("/ratedServicios")
 	public String ratedServicios(Model model) {
