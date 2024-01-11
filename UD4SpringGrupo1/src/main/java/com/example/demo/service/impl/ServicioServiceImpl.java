@@ -95,6 +95,13 @@ public class ServicioServiceImpl implements ServicioService {
 	}
 	
 	@Override
+	public Servicio finishServicio(int servicioId) {
+	    Servicio servicio = servicioRepository.findById(servicioId);
+	    servicio.setFinished(1);
+	    return servicioRepository.save(servicio);
+	}
+	
+	@Override
 	public Servicio commentServicio(int servicioId, String comment) {
 	    Servicio servicio = servicioRepository.findById(servicioId);
 	    servicio.setComment(comment);

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Send a report of the service</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <form method="POST" th:action="@{/student/sendReport}" th:object="${reportModel}">
+		    <input type="hidden" name="serviceId" th:value="${service.id}" />
+		    <label for="reportModel">Please, write us a report to know how was your experience with it:</label>
+		    <textarea name="reportModel" rows="4" cols="32"></textarea>
+		    <br><br>
+		    <button type="submit" class="btn-add">Save report</button>
+		    <a th:href="@{/student/viewServices}" class="btn-cancel">Cancel</a>
+		</form>
+    </div>
+</body>
+</html>

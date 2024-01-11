@@ -34,4 +34,6 @@ public interface ServicioService {
 	
 	Servicio getServicioById(int serviceId);
 
+	Servicio finishServicio(int servicioId);
+
 }

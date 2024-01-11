@@ -50,7 +50,15 @@ public class ReportServiceImpl implements ReportService{
 	    return reports;
 	}
 	
-	
+	@Override
+	public Report addReport(ReportModel reportModel) {
+		Report report = model2entity(reportModel);
+		report.setReport(reportModel.getReport());
+		report.setServiceTime(reportModel.getServiceTime());
+		report.setServicioId(reportModel.getServicioId());
+		report.setStudentId(reportModel.getStudentId());
+		return reportRepository.save(report);
+	}
 
 
 }

@@ -8,6 +8,15 @@
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
         crossorigin="anonymous">
   <link href="/css/styles.css" rel="stylesheet">
+  <style
+  >.green-background {
+    background-color: lightgreen;
+}
+
+.light-red-background {
+    background-color: lightcoral;
+}
+  </style>
 </head>
 <body class="bodyBusiness">
     <div th:replace="/main/CustomNavbar.html"></div>
@@ -17,20 +26,13 @@
             <h3>Your Services</h3>
         </div>
         <div class="info-block2">
-            <p>Lista de tus servicios</p>
-            <p align="right">
-         
-
-                <br>
-               
-            </p>
+            <p>List of your services from your Profesional Family</p>
             <table class="tableBusiness">
                 <thead>
                     <tr>
                         <th>Title</th>
                         <th>Description</th>
-                        <th>Comment</th>
-                        <th>Valoration</th>
+                        <th>Assign</th>
                         <th>Finished</th>
                         <th>Assigned</th>
                     </tr>
@@ -40,20 +42,55 @@
                         <td th:hidden="${service.id}"></td>
                         <td th:text="${service.title}"></td>
                         <td th:text="${service.description}"></td>
-                        <td th:text="${service.comment}"></td>
-                        <td th:text="${service.valoration}"></td>
-                        <td>
-                            <img th:if="${service.finished == 1}" src="/imgs/tick.png" alt="Sí" width="30px" />
-                            <img th:if="${service.finished != 1}" src="/imgs/cross.png" alt="No" width="30px" />
-                        </td>
-                        <td th:if="${service.studentId}" th:text="${service.studentId.name}"></td>
-                        
+						<td th:if="${service.studentId}">
+						    <img src="/imgs/cantAssign.png" alt="No puedes" width="40px" onclick="submitCantAssign(this)" />
+						</td>
+						<td th:unless="${service.studentId}">
+						    <img src="/imgs/assign.png" alt="Asignar" width="40px" onclick="submitAssign(this)" />
+						</td>
+                       <td>
+						<a th:if="${service != null and service.finished != 1}" th:href="@{'/student/sendReport?serviceId=' + ${service.id}}" class="btn btn-blue">
+						    Conclude
+						</a>
+						    <button th:if="${service.finished == 1}" class="btn btn-success">
+						        Finished
+						    </button>
+						</td>
+                        <td th:if="${service.studentId}" th:text="${service.studentId.name}" class="green-background"></td>
+						<td th:unless="${service.studentId}" th:text="'Not assigned'" class="light-red-background"></td>
 
-						<td th:unless="${service.studentId}" th:text="'Not assigned'"></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+    <script type="text/javascript">
+    function redirectToSendReport(button, serviceId) {
+        window.location.href = '/student/sendReport?serviceId=' + serviceId;
+    }
+	</script>
+    
+    <script>
+    function submitAssign(element) {
+
+        var confirmAssign = confirm("Do you want to assign this service?");
+        if (confirmAssign) {
+        	
+        }
+    }
+    function submitCantAssign(element) {
+        var confirmAssign = confirm("This services is already assigned!");
+    }
+    function concludeService(element) {
+        // Realiza aquí la lógica para concluir el servicio
+        // Por ejemplo, puedes mostrar un cuadro de diálogo de confirmación
+        var confirmConclude = confirm("Do you want to finish this service?");
+        if (confirmConclude) {
+            // Aquí puedes realizar la conclusión del servicio si el usuario confirma
+            // Ejecutar la conclusión o enviar una solicitud AJAX, según tu lógica
+        }
+    }
+</script>
+    
 </body>
 </html>

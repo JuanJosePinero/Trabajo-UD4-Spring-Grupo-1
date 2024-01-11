@@ -140,3 +140,14 @@ h1{
   padding: 8px;
   text-align: left;
 }
+
+.btn-blue {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-blue:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
