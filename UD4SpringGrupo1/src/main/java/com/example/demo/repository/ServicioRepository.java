@@ -20,10 +20,11 @@ public interface ServicioRepository  extends JpaRepository<Servicio, Serializabl
 	public abstract Servicio findByTitle(String title);
 	Servicio findById(int id);
 	List<Servicio> findByFinished(int finished);
+	
 	List<Servicio>findByProfesionalFamilyId(ProFamily proFamilyId);
 	public abstract List<Servicio> findByStudentIdIsNull();
 	public abstract List<Servicio> findByStudentIdIsNotNullAndFinishedIsNot(int i);
 	public abstract List<Servicio> findByBusinessId(Business businessId);
 	public abstract List<Report> getReportsForServicesByBusinessId(Business business);
-
+	List<Servicio> findByFinishedAndStudentId(int finished, Student studentId);
 }

@@ -36,6 +36,9 @@ public class StudentController {
 
 	private static final String STUDENT_SERVICES = "/student/student.html";
 	private static final String STUDENT_SEND_REPORT = "/student/studentReport.html";
+	private static final String STUDENT_COMMENTS = "/student/studentComments.html";
+	private static final String STUDENT_VALORATIONS = "/student/studentValorations.html";
+
 	
 	@Autowired
 	@Qualifier("businessService")
@@ -102,6 +105,30 @@ public class StudentController {
 		}
 
 	    return STUDENT_SERVICES;
+	}
+	
+	@GetMapping("/viewComments")
+	public String studentComments(@RequestParam("studentUsername") String name, Model model) {
+	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    String nameStudent = ((UserDetails) principal).getUsername();		       
+        StudentModel student=studentService.getStudentByName(nameStudent);	        
+        int idStudent=student.getId();
+	    List<Servicio> serviceList = servicioRepository.findByFinishedAndStudentId(1 , studentRepository.findById(idStudent));			    
+		model.addAttribute("serviceList", serviceList);
+		model.addAttribute("idStudent",idStudent);
+	    return STUDENT_COMMENTS;
+	}
+	
+	@GetMapping("/viewValorations")
+	public String studentValorations(@RequestParam("studentUsername") String name, Model model) {
+	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    String nameStudent = ((UserDetails) principal).getUsername();		       
+        StudentModel student=studentService.getStudentByName(nameStudent);	        
+        int idStudent=student.getId();
+	    List<Servicio> serviceList = servicioRepository.findByFinishedAndStudentId(1 , studentRepository.findById(idStudent));			    
+		model.addAttribute("serviceList", serviceList);
+		model.addAttribute("idStudent",idStudent);
+	    return STUDENT_VALORATIONS;
 	}
 	
 	@GetMapping("/student/sendReport/{servicioId}")

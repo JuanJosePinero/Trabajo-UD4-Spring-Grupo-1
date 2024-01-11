@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Page where students can add themselves to any available service.</title>
+<link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+        crossorigin="anonymous">
+  <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body class="bodyBusiness">
+    <div th:replace="/main/CustomNavbar.html"></div>
+
+    <div class="info-container2">
+        <div class="info-block-head">
+            <h3>Your valorations</h3>
+        </div>
+        <div class="info-block2">
+            <p>Your valorations</p>
+            <table class="tableBusiness">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Valoration</th>
+                    </tr>
+                </thead>
+                <tbody id="serviceTableBody" th:each="service : ${serviceList}">
+                        <td th:hidden="${service.id}"></td>
+                        <td th:text="${service.title}"></td>
+                        <td>
+						<img
+							th:src="@{'/imgs/stars/e' + ${service.valoration.toString().replace('.', '_')} + '.jpeg'}"
+							alt="Estrella" width="250px" /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
