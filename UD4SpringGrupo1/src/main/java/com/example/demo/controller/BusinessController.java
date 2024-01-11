@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -334,10 +336,22 @@ public class BusinessController {
 	
 	@GetMapping("/reports")
 	public String Reports(Model model) {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String userId = ((UserDetails) principal).getUsername();
+	       
+        StudentModel student=studentService.getStudentByName(userId);
+        String name=student.getName();
+        String email=student.getEmail();
+        System.out.println("El email de "+name+" es : "+email);
+        Business business=businessService.getIdByEmail(email);
+        
+        int businessId=business.getId();
+        System.out.println("IDDD: "+businessId);
 		List<Report> reports = reportRepository.findAll();
 		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
         model.addAttribute("report", reports);
         model.addAttribute("profesionalFamilies", profesionalFamilies);
+        model.addAttribute("businessId",businessId);
 	    return BUSINESS_REPORT_VIEW;
 	}
 	

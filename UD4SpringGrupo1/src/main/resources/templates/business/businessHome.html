@@ -2,13 +2,11 @@
 <html>
 
 <head>
-<meta charset="UTF-8">
-<title>Your business</title>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-	integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-	crossorigin="anonymous">
-<link href="/css/styles.css" rel="stylesheet">
+	<meta charset="UTF-8">
+	<title>Your business</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+		integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<link href="/css/styles.css" rel="stylesheet">
 </head>
 
 <body class="bodyBusiness">
@@ -22,8 +20,8 @@
 			<a th:href="@{/servicio/addServicio}" class="btn-add">Add
 				Servicio</a>
 			<p align="right">
-				<label for="filterBy">Filter by:</label> <select id="filterBy"
-					name="filterBy" onchange="filterServices(this.value)">
+				<label for="filterBy">Filter by:</label> <select id="filterBy" name="filterBy"
+					onchange="filterServices(this.value)">
 					<option value="null">Select an option</option>
 					<option value="all">All Services</option>
 					<option value="finishedServices">Completed Services</option>
@@ -31,12 +29,12 @@
 						Uncompleted Services</option>
 					<option value="no_asignados">Unassigned Services</option>
 				</select> <br> <label for="filterByProFamily">Filter by Profesional Family:</label>
-<select id="filterByProFamily" name="familyName" onchange="filterServicesByProFamily(this.value)">
-    <option value="none">None</option>
-    <th:block th:each="family : ${profesionalFamilies}">
-        <option th:value="${family.name}" th:text="${family.name}"></option>
-    </th:block>
-</select>
+				<select id="filterByProFamily" name="familyName" onchange="filterServicesByProFamily(this.value)">
+					<option value="none">None</option>
+					<th:block th:each="family : ${profesionalFamilies}">
+						<option th:value="${family.name}" th:text="${family.name}"></option>
+					</th:block>
+				</select>
 
 
 
@@ -63,49 +61,39 @@
 						<td th:text="${service.description}"></td>
 						<td th:text="${service.studentId != null ? service.studentId.name : 'Not assigned'}"></td>
 						<td th:text="${service.profesionalFamilyId.name}"></td>
-						<td><img th:if="${service.finished == 1}"
-							src="/imgs/tick.png" alt="Sí" width="30px" /> <img
-							th:if="${service.finished != 1}" src="/imgs/cross.png" alt="No"
-							width="30px" /></td>
+						<td><img th:if="${service.finished == 1}" src="/imgs/tick.png" alt="Sí" width="30px" /> <img
+								th:if="${service.finished != 1}" src="/imgs/cross.png" alt="No" width="30px" /></td>
 						<td>
-    <a th:href="@{'/servicio/rateServicio/' + ${service.id}}"
-       class="btn btn-link p-0 m-0"
-       th:if="${service.finished == 1 and service.studentId != null}"
-    >
-        <img src="/imgs/estrella.png" alt="Star img" width="30px">
-    </a>
-    <a href="#" onclick="return showErrorMessage();"
-       th:unless="${service.finished == 1 and service.studentId != null}"
-    >
-        <img src="/imgs/estrellaVacia.png" alt="Empty Star img" width="30px">
-    </a>
-</td>
+							<a th:href="@{'/servicio/rateServicio/' + ${service.id}}" class="btn btn-link p-0 m-0"
+								th:if="${service.finished == 1 and service.studentId != null}">
+								<img src="/imgs/estrella.png" alt="Star img" width="30px">
+							</a>
+							<a href="#" onclick="return showErrorMessage();"
+								th:unless="${service.finished == 1 and service.studentId != null}">
+								<img src="/imgs/estrellaVacia.png" alt="Empty Star img" width="30px">
+							</a>
+						</td>
 
 						<td>
-    <a th:href="@{'/servicio/commentServicio/' + ${service.id}}"
-       class="btn btn-link p-0 m-0"
-       th:if="${service.comment != null and !service.comment.equalsIgnoreCase('')}"
-    >
-        <img src="/imgs/comentDone.png" alt="Comment Done img" width="30px">
-    </a>
-    <a href="#" onclick="return showCommentErrorMessage();"
-       th:unless="${service.comment != null and !service.comment.equalsIgnoreCase('')}"
-    >
-        <img src="/imgs/coment.png" alt="Comment img" width="30px">
-    </a>
-</td>
+							<a th:href="@{'/servicio/commentServicio/' + ${service.id}}" class="btn btn-link p-0 m-0"
+								th:if="${service.comment != null and !service.comment.equalsIgnoreCase('')}">
+								<img src="/imgs/comentDone.png" alt="Comment Done img" width="30px">
+							</a>
+							<a href="#" onclick="return showCommentErrorMessage();"
+								th:unless="${service.comment != null and !service.comment.equalsIgnoreCase('')}">
+								<img src="/imgs/coment.png" alt="Comment img" width="30px">
+							</a>
+						</td>
 
 						<td>
-							<form th:action="@{'/servicio/editServicio/' + ${service.id}}"
-								method="get">
+							<form th:action="@{'/servicio/editServicio/' + ${service.id}}" method="get">
 								<button type="submit" class="btn btn-link p-0 m-0">
 									<img src="/imgs/edit.png" alt="Edit img" width="30px">
 								</button>
 							</form>
 						</td>
 						<td>
-							<form th:action="@{'/servicio/deleteServicio/' + ${service.id}}"
-								method="post"
+							<form th:action="@{'/servicio/deleteServicio/' + ${service.id}}" method="post"
 								onsubmit="return confirm('¿Estás seguro que quieres cambiar su estado?');">
 								<button type="submit" class="btn btn-link p-0 m-0">
 									<img src="/imgs/delete.png" alt="Edit img" width="30px">
@@ -120,47 +108,47 @@
 	<div id="selectedValue"></div>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-	function filterServices(selectedValue) {
-	    if (selectedValue === 'finishedServices') {
-	    	 window.location.href = '/business/home/finishedServices';
-	    }else if(selectedValue === 'no_asignados') {
-	    	 window.location.href = '/business/home/unassignedServices';
-	    }else if(selectedValue === 'asignados_no_realizados') {
-	    	 window.location.href = '/business/home/assignedButUncompletedServices';
-	    }else if(selectedValue === 'all') {
-	    	window.location.href = '/business/home';
-	    }
-	}
+		function filterServices(selectedValue) {
+			if (selectedValue === 'finishedServices') {
+				window.location.href = '/business/home/finishedServices';
+			} else if (selectedValue === 'no_asignados') {
+				window.location.href = '/business/home/unassignedServices';
+			} else if (selectedValue === 'asignados_no_realizados') {
+				window.location.href = '/business/home/assignedButUncompletedServices';
+			} else if (selectedValue === 'all') {
+				window.location.href = '/business/home';
+			}
+		}
 
 	</script>
-	
-	
-<script>
-    function filterServicesByProFamily(selectedValue) {
-        var tableRows = document.querySelectorAll("tbody#serviceTableBody tr");
 
-        tableRows.forEach(function(row) {
-            var proFamilyCell = row.querySelector("td:nth-child(4)");
-            if (proFamilyCell && proFamilyCell.textContent.trim() === selectedValue) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-        });
-    }
-</script>
-<script>
-    function showErrorMessage() {
-        alert("You can't valorate because the service is unassigned or is not finished!");
-        return false;
-    }
-</script>
-<script>
-    function showCommentErrorMessage() {
-        alert("You can't comment because the service is unassigned or is not finished!");
-        return false;
-    }
-</script>
+
+	<script>
+		function filterServicesByProFamily(selectedValue) {
+			var tableRows = document.querySelectorAll("tbody#serviceTableBody tr");
+
+			tableRows.forEach(function (row) {
+				var proFamilyCell = row.querySelector("td:nth-child(4)");
+				if (proFamilyCell && proFamilyCell.textContent.trim() === selectedValue) {
+					row.style.display = "";
+				} else {
+					row.style.display = "none";
+				}
+			});
+		}
+	</script>
+	<script>
+		function showErrorMessage() {
+			alert("You can't valorate because the service is unassigned or is not finished!");
+			return false;
+		}
+	</script>
+	<script>
+		function showCommentErrorMessage() {
+			alert("You can't comment because the service is unassigned or is not finished!");
+			return false;
+		}
+	</script>
 
 
 </body>

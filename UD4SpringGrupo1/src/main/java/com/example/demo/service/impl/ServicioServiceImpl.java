@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entity.Business;
 import com.example.demo.entity.Servicio;
 import com.example.demo.model.ServicioModel;
 import com.example.demo.repository.ServicioRepository;
@@ -178,6 +179,12 @@ public class ServicioServiceImpl implements ServicioService {
 	    }
 
 	    return servicioModels;
+	}
+
+	@Override
+	public List<ServicioModel> getServicesByBusinessId(Business business) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

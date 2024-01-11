@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import com.example.demo.entity.Business;
 import com.example.demo.entity.Servicio;
 import com.example.demo.model.ServicioModel;
 
@@ -25,6 +26,8 @@ public interface ServicioService {
 	List<ServicioModel> findServiciosByProFamily(String familyName);
 
 	List<ServicioModel> getAllServicios();
+	
+	public List<ServicioModel>getServicesByBusinessId(Business business);
 	
 //	List<ServicioModel> obtenerServiciosPorUsuario(int userId);
 

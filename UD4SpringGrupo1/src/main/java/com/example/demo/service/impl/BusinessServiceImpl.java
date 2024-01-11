@@ -96,4 +96,10 @@ public class BusinessServiceImpl implements BusinessService {
 	    return businessRepository.save(business);
 	}
 
+	@Override
+	public Business getIdByEmail(String email) {
+		Business business=businessRepository.findByEmail(email);
+		return business;
+	}
+
 }

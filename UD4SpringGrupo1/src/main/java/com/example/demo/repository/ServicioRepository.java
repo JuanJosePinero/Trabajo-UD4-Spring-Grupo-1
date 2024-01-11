@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.entity.Business;
 import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Servicio;
 import com.example.demo.entity.Student;
@@ -21,5 +22,6 @@ public interface ServicioRepository  extends JpaRepository<Servicio, Serializabl
 	List<Servicio>findByProfesionalFamilyId(ProFamily proFamilyId);
 	public abstract List<Servicio> findByStudentIdIsNull();
 	public abstract List<Servicio> findByStudentIdIsNotNullAndFinishedIsNot(int i);
+	public abstract List<Servicio> findByBusinessId(Business businessId);
 
 }

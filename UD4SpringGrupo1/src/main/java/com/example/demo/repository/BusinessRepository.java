@@ -11,5 +11,7 @@ import com.example.demo.entity.Business;
 public interface BusinessRepository extends JpaRepository<Business, Serializable>{
 	
 	public abstract Business findByName(String name);
+	
+	public abstract Business findByEmail(String email);
 
 }
