@@ -87,7 +87,7 @@ public class Business extends User{
 	@Override
 	public String toString() {
 		return "Business [name=" + name + ", address=" + address + ", phone=" + phone + ", logo=" + logo + ", deleted="
-				+ deleted + "]";
+				+ deleted + "id: "+getId()+"]";
 	}
 	
 	

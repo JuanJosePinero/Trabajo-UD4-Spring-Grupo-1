@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.entity.Business;
 import com.example.demo.entity.ProFamily;
+import com.example.demo.entity.Report;
 import com.example.demo.entity.Servicio;
 import com.example.demo.entity.Student;
 
@@ -23,5 +24,6 @@ public interface ServicioRepository  extends JpaRepository<Servicio, Serializabl
 	public abstract List<Servicio> findByStudentIdIsNull();
 	public abstract List<Servicio> findByStudentIdIsNotNullAndFinishedIsNot(int i);
 	public abstract List<Servicio> findByBusinessId(Business businessId);
+	public abstract List<Report> getReportsForServicesByBusinessId(Business business);
 
 }

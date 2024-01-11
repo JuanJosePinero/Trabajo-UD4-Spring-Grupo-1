@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ import com.example.demo.service.FilesStorageService;
 import com.example.demo.service.ReportService;
 import com.example.demo.service.ServicioService;
 import com.example.demo.service.StudentService;
+import com.example.demo.service.impl.ServicioServiceImpl;
 
 @Controller
 @RequestMapping("business")
@@ -49,270 +51,266 @@ public class BusinessController {
 	private static final String BUSINESS_HOME_VIEW = "/business/businessHome";
 	private static final String BUSINESS_REPORT_VIEW = "/business/businessReport";
 	private static final String BUSINESS_RATED_SERVICES_VIEW = "/business/ratedServices";
-	
+
 	@Autowired
 	@Qualifier("businessService")
-	 private BusinessService businessService;
-	
+	private BusinessService businessService;
+
 	@Autowired
 	@Qualifier("reportService")
-	 private ReportService reportService;
-	
+	private ReportService reportService;
+
 	@Autowired
 	@Qualifier("businessRepository")
-	 private BusinessRepository businessRepository;
+	private BusinessRepository businessRepository;
+
+	@Autowired
+	@Qualifier("servicioService")
+	private ServicioService servicioService;
 	
 	@Autowired
 	@Qualifier("servicioService")
-	 private ServicioService servicioService;
-	
+	private ServicioServiceImpl servicioServiceImpl;
+
 	@Autowired
 	@Qualifier("servicioRepository")
-	 private ServicioRepository servicioRepository;
-	
+	private ServicioRepository servicioRepository;
+
 	@Autowired
 	@Qualifier("proFamilyRepository")
-	 private ProFamilyRepository proFamilyRepository;
-	
+	private ProFamilyRepository proFamilyRepository;
+
 	@Autowired
 	@Qualifier("studentRepository")
 	private StudentRepository studentRepository;
-	
+
 	@Autowired
 	@Qualifier("reportRepository")
 	private ReportRepository reportRepository;
-	
+
 	@Autowired
 	@Qualifier("studentService")
 	private StudentService studentService;
-	
+
 	@Autowired
 	@Qualifier("filesStorageService")
-	 private FilesStorageService storageService;
-	
+	private FilesStorageService storageService;
+
 	@GetMapping("/list")
 	public String business(Model model) {
 		List<Business> businessList = businessRepository.findAll();
-		model.addAttribute("business1", businessList); 
-	    return BUSINESS_VIEW;
+		model.addAttribute("business1", businessList);
+		return BUSINESS_VIEW;
 	}
-	
+
 	@GetMapping("/addBusiness")
 	public String addBusiness(Model model) {
-	    model.addAttribute("businessModel", new BusinessModel());
-	    List<Student> studentEmails = studentRepository.findAll();
-        model.addAttribute("studentEmails", studentEmails);
-	    return ADD_BUSINESS_VIEW;
+		model.addAttribute("businessModel", new BusinessModel());
+		List<Student> studentEmails = studentRepository.findAll();
+		model.addAttribute("studentEmails", studentEmails);
+		return ADD_BUSINESS_VIEW;
 	}
-	
+
 //	@PostMapping("/addBusiness")
 //	public String saveAddBusiness(@ModelAttribute BusinessModel businessModel, RedirectAttributes flash) {
 //		businessService.addBusiness(businessModel);
 //	    flash.addFlashAttribute("success", "Business registered succesfully!");
 //	    return "redirect:/business/list";
 //	}
-	
+
 	@PostMapping("/addBusiness")
 	public String addEmpresa(@ModelAttribute("empresa") BusinessModel businessModel,
 			@RequestParam("logoImagen") MultipartFile file, @RequestParam("logo") String logoName,
 			RedirectAttributes flash) {
 
 		if (businessModel != null) {
-			if (businessModel.getName().isEmpty() || businessModel.getAddress().isEmpty() || businessModel.getEmail().isEmpty() || businessModel.getPhone().isEmpty()) {
+			if (businessModel.getName().isEmpty() || businessModel.getAddress().isEmpty()
+					|| businessModel.getEmail().isEmpty() || businessModel.getPhone().isEmpty()) {
 				flash.addFlashAttribute("error", "Some fields are empty");
 				return "redirect:/business/addBusiness";
 			} else {
-				
+
 				String projectDir = System.getProperty("user.dir");
 
-				
 				String uploadDir = projectDir + "/src/main/resources/static/imgs/business/";
 
 				try {
-					
+
 					File uploadDirFile = new File(uploadDir);
 					if (!uploadDirFile.exists()) {
 						uploadDirFile.mkdirs();
 					}
-					file.transferTo(new File(uploadDir + logoName));					
+					file.transferTo(new File(uploadDir + logoName));
 				} catch (IOException e) {
 					e.printStackTrace();
-				}			    
+				}
 				Student student = studentRepository.findByEmail(businessModel.getEmail());
 				if (student != null) {
-			        student.setRole("ROLE_BUSINESS");
-			        student.setEnabled(1);
-			        student.setDeleted(0);
-			        StudentModel studentBusiness = studentService.entity2model(student);
+					student.setRole("ROLE_BUSINESS");
+					student.setEnabled(1);
+					student.setDeleted(0);
+					StudentModel studentBusiness = studentService.entity2model(student);
 					studentService.updateStudent(studentBusiness);
-			    }
+				}
 				businessModel.setLogo(logoName);
-				
-				 Business business = businessService.model2entity(businessModel);
-				 businessService.saveBusiness(business);
+
+				Business business = businessService.model2entity(businessModel);
+				businessService.saveBusiness(business);
 				flash.addFlashAttribute("success", "Business created succesfully");
 			}
 		}
 		return "redirect:/business/list";
 	}
-	
+
 	@GetMapping("/editBusiness/{businessID}")
-	public String editBusiness(@PathVariable("businessID")int businessId,Model model) {
-		Business business=businessService.getBusinessById(businessId);
-		model.addAttribute("businessModel", business); 
-	    return EDIT_BUSINESS_VIEW;
+	public String editBusiness(@PathVariable("businessID") int businessId, Model model) {
+		Business business = businessService.getBusinessById(businessId);
+		model.addAttribute("businessModel", business);
+		return EDIT_BUSINESS_VIEW;
 	}
-	
 
 	@PostMapping("/editBusiness")
-	public String saveEditedBusiness(@ModelAttribute BusinessModel businessModel,
-	                                 RedirectAttributes flash,
-	                                 @RequestParam("logoImagen") MultipartFile file,
-	                                 @RequestParam("logo") String logoName) {
-	    if (businessModel.getId() > 0) {
-	        Business business = businessRepository.findById(businessModel.getId()).orElse(null);
+	public String saveEditedBusiness(@ModelAttribute BusinessModel businessModel, RedirectAttributes flash,
+			@RequestParam("logoImagen") MultipartFile file, @RequestParam("logo") String logoName) {
+		if (businessModel.getId() > 0) {
+			Business business = businessRepository.findById(businessModel.getId()).orElse(null);
 
-	        if (business != null) {
-	           
-	            String oldLogoName = business.getLogo();
+			if (business != null) {
 
-	            business.setName(businessModel.getName());
-	            business.setAddress(businessModel.getAddress());
-	            business.setEmail(businessModel.getEmail());
-	            business.setPhone(businessModel.getPhone());
+				String oldLogoName = business.getLogo();
 
-	            String projectDir = System.getProperty("user.dir");
-	            String uploadDir = projectDir + "/src/main/resources/static/imgs/business/";
+				business.setName(businessModel.getName());
+				business.setAddress(businessModel.getAddress());
+				business.setEmail(businessModel.getEmail());
+				business.setPhone(businessModel.getPhone());
 
-	            try {
-	                File uploadDirFile = new File(uploadDir);
-	                if (!uploadDirFile.exists()) {
-	                    uploadDirFile.mkdirs();
-	                }
+				String projectDir = System.getProperty("user.dir");
+				String uploadDir = projectDir + "/src/main/resources/static/imgs/business/";
 
-	               
-	                file.transferTo(new File(uploadDir + logoName));
-	            } catch (IOException e) {
-	                e.printStackTrace();
-	            }
+				try {
+					File uploadDirFile = new File(uploadDir);
+					if (!uploadDirFile.exists()) {
+						uploadDirFile.mkdirs();
+					}
 
-	           
-	            business.setLogo(logoName);
+					file.transferTo(new File(uploadDir + logoName));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 
-	            
-	            Business updatedBusiness = businessService.updateBusiness(business);
+				business.setLogo(logoName);
 
-	            if (updatedBusiness != null) {
-	                
-	                if (oldLogoName != null && !oldLogoName.equals(logoName)) {
-	                    String oldLogoPath = uploadDir + oldLogoName;
-	                    File oldLogoFile = new File(oldLogoPath);
-	                    if (oldLogoFile.exists()) {
-	                        oldLogoFile.delete();
-	                    }
-	                }
+				Business updatedBusiness = businessService.updateBusiness(business);
 
-	                flash.addFlashAttribute("success", "Business updated successfully!");
-	                System.out.println("Success: Business updated. ID: " + updatedBusiness.getId() + ", Name: " + updatedBusiness.getName());
-	            } else {
-	                flash.addFlashAttribute("error", "Failed to update Business.");
-	                System.out.println("Failed: Unable to update Business.");
-	            }
-	        } else {
-	            flash.addFlashAttribute("error", "Business not found.");
-	            System.out.println("Failed: Business not found.");
-	        }
-	    } else {
-	        flash.addFlashAttribute("error", "Invalid Business ID.");
-	        System.out.println("Failed: Invalid Business ID.");
-	    }
+				if (updatedBusiness != null) {
 
-	    return "redirect:/business/list";
+					if (oldLogoName != null && !oldLogoName.equals(logoName)) {
+						String oldLogoPath = uploadDir + oldLogoName;
+						File oldLogoFile = new File(oldLogoPath);
+						if (oldLogoFile.exists()) {
+							oldLogoFile.delete();
+						}
+					}
+
+					flash.addFlashAttribute("success", "Business updated successfully!");
+					System.out.println("Success: Business updated. ID: " + updatedBusiness.getId() + ", Name: "
+							+ updatedBusiness.getName());
+				} else {
+					flash.addFlashAttribute("error", "Failed to update Business.");
+					System.out.println("Failed: Unable to update Business.");
+				}
+			} else {
+				flash.addFlashAttribute("error", "Business not found.");
+				System.out.println("Failed: Business not found.");
+			}
+		} else {
+			flash.addFlashAttribute("error", "Invalid Business ID.");
+			System.out.println("Failed: Invalid Business ID.");
+		}
+
+		return "redirect:/business/list";
 	}
 
-
 	@PostMapping("/deleteBusiness/{businessId}")
-	public String delete(@PathVariable("businessId") int businessId, Model model,RedirectAttributes flash) {
-	    Business business = businessService.getBusinessById(businessId);
+	public String delete(@PathVariable("businessId") int businessId, Model model, RedirectAttributes flash) {
+		Business business = businessService.getBusinessById(businessId);
 
-	    if (business != null) {
-	        
-	        String imageName = business.getLogo();
+		if (business != null) {
 
-	        
-	        businessService.deleteBusiness(businessId);
+			String imageName = business.getLogo();
 
-	        
-	        if (imageName != null && !imageName.isEmpty()) {
-	            String projectDir = System.getProperty("user.dir");
-	            String imagePath = projectDir + "/src/main/resources/static/imgs/business/" + imageName;
-	            File imageFile = new File(imagePath);
+			businessService.deleteBusiness(businessId);
 
-	            if (imageFile.exists()) {
-	                imageFile.delete();
-	            }
-	        }
-	        flash.addFlashAttribute("success", "Business updated successfully!");
-	        return "redirect:/business/list";
-	    } else {
-	        
-	        return "redirect:/business/list";
-	    }
+			if (imageName != null && !imageName.isEmpty()) {
+				String projectDir = System.getProperty("user.dir");
+				String imagePath = projectDir + "/src/main/resources/static/imgs/business/" + imageName;
+				File imageFile = new File(imagePath);
+
+				if (imageFile.exists()) {
+					imageFile.delete();
+				}
+			}
+			flash.addFlashAttribute("success", "Business updated successfully!");
+			return "redirect:/business/list";
+		} else {
+
+			return "redirect:/business/list";
+		}
 	}
 
 	@GetMapping("/home")
 	public String Business(Model model) {
 		List<Servicio> servicios = servicioRepository.findAll();
 		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
-        model.addAttribute("servicio", servicios);
-        model.addAttribute("profesionalFamilies", profesionalFamilies);
-	    return BUSINESS_HOME_VIEW;
+		model.addAttribute("servicio", servicios);
+		model.addAttribute("profesionalFamilies", profesionalFamilies);
+		return BUSINESS_HOME_VIEW;
 	}
-	
+
 	@GetMapping("/home/finishedServices")
 	public String getFinishedServices(Model model) {
-	    List<ServicioModel> finishedServices = servicioService.getFinishedServicios();
-	    List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
-	    model.addAttribute("servicio", finishedServices);
-	    model.addAttribute("profesionalFamilies", profesionalFamilies);
-	    return BUSINESS_HOME_VIEW;
+		List<ServicioModel> finishedServices = servicioService.getFinishedServicios();
+		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
+		model.addAttribute("servicio", finishedServices);
+		model.addAttribute("profesionalFamilies", profesionalFamilies);
+		return BUSINESS_HOME_VIEW;
 	}
-	
+
 	@GetMapping("/home/unassignedServices")
 	public String getUnassignedServices(Model model) {
-	    List<ServicioModel> finishedServices = servicioService.getUnassignedServicios();
-	    List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
-	    model.addAttribute("servicio", finishedServices);
-	    model.addAttribute("profesionalFamilies", profesionalFamilies);
-	    return BUSINESS_HOME_VIEW;
+		List<ServicioModel> finishedServices = servicioService.getUnassignedServicios();
+		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
+		model.addAttribute("servicio", finishedServices);
+		model.addAttribute("profesionalFamilies", profesionalFamilies);
+		return BUSINESS_HOME_VIEW;
 	}
-	
+
 	@GetMapping("/home/assignedButUncompletedServices")
 	public String getAssignedButUncompletedServices(Model model) {
-	    List<ServicioModel> finishedServices = servicioService.getAssignedButUncompletedServices();
-	    List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
-	    model.addAttribute("servicio", finishedServices);
-	    model.addAttribute("profesionalFamilies", profesionalFamilies);
-	    return BUSINESS_HOME_VIEW;
+		List<ServicioModel> finishedServices = servicioService.getAssignedButUncompletedServices();
+		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
+		model.addAttribute("servicio", finishedServices);
+		model.addAttribute("profesionalFamilies", profesionalFamilies);
+		return BUSINESS_HOME_VIEW;
 	}
-	
+
 	@GetMapping("/home/findByProFamily")
-	public String getServiciosByProFamily(Model model, @RequestParam(name = "familyName", required = false) String familyName) {
-	    List<ServicioModel> servicios;
+	public String getServiciosByProFamily(Model model,
+			@RequestParam(name = "familyName", required = false) String familyName) {
+		List<ServicioModel> servicios;
 
-	    if (familyName != null && !familyName.isEmpty()) {
-	        servicios = servicioService.findServiciosByProFamily(familyName);
-	    } else {
-	        servicios = servicioService.getAssignedButUncompletedServices();
-	    }
+		if (familyName != null && !familyName.isEmpty()) {
+			servicios = servicioService.findServiciosByProFamily(familyName);
+		} else {
+			servicios = servicioService.getAssignedButUncompletedServices();
+		}
 
-	    List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
-	    model.addAttribute("servicio", servicios);
-	    model.addAttribute("profesionalFamilies", profesionalFamilies);
-	    return BUSINESS_HOME_VIEW;
+		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
+		model.addAttribute("servicio", servicios);
+		model.addAttribute("profesionalFamilies", profesionalFamilies);
+		return BUSINESS_HOME_VIEW;
 	}
 
-	
 //	@GetMapping("/home")
 //	public String business(@RequestParam(name = "filterBy", required = false) String filterBy, Model model) {
 //	    List<ServicioModel> servicios;
@@ -333,42 +331,39 @@ public class BusinessController {
 //	    return BUSINESS_HOME_VIEW;
 //	}
 
-	
 	@GetMapping("/reports")
 	public String Reports(Model model) {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String userId = ((UserDetails) principal).getUsername();
-	       
-        StudentModel student=studentService.getStudentByName(userId);
-        String name=student.getName();
-        String email=student.getEmail();
-        System.out.println("El email de "+name+" es : "+email);
-        Business business=businessService.getIdByEmail(email);
-        
-        int businessId=business.getId();
-        System.out.println("IDDD: "+businessId);
-		List<Report> reports = reportRepository.findAll();
-		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
-        model.addAttribute("report", reports);
-        model.addAttribute("profesionalFamilies", profesionalFamilies);
-        model.addAttribute("businessId",businessId);
-	    return BUSINESS_REPORT_VIEW;
-	}
+
+		StudentModel student = studentService.getStudentByName(userId);
+		String email = student.getEmail();
+		Business business = businessService.getIdByEmail(email);
+		
+		 List<Report> reports = servicioService.getReportsForServicesByBusinessId(business);
+		  
 	
+		
+		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
+		model.addAttribute("report", reports);
+		model.addAttribute("profesionalFamilies", profesionalFamilies);
+
+		return BUSINESS_REPORT_VIEW;
+	}
+
 	@GetMapping("/reports/filter")
 	@ResponseBody
 	public List<Report> filterReportsByProFamily(@RequestParam String familyName) {
-	    return reportService.findReportsByProFamily(familyName);
+		return reportService.findReportsByProFamily(familyName);
 	}
 
-	
 	@GetMapping("/ratedServicios")
 	public String ratedServicios(Model model) {
 		List<Servicio> servicios = servicioRepository.findAll();
 		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
-        model.addAttribute("servicio", servicios);
-        model.addAttribute("profesionalFamilies", profesionalFamilies);
-	    return BUSINESS_RATED_SERVICES_VIEW;
+		model.addAttribute("servicio", servicios);
+		model.addAttribute("profesionalFamilies", profesionalFamilies);
+		return BUSINESS_RATED_SERVICES_VIEW;
 	}
 
 }

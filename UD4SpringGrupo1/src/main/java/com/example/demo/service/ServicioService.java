@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.List;
 
 import com.example.demo.entity.Business;
+import com.example.demo.entity.Report;
 import com.example.demo.entity.Servicio;
 import com.example.demo.model.ServicioModel;
 
@@ -29,6 +30,8 @@ public interface ServicioService {
 	
 	public List<ServicioModel>getServicesByBusinessId(Business business);
 	
-//	List<ServicioModel> obtenerServiciosPorUsuario(int userId);
+	public abstract List<Report> getReportsForServicesByBusinessId(Business business);
+	
+	Servicio getServicioById(int serviceId);
 
 }

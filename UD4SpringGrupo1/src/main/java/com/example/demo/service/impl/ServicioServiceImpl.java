@@ -9,8 +9,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Business;
+import com.example.demo.entity.Report;
 import com.example.demo.entity.Servicio;
 import com.example.demo.model.ServicioModel;
+import com.example.demo.repository.ReportRepository;
 import com.example.demo.repository.ServicioRepository;
 import com.example.demo.service.ServicioService;
 
@@ -19,13 +21,15 @@ import com.example.demo.service.ServicioService;
 public class ServicioServiceImpl implements ServicioService {
 
     private final ServicioRepository servicioRepository;
-
+    
     @Autowired
+    private ReportRepository reportRepository;
+
     public ServicioServiceImpl(ServicioRepository servicioRepository) {
         this.servicioRepository = servicioRepository;
     }
     
-    private Servicio model2entity(ServicioModel servicioModel) {
+    public Servicio model2entity(ServicioModel servicioModel) {
 		ModelMapper mapper = new ModelMapper();
 		return mapper.map(servicioModel, Servicio.class);
 	}
@@ -34,24 +38,6 @@ public class ServicioServiceImpl implements ServicioService {
 		ModelMapper mapper = new ModelMapper();
 		return mapper.map(servicio, ServicioModel.class);
 	}
-	
-//	 @Override
-//	    public List<ServicioModel> obtenerServiciosPorUsuario(int userId) {
-//	        List<ServicioModel> serviciosDelUsuario = new ArrayList<>();
-//
-//	        // Obtener todos los servicios
-//	        List<Servicio> todosLosServicios = servicioRepository.findAll();
-//
-//	        // Recorrer todos los servicios y agregar los del usuario al resultado
-//	        for (Servicio servicio : todosLosServicios) {
-//	        	if (servicio.getId() == userId) {
-//	        	    serviciosDelUsuario.add(servicio);
-//	        	}
-//
-//	        }
-//
-//	        return serviciosDelUsuario;
-//	    }
 	
 	@Override
 	public Servicio addServicio(ServicioModel servicioModel) {
@@ -183,9 +169,39 @@ public class ServicioServiceImpl implements ServicioService {
 
 	@Override
 	public List<ServicioModel> getServicesByBusinessId(Business business) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Servicio>modelServices=servicioRepository.findAll();
+		List<ServicioModel>services=new ArrayList<>();
+		System.out.println("FJDSFJ: "+business.getId());
+		for(Servicio servicio: modelServices) {
+			if(servicio.getBusinessId()!=null && servicio.getBusinessId().getId() == business.getId()) {
+			ServicioModel servicioModel = entity2model(servicio);
+			services.add(servicioModel);
+			}
+		}
+		
+		return services;
+		
 	}
+
+	@Override
+    public List<Report> getReportsForServicesByBusinessId(Business business) {
+        List<ServicioModel> services = getServicesByBusinessId(business);
+        List<Report> reports = new ArrayList<>();
+
+        for (ServicioModel servicioModel : services) {
+            List<Report> reportsForService = reportRepository.findAllByServicioId(model2entity(servicioModel));
+            reports.addAll(reportsForService);
+        }
+
+        return reports;
+    }
+
+	@Override
+	public Servicio getServicioById(int serviceId) {
+        return servicioRepository.findById(serviceId);
+    }
+	
+	
 
 
 
