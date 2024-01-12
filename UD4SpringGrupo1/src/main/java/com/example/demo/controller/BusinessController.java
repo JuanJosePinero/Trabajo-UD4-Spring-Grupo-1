@@ -3,7 +3,9 @@ package com.example.demo.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -340,22 +342,48 @@ public class BusinessController {
 		String email = student.getEmail();
 		Business business = businessService.getIdByEmail(email);
 		
-		 List<Report> reports = servicioService.getReportsForServicesByBusinessId(business);
+		List<Report> reports = servicioService.getReportsForServicesByBusinessId(business);
 		  
-	
+		List<Servicio> businessIdServices=reports.stream().map(report->report.getServicioId()).collect(Collectors.toList());
+		 
+		System.out.println("QUEEE: "+businessIdServices);
 		
-		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
+		List<ProFamily> profesionalFamilies = servicioServiceImpl.getProfessionalFamiliesByBusinessId(businessIdServices);
 		model.addAttribute("report", reports);
 		model.addAttribute("profesionalFamilies", profesionalFamilies);
+		model.addAttribute("businessIdServices",businessIdServices);
 
 		return BUSINESS_REPORT_VIEW;
 	}
 
-	@GetMapping("/reports/filter")
-	@ResponseBody
-	public List<Report> filterReportsByProFamily(@RequestParam String familyName) {
-		return reportService.findReportsByProFamily(familyName);
+	@GetMapping("/reports/filterByFamily")
+	public String filterByFamily(@RequestParam(name = "profesionalFamilyId", required = false) long profesionalFamilyId, Model model) {
+	    // Obtener el usuario actual
+	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    String userId = ((UserDetails) principal).getUsername();
+	    StudentModel student = studentService.getStudentByName(userId);
+	    String email = student.getEmail();
+	    Business business = businessService.getIdByEmail(email);
+	    
+	    
+	    ProFamily selectedFamily = proFamilyRepository.findById(profesionalFamilyId).orElse(null);
+	    System.out.println("QUE SE VE: "+selectedFamily);
+	    List<Report> reports = servicioService.getReportsForServicesByBusinessId(business);
+
+	    
+	    reports.sort(Comparator.comparing(report -> report.getServicioId().getProfesionalFamilyId().getName()));
+
+	    
+	    model.addAttribute("reports", reports);
+
+	    
+	    return BUSINESS_REPORT_VIEW; 
 	}
+
+
+
+
+
 
 	@GetMapping("/ratedServicios")
 	public String ratedServicios(Model model) {

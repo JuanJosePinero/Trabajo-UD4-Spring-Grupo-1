@@ -18,11 +18,13 @@ import com.example.demo.entity.Business;
 import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Servicio;
 import com.example.demo.model.ServicioModel;
+import com.example.demo.model.StudentModel;
 import com.example.demo.repository.ProFamilyRepository;
 import com.example.demo.repository.ServicioRepository;
 import com.example.demo.service.BusinessService;
 import com.example.demo.service.ProFamilyService;
 import com.example.demo.service.ServicioService;
+import com.example.demo.service.StudentService;
 
 @Controller
 @RequestMapping("/servicio")
@@ -39,6 +41,10 @@ public class ServicioController {
 	@Autowired
 	@Qualifier("proFamilyService")
     private ProFamilyService proFamilyService;
+	
+	@Autowired
+	@Qualifier("studentService")
+    private StudentService studentService;
 	
 	@Autowired
 	@Qualifier("businessService")
@@ -70,16 +76,24 @@ public class ServicioController {
 
 	@PostMapping("/addServicio")
 	public String addServicioPost(@ModelAttribute ServicioModel servicioModel, Model model) {
+	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    String username = ((UserDetails) principal).getUsername();
+	    System.out.println("UserId "+username);
+	    StudentModel student = studentService.getStudentByName(username);
+	    String email = student.getEmail();
+	    System.out.println("EMAIL STUDENT"+email);
+	    
+	    Business business = businessService.getIdByEmail(email);
+	    System.out.println("BUSIUNESSSSSSSSSSSSSS"+business);
 
-		 model.addAttribute("servicioModel", new ServicioModel());
-		 Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		 String userId = ((UserDetails) principal).getUsername();
-		 Business business = businessService.getIdByEmail(userId);
-//		 int businessId = business.getId();
-		 
-		 servicioModel.setBusinessId(business);
-		 System.out.println("businesssssss: "+business);
-		 servicioService.addServicio(servicioModel);
+	    servicioModel.setBusinessId(business);
+
+	    model.addAttribute("servicioModel", servicioModel);
+
+	    model.addAttribute("business", business);
+
+	    servicioService.addServicio(servicioModel);
+
 	    return "redirect:/business/home";
 	}
 

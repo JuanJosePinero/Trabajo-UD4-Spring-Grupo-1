@@ -1,6 +1,8 @@
 package com.example.demo.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -9,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Business;
+import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Report;
 import com.example.demo.entity.Servicio;
 import com.example.demo.model.ServicioModel;
@@ -206,9 +209,14 @@ public class ServicioServiceImpl implements ServicioService {
 	public Servicio getServicioById(int serviceId) {
         return servicioRepository.findById(serviceId);
     }
-	
-	
 
-
+	public List<ProFamily> getProfessionalFamiliesByBusinessId(List<Servicio>listServices){
+		List<ProFamily>reports=new ArrayList<>();
+		for(Servicio servicio: listServices) {
+			reports.add(servicio.getProfesionalFamilyId());
+		}
+		Collections.sort(reports, Comparator.comparing(ProFamily::getName));
+		return reports;
+	}
 
 }

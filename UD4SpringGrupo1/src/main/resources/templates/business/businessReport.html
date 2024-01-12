@@ -2,81 +2,102 @@
 <html>
 
 <head>
-<meta charset="UTF-8">
-<title>Your reports</title>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-	integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-	crossorigin="anonymous">
-<link href="/css/styles.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Your reports</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="/css/styles.css" rel="stylesheet">
 </head>
 
 <body class="bodyBusiness">
-	<div th:replace="/main/CustomNavbar.html"></div>
+    <div th:replace="/main/CustomNavbar.html"></div>
 
-	<div class="info-container2">
-		<div class="info-block-head">
-			<h3>Your Reports</h3>
-		</div>
-		<div class="info-block2">
-			<div style="display: flex; justify-content: space-between;">
-				<span>Table with all your reports</span> <span> <label for="filterByProFamily">Filter by Profesional Family:</label>
-<select id="filterByProFamily" name="filterByProFamily">
-    <option value="none">None</option>
-    <th:block th:each="family : ${profesionalFamilies}">
-        <option th:value="${family.name}" th:text="${family.name}"></option>
-    </th:block>
-</select>
+    <div class="info-container2">
+        <div class="info-block-head">
+            <h3>Your Reports</h3>
+        </div>
+        <div class="info-block2">
+            <!-- Formulario para filtrar por familia profesional -->
 
-				</span>
-			</div>
+            <!-- Supongamos que "profesionalFamilies" es una lista de objetos ProFamily con un campo "id" que deseas comparar -->
+            <select id="familiaProfesional" name="familiaProfesional">
+                <option value="">Seleccione una familia profesional</option>
+                <th:block th:each="family : ${profesionalFamilies}">
+                    <option th:value="${family.id}" th:text="${family.name}"></option>
+                </th:block>
+            </select>
 
-			<table class="tableBusiness">
-				<thead>
-					<tr>
-						<th>Date</th>
-						<th>Service Name</th>
-						<th>Report</th>
-						<th>Student Name</th>
-						<th>Service Time</th>
-					</tr>
-				</thead>
-				<tbody id="reportTableBody" th:each="reports : ${report}">
-					<tr data-family-name="${reports.profesionalFamilyId.name}">
-						<td th:hidden="${reports.id}"></td>
-						<td th:hidden="${reports.servicioId.profesionalFamilyId.name}"></td>
-						<td th:text="${reports.fullDate}"></td>
-						<td th:text="${reports.servicioId.title}"></td>
-						<td th:text="${reports.report}"></td>
-						<td th:text="${reports.studentId.name}"></td>
-						<td th:text="'&#x231A; ' + ${reports.serviceTime} + ' hours'"></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$("#filterByProFamily").change(function() {
-    var selectedFamilyName = $(this).val();
-    var studentUsername = /* Obtén el valor de #authentication.principal.getUsername() aquí */;
+            <div style="display: flex; justify-content: space-between;">
+                <span>Table with all your reports</span>
+            </div>
 
-    if (selectedFamilyName === "none") {
-        // Si se selecciona "None", redirigir a la página original con el parámetro studentUsername
-        window.location.href = "/reports?studentUsername=" + encodeURIComponent(studentUsername);
-    } else {
-        // Realizar una solicitud AJAX para obtener los informes filtrados
-        $.get("/reports/filter", { familyName: selectedFamilyName }, function(data) {
-            // Ocultar todas las filas y luego mostrar solo las que coinciden con la familia seleccionada
-            $("#reportTableBody tr").hide();
-            $.each(data, function(index, report) {
-                $("#reportTableBody tr[data-family-name='" + report.servicioId.profesionalFamilyId.name + "']").show();
-            });
+            <table class="tableBusiness">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Service Name</th>
+                        <th>Report</th>
+                        <th>Student Name</th>
+                        <th>Service Time</th>
+                    </tr>
+                </thead>
+                <tbody id="reportTableBody" th:each="report : ${report}">
+                    <tr data-family-name="${report.servicioId.profesionalFamilyId.name}">
+                        <td th:hidden="${report.id}"></td>
+                        <td th:text="${report.fullDate}"></td>
+                        <td th:text="${report.servicioId.title}"></td>
+                        <td th:text="${report.report}"></td>
+                        <td th:text="${report.studentId.name}"></td>
+                        <td th:text="'&#x231A; ' + ${report.serviceTime} + ' hours'"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    document.getElementById("familiaProfesional").addEventListener("change", function () {
+        var selectedFamilyId = this.value; // Obtener el ID de la familia seleccionada
+
+        // Obtener los profesional_family_id de los servicios desde el modelo (puedes incluirlo en tu HTML)
+        var businessIdServices = /* Obtén esta lista desde tu modelo en el servidor o desde el HTML */;
+
+        // Filtrar servicios que coincidan con la familia seleccionada
+        var filteredServices = businessIdServices.filter(function (service) {
+            return service.profesionalFamilyId.id == selectedFamilyId;
         });
-    }
-});
-</script>
 
+        // Limpiar el contenido actual del tbody
+        var tbody = document.getElementById("reportTableBody");
+        tbody.innerHTML = "";
+
+        // Verificar si hay servicios filtrados
+        if (filteredServices.length > 0) {
+            // Iterar sobre los servicios filtrados y agregarlos al tbody
+            filteredServices.forEach(function (service) {
+                var row = tbody.insertRow();
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3);
+                var cell5 = row.insertCell(4);
+
+                // Asignar los valores a las celdas (ajusta según tus propiedades reales)
+                cell1.innerText = service.fullDate;
+                cell2.innerText = service.servicioId.title;
+                cell3.innerText = service.report;
+                cell4.innerText = service.studentId.name;
+                cell5.innerText = '\u231A ' + service.serviceTime + ' hours';
+            });
+        } else {
+            // Agregar una fila indicando que no hay reportes
+            var noReportRow = tbody.insertRow();
+            var noReportCell = noReportRow.insertCell(0);
+            noReportCell.colSpan = 5;
+            noReportCell.innerText = "No reports with that filter.";
+        }
+    });
+</script>
 
 
 

@@ -36,19 +36,21 @@ public class ReportServiceImpl implements ReportService{
 	}
 	
 	@Override
-	public List<Report> findReportsByProFamily(String familyName) {
+	public List<Report> findReportsByServiceProFamily(String familyName) {
 	    List<Report> reports = new ArrayList<>();
 
 	    for (Report report : reportRepository.findAll()) {
 	        Servicio servicio = report.getServicioId();
-	        if (servicio != null && servicio.getProfesionalFamilyId() != null && servicio.getProfesionalFamilyId().getName().equals(familyName)) {
+	        if (servicio != null && servicio.getProfesionalFamilyId() != null &&
+	            servicio.getProfesionalFamilyId().getName().equals(familyName)) {
 	            reports.add(report);
 	        }
 	    }
-	    System.out.println(reports);
-	    
+	    System.out.println("REPORTEEEES: " + reports);
+
 	    return reports;
 	}
+
 	
 	@Override
 	public Report addReport(ReportModel reportModel) {

@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.List;
 
 import com.example.demo.entity.Business;
+import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Report;
 import com.example.demo.entity.Servicio;
 import com.example.demo.model.ServicioModel;
