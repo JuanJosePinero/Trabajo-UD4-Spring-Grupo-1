@@ -8,20 +8,47 @@
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
         crossorigin="anonymous">
   <link href="/css/styles.css" rel="stylesheet">
+    <style>
+    .green-background {
+      background-color: lightgreen;
+    }
+
+    .light-red-background {
+      background-color: lightcoral;
+    }
+
+    /* Modificaciones para el div */
+    .centered-container {
+      text-align: center;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background-color: rgba(248, 249, 250, 0.8);
+      width: 50%; /* Ajusta el ancho según tus preferencias */
+    }
+    
+    .centered-title {
+      text-align: center;
+      margin: auto;
+    }
+  </style>
 </head>
 <body class="bodyBusiness">
     <div th:replace="/main/CustomNavbar.html"></div>
 
-    <div class="info-container2">
-        <div class="info-block-head">
+<br><br>
+   <div class="centered-container">
+        <div class="centered-title">
             <h3>Your valorations</h3>
         </div>
         <div class="info-block2">
-            <p>Your valorations</p>
+            <p>Here are all the valorations that you set to your services</p>
+            <hr>
             <table class="tableBusiness">
                 <thead>
                     <tr>
-                        <th>Title</th>
+                        <th>Service Title</th>
                         <th>Valoration</th>
                     </tr>
                 </thead>
