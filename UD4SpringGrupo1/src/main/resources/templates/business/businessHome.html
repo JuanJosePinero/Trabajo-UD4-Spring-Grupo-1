@@ -55,7 +55,7 @@
 					</tr>
 				</thead>
 				<tbody id="serviceTableBody">
-					<tr th:each="service : ${servicio}" th:if="${service.deleted != 1}">
+					<tr th:each="service : ${servicio}" th:if="${service.deleted != 1 and service.businessId?.id == business.id}">
 						<td th:hidden="${service.id}"></td>
 						<td th:text="${service.title}"></td>
 						<td th:text="${service.description}"></td>

@@ -21,8 +21,7 @@
                 <input th:field="*{description}" type="text" class="form-control" placeholder="Description" autofocus="true" required />
                 <input th:field="*{comment}" type="hidden" class="form-control" placeholder="Comment" autofocus="true" />
                 <input th:field="*{finished}" type="hidden" class="form-control" placeholder="Finished" autofocus="true" />
-                <input th:field="*{businessId}" type="hidden" />
-
+               <input th:field="*{businessId}" type="hidden" />
                 <label for="profesionalFamily">Profesional Family:</label>
                 <select name="profesionalFamilyId" class="form-control">
                     <option th:each="proFamily : ${profesionalFamilies}" th:value="${proFamily.id}" th:text="${proFamily.name}"></option>

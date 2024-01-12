@@ -262,37 +262,78 @@ public class BusinessController {
 
 	@GetMapping("/home")
 	public String Business(Model model) {
-		List<Servicio> servicios = servicioRepository.findAll();
-		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
-		model.addAttribute("servicio", servicios);
-		model.addAttribute("profesionalFamilies", profesionalFamilies);
-		return BUSINESS_HOME_VIEW;
+	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    String username = ((UserDetails) principal).getUsername();
+	    System.out.println("UserId " + username);
+	    StudentModel student = studentService.getStudentByName(username);
+	    String email = student.getEmail();
+	    System.out.println("EMAIL STUDENT" + email);
+	    Business business = businessService.getIdByEmail(email);
+	    System.out.println("BUSIUNESSSSSSSSSSSSSS" + business);
+
+	    List<Servicio> servicios = servicioRepository.findAll();
+	    List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
+	    model.addAttribute("servicio", servicios);
+	    model.addAttribute("profesionalFamilies", profesionalFamilies);
+	    model.addAttribute("business", business);
+	    return BUSINESS_HOME_VIEW;
 	}
+
 
 	@GetMapping("/home/finishedServices")
 	public String getFinishedServices(Model model) {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    String username = ((UserDetails) principal).getUsername();
+	    System.out.println("UserId " + username);
+	    StudentModel student = studentService.getStudentByName(username);
+	    String email = student.getEmail();
+	    System.out.println("EMAIL STUDENT" + email);
+	    Business business = businessService.getIdByEmail(email);
+	    System.out.println("BUSIUNESSSSSSSSSSSSSS" + business);
+	    
 		List<ServicioModel> finishedServices = servicioService.getFinishedServicios();
 		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
 		model.addAttribute("servicio", finishedServices);
 		model.addAttribute("profesionalFamilies", profesionalFamilies);
+	    model.addAttribute("business", business);
 		return BUSINESS_HOME_VIEW;
 	}
 
 	@GetMapping("/home/unassignedServices")
 	public String getUnassignedServices(Model model) {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    String username = ((UserDetails) principal).getUsername();
+	    System.out.println("UserId " + username);
+	    StudentModel student = studentService.getStudentByName(username);
+	    String email = student.getEmail();
+	    System.out.println("EMAIL STUDENT" + email);
+	    Business business = businessService.getIdByEmail(email);
+	    System.out.println("BUSIUNESSSSSSSSSSSSSS" + business);
+	    
 		List<ServicioModel> finishedServices = servicioService.getUnassignedServicios();
 		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
 		model.addAttribute("servicio", finishedServices);
 		model.addAttribute("profesionalFamilies", profesionalFamilies);
+	    model.addAttribute("business", business);
 		return BUSINESS_HOME_VIEW;
 	}
 
 	@GetMapping("/home/assignedButUncompletedServices")
 	public String getAssignedButUncompletedServices(Model model) {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    String username = ((UserDetails) principal).getUsername();
+	    System.out.println("UserId " + username);
+	    StudentModel student = studentService.getStudentByName(username);
+	    String email = student.getEmail();
+	    System.out.println("EMAIL STUDENT" + email);
+	    Business business = businessService.getIdByEmail(email);
+	    System.out.println("BUSIUNESSSSSSSSSSSSSS" + business);
+	    
 		List<ServicioModel> finishedServices = servicioService.getAssignedButUncompletedServices();
 		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
 		model.addAttribute("servicio", finishedServices);
 		model.addAttribute("profesionalFamilies", profesionalFamilies);
+	    model.addAttribute("business", business);
 		return BUSINESS_HOME_VIEW;
 	}
 
