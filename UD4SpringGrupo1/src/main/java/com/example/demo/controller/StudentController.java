@@ -86,13 +86,11 @@ public class StudentController {
 	    System.out.println("Nombre: " + name);
 
 	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	    String nameStudent = ((UserDetails) principal).getUsername();
-	       
+	    String nameStudent = ((UserDetails) principal).getUsername();  
         StudentModel student=studentService.getStudentByName(nameStudent);
-        
         int idStudent=student.getId();
-        
-	   
+        System.out.println("idStudent: "+idStudent);
+   
 	    ProFamily proFamily = student.getProfesionalFamily();
 	    System.out.println("famlia: "+proFamily);
 		if (proFamily != null) {
