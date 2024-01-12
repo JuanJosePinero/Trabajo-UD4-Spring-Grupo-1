@@ -17,20 +17,20 @@
             <h2 class="form-heading">Add Service</h2>
 
             <div class="form-group">
-            	<input th:field="*{title}" type="text" class="form-control" placeholder="Title" autofocus="true" />
-            	<input th:field="*{description}" type="text" class="form-control" placeholder="Description" autofocus="true" />
+                <input th:field="*{title}" type="text" class="form-control" placeholder="Title" autofocus="true" required />
+                <input th:field="*{description}" type="text" class="form-control" placeholder="Description" autofocus="true" required />
                 <input th:field="*{comment}" type="hidden" class="form-control" placeholder="Comment" autofocus="true" />
                 <input th:field="*{finished}" type="hidden" class="form-control" placeholder="Finished" autofocus="true" />
+                <input th:field="*{businessId}" type="hidden" />
 
-
-
-
-               <label for="profesionalFamily">Profesional Family:</label> <select name="profesionalFamilyId" class="form-control">
-    <option th:each="proFamily : ${profesionalFamilies}" th:value="${proFamily.id}" th:text="${proFamily.name}"></option>
-</select>
-
-                <!-- Aquí debes agregar los campos para studentId, businessId, profesionalFamilyId, valoration, finished, y comment -->
+                <label for="profesionalFamily">Profesional Family:</label>
+                <select name="profesionalFamilyId" class="form-control">
+                    <option th:each="proFamily : ${profesionalFamilies}" th:value="${proFamily.id}" th:text="${proFamily.name}"></option>
+                </select>
             </div>
+            
+            <!-- Mensaje de error para campos vacíos -->
+            <p th:if="${#fields.hasErrors('title') or #fields.hasErrors('description')}" class="alert alert-danger">This fields must be completed.</p>
 
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> <br>
             <div th:if="${error}" class="alert alert-danger">

@@ -71,21 +71,20 @@ public class ServicioServiceImpl implements ServicioService {
 
 	@Override
 	public Servicio updateServicio(ServicioModel servicioModel) {
-		Servicio servicio = servicioRepository.findById(servicioModel.getId());
-		servicio.setTitle(servicioModel.getTitle());
-		servicio.setDescription(servicioModel.getDescription());
-		servicio.setHappeningDate(servicioModel.getHappeningDate());
-		servicio.setRegisterDate(servicioModel.getRegisterDate());
-		servicio.setId(servicioModel.getId());
-		servicio.setBusinessId(servicioModel.getBusinessId());
-		servicio.setProfesionalFamilyId(servicioModel.getProfesionalFamilyId());
-		servicio.setStudentId(servicioModel.getStudentId());
-		servicio.setValoration(servicioModel.getValoration());
-		servicio.setComment(null);
-		servicio.setDeleted(0);
-		servicio.setFinished(servicioModel.getFinished());
-		return servicioRepository.save(servicio);
+	    Servicio servicio = servicioRepository.findById(servicioModel.getId());
+	    servicio.setTitle(servicioModel.getTitle());
+	    servicio.setDescription(servicioModel.getDescription());
+	    servicio.setHappeningDate(servicioModel.getHappeningDate());
+	    servicio.setRegisterDate(servicioModel.getRegisterDate());
+	    servicio.setId(servicioModel.getId());
+	    servicio.setBusinessId(servicioModel.getBusinessId());
+	    servicio.setProfesionalFamilyId(servicioModel.getProfesionalFamilyId());
+	    servicio.setStudentId(servicioModel.getStudentId());
+	    
+	    servicio.setDeleted(0);
+	    return servicioRepository.save(servicio);
 	}
+
 
 	@Override
 	public Servicio rateServicio(int servicioId, float valoracion) {

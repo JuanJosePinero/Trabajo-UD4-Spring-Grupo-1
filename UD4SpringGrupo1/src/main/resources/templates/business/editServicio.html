@@ -26,9 +26,13 @@
 </select>
             
             <!-- Agrega los campos para studentId, businessId, valoration, finished, y comment aquí -->
-            <input type="hidden" name="comment" th:field="*{comment}" />
-            <input type="hidden" name="finished" th:field="*{finished}" />
-            
+<input type="hidden" name="comment" th:value="*{comment}" />
+<input type="hidden" name="studentId" th:value="*{studentId != null ? studentId.id : null}" />
+<input type="hidden" name="businessId" th:value="*{businessId != null ? businessId.id : null}" />
+<input type="hidden" name="valoration" th:field="*{valoration}" />
+<input type="hidden" name="finished" th:field="*{finished}" />
+<input type="hidden" name="registerDate" th:field="*{registerDate}" />
+<input type="hidden" name="happeningDate" th:value="${servicio.happeningDate != null ? #dates.format(servicio.happeningDate, 'yyyy-MM-dd') : null}" />
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             <br><br>
             <button class="btn-add" type="submit">Save</button>

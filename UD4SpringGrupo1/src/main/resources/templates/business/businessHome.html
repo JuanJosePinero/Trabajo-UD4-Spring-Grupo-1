@@ -76,11 +76,11 @@
 
 						<td>
 							<a th:href="@{'/servicio/commentServicio/' + ${service.id}}" class="btn btn-link p-0 m-0"
-								th:if="${service.comment != null and !service.comment.equalsIgnoreCase('')}">
+								th:if="${service.studentId != null and service.finished == 1}">
 								<img src="/imgs/comentDone.png" alt="Comment Done img" width="30px">
 							</a>
 							<a href="#" onclick="return showCommentErrorMessage();"
-								th:unless="${service.comment != null and !service.comment.equalsIgnoreCase('')}">
+								th:unless="${service.studentId != null and service.finished == 1}">
 								<img src="/imgs/coment.png" alt="Comment img" width="30px">
 							</a>
 						</td>

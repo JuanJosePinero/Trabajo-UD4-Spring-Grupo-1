@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,13 +13,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.entity.Business;
 import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Servicio;
 import com.example.demo.model.ServicioModel;
 import com.example.demo.repository.ProFamilyRepository;
 import com.example.demo.repository.ServicioRepository;
+import com.example.demo.service.BusinessService;
 import com.example.demo.service.ProFamilyService;
 import com.example.demo.service.ServicioService;
 
@@ -36,6 +39,10 @@ public class ServicioController {
 	@Autowired
 	@Qualifier("proFamilyService")
     private ProFamilyService proFamilyService;
+	
+	@Autowired
+	@Qualifier("businessService")
+    private BusinessService businessService;
 	
 	@Autowired
 	@Qualifier("proFamilyRepository")
@@ -63,10 +70,15 @@ public class ServicioController {
 
 	@PostMapping("/addServicio")
 	public String addServicioPost(@ModelAttribute ServicioModel servicioModel, Model model) {
-	    // Puedes configurar la fecha actual antes de guardarla en la base de datos
-//	    servicioModel.setRegisterDate(new Date(System.currentTimeMillis()));
-//	    servicioService.addServicio(servicioModel);
+
 		 model.addAttribute("servicioModel", new ServicioModel());
+		 Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		 String userId = ((UserDetails) principal).getUsername();
+		 Business business = businessService.getIdByEmail(userId);
+//		 int businessId = business.getId();
+		 
+		 servicioModel.setBusinessId(business);
+		 System.out.println("businesssssss: "+business);
 		 servicioService.addServicio(servicioModel);
 	    return "redirect:/business/home";
 	}
