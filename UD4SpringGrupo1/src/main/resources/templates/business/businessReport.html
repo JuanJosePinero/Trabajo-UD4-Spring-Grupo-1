@@ -1,105 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Your reports</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link href="/css/styles.css" rel="stylesheet">
+	<meta charset="UTF-8">
+	<title>Your reports</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+		integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<link href="/css/styles.css" rel="stylesheet">
 </head>
 
-<body class="bodyBusiness">
-    <div th:replace="/main/CustomNavbar.html"></div>
+<body class="bodyBusiness" th:data-username="${username}">
 
-    <div class="info-container2">
-        <div class="info-block-head">
-            <h3>Your Reports</h3>
-        </div>
-        <div class="info-block2">
-            <!-- Formulario para filtrar por familia profesional -->
-
-            <!-- Supongamos que "profesionalFamilies" es una lista de objetos ProFamily con un campo "id" que deseas comparar -->
-            <select id="familiaProfesional" name="familiaProfesional">
+	<div th:replace="/main/CustomNavbar.html"></div>
+	
+	<div class="info-container2">
+		<div class="info-block-head">
+			<h3>Your Reports</h3>
+		</div>
+		
+		<div class="info-block2">
+	<form action="#" th:action="@{/business/reports}" method="GET" class="form form-signin">
+    <div class="form-row align-items-center">
+        <div class="col-auto">
+            <select id="familiaProfesional" name="opcion" class="form-control">
                 <option value="">Seleccione una familia profesional</option>
                 <th:block th:each="family : ${profesionalFamilies}">
                     <option th:value="${family.id}" th:text="${family.name}"></option>
                 </th:block>
             </select>
-
-            <div style="display: flex; justify-content: space-between;">
-                <span>Table with all your reports</span>
-            </div>
-
-            <table class="tableBusiness">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Service Name</th>
-                        <th>Report</th>
-                        <th>Student Name</th>
-                        <th>Service Time</th>
-                    </tr>
-                </thead>
-                <tbody id="reportTableBody" th:each="report : ${report}">
-                    <tr data-family-name="${report.servicioId.profesionalFamilyId.name}">
-                        <td th:hidden="${report.id}"></td>
-                        <td th:text="${report.fullDate}"></td>
-                        <td th:text="${report.servicioId.title}"></td>
-                        <td th:text="${report.report}"></td>
-                        <td th:text="${report.studentId.name}"></td>
-                        <td th:text="'&#x231A; ' + ${report.serviceTime} + ' hours'"></td>
-                    </tr>
-                </tbody>
-            </table>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-primary btn-sm text-uppercase ml-2" type="submit">Filter</button>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-    document.getElementById("familiaProfesional").addEventListener("change", function () {
-        var selectedFamilyId = this.value; // Obtener el ID de la familia seleccionada
+</form>
 
-        // Obtener los profesional_family_id de los servicios desde el modelo (puedes incluirlo en tu HTML)
-        var businessIdServices = /* Obtén esta lista desde tu modelo en el servidor o desde el HTML */;
+			<div style="display: flex; justify-content: space-between;">
+				<span>Table with all your reports</span>
+			</div>
 
-        // Filtrar servicios que coincidan con la familia seleccionada
-        var filteredServices = businessIdServices.filter(function (service) {
-            return service.profesionalFamilyId.id == selectedFamilyId;
-        });
-
-        // Limpiar el contenido actual del tbody
-        var tbody = document.getElementById("reportTableBody");
-        tbody.innerHTML = "";
-
-        // Verificar si hay servicios filtrados
-        if (filteredServices.length > 0) {
-            // Iterar sobre los servicios filtrados y agregarlos al tbody
-            filteredServices.forEach(function (service) {
-                var row = tbody.insertRow();
-                var cell1 = row.insertCell(0);
-                var cell2 = row.insertCell(1);
-                var cell3 = row.insertCell(2);
-                var cell4 = row.insertCell(3);
-                var cell5 = row.insertCell(4);
-
-                // Asignar los valores a las celdas (ajusta según tus propiedades reales)
-                cell1.innerText = service.fullDate;
-                cell2.innerText = service.servicioId.title;
-                cell3.innerText = service.report;
-                cell4.innerText = service.studentId.name;
-                cell5.innerText = '\u231A ' + service.serviceTime + ' hours';
-            });
-        } else {
-            // Agregar una fila indicando que no hay reportes
-            var noReportRow = tbody.insertRow();
-            var noReportCell = noReportRow.insertCell(0);
-            noReportCell.colSpan = 5;
-            noReportCell.innerText = "No reports with that filter.";
-        }
-    });
-</script>
-
-
+			<table class="tableBusiness">
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>Service Name</th>
+						<th>Report</th>
+						<th>Student Name</th>
+						<th>Service Time</th>
+					</tr>
+				</thead>
+				<tbody id="reportTableBody" th:each="report : ${report}">
+					<tr>
+						<td th:text="${report.fullDate}"></td>
+						<td th:text="${report.servicioId != null ? report.servicioId.title : ''}"></td>
+						<td th:text="${report.report}"></td>
+						<td th:text="${report.studentId != null ? report.studentId.name : ''}"></td>
+						<td th:text="'&#x231A; ' + ${report.serviceTime} + ' hours'"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 
 </body>
 

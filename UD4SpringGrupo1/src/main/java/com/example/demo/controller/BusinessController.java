@@ -2,8 +2,6 @@ package com.example.demo.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -38,6 +35,7 @@ import com.example.demo.repository.ServicioRepository;
 import com.example.demo.repository.StudentRepository;
 import com.example.demo.service.BusinessService;
 import com.example.demo.service.FilesStorageService;
+import com.example.demo.service.ProFamilyService;
 import com.example.demo.service.ReportService;
 import com.example.demo.service.ServicioService;
 import com.example.demo.service.StudentService;
@@ -81,6 +79,10 @@ public class BusinessController {
 	@Autowired
 	@Qualifier("proFamilyRepository")
 	private ProFamilyRepository proFamilyRepository;
+	
+	@Autowired
+	@Qualifier("proFamilyService")
+	private ProFamilyService proFamilyService;
 
 	@Autowired
 	@Qualifier("studentRepository")
@@ -375,55 +377,45 @@ public class BusinessController {
 //	}
 
 	@GetMapping("/reports")
-	public String Reports(Model model) {
+	public String Reports(@RequestParam(name="opcion",required=false,defaultValue="0")String opcion,Model model) {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String userId = ((UserDetails) principal).getUsername();
+		String username = ((UserDetails) principal).getUsername();
 
-		StudentModel student = studentService.getStudentByName(userId);
+		StudentModel student = studentService.getStudentByName(username);
 		String email = student.getEmail();
 		Business business = businessService.getIdByEmail(email);
 		
-		List<Report> reports = servicioService.getReportsForServicesByBusinessId(business);
-		  
-		List<Servicio> businessIdServices=reports.stream().map(report->report.getServicioId()).collect(Collectors.toList());
-		 
-		System.out.println("QUEEE: "+businessIdServices);
-		
-		List<ProFamily> profesionalFamilies = servicioServiceImpl.getProfessionalFamiliesByBusinessId(businessIdServices);
-		model.addAttribute("report", reports);
+		List<ProFamily> profesionalFamilies = proFamilyService.getAll();
 		model.addAttribute("profesionalFamilies", profesionalFamilies);
-		model.addAttribute("businessIdServices",businessIdServices);
+		
+		System.out.println("OPCION: "+opcion);
+		if(Integer.parseInt(opcion)!=0) {
+			
+			ProFamily profam=proFamilyService.findById(Integer.parseInt(opcion));
+			List<Report>reports=reportService.findReportsByServiceProFamily(profam.getName(),business);
+			model.addAttribute("report", reports);
+			List<Servicio> businessIdServices=reports.stream().map(report->report.getServicioId()).collect(Collectors.toList());
+			
+			model.addAttribute("businessIdServices",businessIdServices);
+			System.out.println("QUEEE: "+businessIdServices);
+		}else {
+			
+			List<Report> reports = servicioService.getReportsForServicesByBusinessId(business);
+			model.addAttribute("report", reports);
+			List<Servicio> businessIdServices=reports.stream().map(report->report.getServicioId()).collect(Collectors.toList());
+			model.addAttribute("businessIdServices",businessIdServices);
+			System.out.println("QUEEE: "+businessIdServices);
+		}
+		 
+		
+		
+		
+		
+		
+		model.addAttribute("username",username);
 
 		return BUSINESS_REPORT_VIEW;
 	}
-
-	@GetMapping("/reports/filterByFamily")
-	public String filterByFamily(@RequestParam(name = "profesionalFamilyId", required = false) long profesionalFamilyId, Model model) {
-	    // Obtener el usuario actual
-	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	    String userId = ((UserDetails) principal).getUsername();
-	    StudentModel student = studentService.getStudentByName(userId);
-	    String email = student.getEmail();
-	    Business business = businessService.getIdByEmail(email);
-	    
-	    
-	    ProFamily selectedFamily = proFamilyRepository.findById(profesionalFamilyId).orElse(null);
-	    System.out.println("QUE SE VE: "+selectedFamily);
-	    List<Report> reports = servicioService.getReportsForServicesByBusinessId(business);
-
-	    
-	    reports.sort(Comparator.comparing(report -> report.getServicioId().getProfesionalFamilyId().getName()));
-
-	    
-	    model.addAttribute("reports", reports);
-
-	    
-	    return BUSINESS_REPORT_VIEW; 
-	}
-
-
-
-
 
 
 	@GetMapping("/ratedServicios")

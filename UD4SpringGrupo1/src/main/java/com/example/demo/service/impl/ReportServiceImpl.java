@@ -8,19 +8,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entity.Business;
 import com.example.demo.entity.Report;
 import com.example.demo.entity.Servicio;
 import com.example.demo.model.ReportModel;
+import com.example.demo.model.ServicioModel;
 import com.example.demo.repository.ReportRepository;
+import com.example.demo.repository.ServicioRepository;
 import com.example.demo.service.ReportService;
+import com.example.demo.service.ServicioService;
 
 @Configuration
 @Service("reportService")
 public class ReportServiceImpl implements ReportService{
-	
+	@Autowired
+	private ServicioServiceImpl servicioService;
 	private final ReportRepository reportRepository;
+	
 
-    @Autowired
+    
     public ReportServiceImpl(ReportRepository reportRepository) {
         this.reportRepository = reportRepository;
     }
@@ -36,14 +42,24 @@ public class ReportServiceImpl implements ReportService{
 	}
 	
 	@Override
-	public List<Report> findReportsByServiceProFamily(String familyName) {
+	public List<Report> findReportsByServiceProFamily(String familyName,Business business) {
 	    List<Report> reports = new ArrayList<>();
+	    
+	    List<ServicioModel> services = servicioService.getServicesByBusinessId(business);
 
+        for (ServicioModel servicioModel : services) {
+            List<Report> reportsForService = reportRepository.findAllByServicioId(servicioService.model2entity(servicioModel));
+            reports.addAll(reportsForService);
+        }
+	    
+	    
+	    
+	    
 	    for (Report report : reportRepository.findAll()) {
 	        Servicio servicio = report.getServicioId();
 	        if (servicio != null && servicio.getProfesionalFamilyId() != null &&
-	            servicio.getProfesionalFamilyId().getName().equals(familyName)) {
-	            reports.add(report);
+	            !servicio.getProfesionalFamilyId().getName().equals(familyName)) {
+	            reports.remove(report);
 	        }
 	    }
 	    System.out.println("REPORTEEEES: " + reports);

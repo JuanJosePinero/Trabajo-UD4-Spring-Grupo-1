@@ -61,4 +61,14 @@ public class ProFamilyServiceImpl implements ProFamilyService {
 		return proFamilyRepository.save(proFamily);
 	}
 
+	@Override
+	public ProFamily findById(int id) {
+		return proFamilyRepository.findById(id);
+	}
+
+	@Override
+	public List<ProFamily> getAll() {
+		return proFamilyRepository.findAll();
+	}
+
 }
