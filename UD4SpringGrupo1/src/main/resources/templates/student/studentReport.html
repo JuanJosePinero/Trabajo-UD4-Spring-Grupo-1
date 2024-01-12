@@ -1,19 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Send a report of the service</title>
+<meta charset="UTF-8">
+<title>Page where students can add themselves to any available service.</title>
+<link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+        crossorigin="anonymous">
+  <link href="/css/styles.css" rel="stylesheet">
 </head>
-<body>
-    <div class="container mt-5">
-        <form method="POST" th:action="@{/student/sendReport}" th:object="${reportModel}">
-		    <input type="hidden" name="serviceId" th:value="${service.id}" />
-		    <label for="reportModel">Please, write us a report to know how was your experience with it:</label>
-		    <textarea name="reportModel" rows="4" cols="32"></textarea>
+<body class="bodyBusiness">
+    <div th:replace="/main/CustomNavbar.html"></div>
+   <div class="container mt-5">
+	    <form method="POST" th:action="@{/student/sendReport}"th:object="${report}">
+		    <input type="hidden" name="servicioId" th:value="${servicioId}" />
+		    <br>
+		    <label for="report">Report:</label>
+		    <textarea name="report" rows="4" cols="32" ></textarea>
 		    <br><br>
-		    <button type="submit" class="btn-add">Save report</button>
-		    <a th:href="@{/student/viewServices}" class="btn-cancel">Cancel</a>
+		    <button type="submit" class="btn-add">Save Report</button>
+		    <a th:href="@{/student/viewServices(studentUsername=${#authentication.principal.getUsername()})}" class="btn-cancel">Cancel</a>
 		</form>
-    </div>
+	</div>
 </body>
 </html>
