@@ -53,6 +53,7 @@
                     </tr>
                 </thead>
                 <tbody id="serviceTableBody" th:each="service : ${serviceList}">
+                	<tr>
                         <td th:hidden="${service.id}"></td>
                         <td th:text="${service.title}"></td>
                         <td>

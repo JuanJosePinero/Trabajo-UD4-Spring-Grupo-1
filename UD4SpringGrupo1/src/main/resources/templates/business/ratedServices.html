@@ -27,32 +27,33 @@
 		</div>
 		<div class="info-block2">
 			<div style="display: flex; justify-content: space-between;">
+<span>Table with all your rated services</span> 
+				
+<form action="#" th:action="@{/business/ratedServicios}" method="GET" class="form form-signin">
+    <div class="form-row align-items-center">
+        <div class="col-auto">
+            <select id="familiaProfesional" name="opcion" class="form-control">
+                <option value="">Seleccione una familia profesional</option>
+                <th:block th:each="family : ${profesionalFamilies}">
+                    <option th:value="${family.id}" th:text="${family.name}"></option>
+                </th:block>
+            </select>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-primary btn-sm text-uppercase ml-2" type="submit">Filter</button>
+        </div>
+    </div>
+</form> <br>
 
-				<span>Table with all your rated services</span> <span> <label
-					for="filterByServiceTitle">Filter by Service Title:</label> <select
-					id="filterByServiceTitle" name="filterByServiceTitle">
-						<option value="none">None</option>
-						<th:block th:each="service : ${servicio}" th:if="${service.deleted != 1 and service.studentId != null and service.finished == 1}">>
-							<option th:value="${service.title}" th:text="${service.title}"></option>
-						</th:block>
-				</select> <br>
-				<label for="filterByProFamily">Filter by Profesional Family:</label>
-					<select id="filterByProFamily" name="filterByProFamily">
-						<option value="none">None</option>
-						<th:block th:each="family : ${profesionalFamilies}">
-							<option th:value="${family.name}" th:text="${family.name}"></option>
-						</th:block>
-				</select>
-
-				</span>
 			</div>
+			<br>
 
 			<table class="table tableBusiness">
 				<thead>
 					<tr>
 						<th>Service Title</th>
 						<th>Student</th>
-						<th>ProF</th>
+						<th>Prfesional Family</th>
 						<th>Valoration</th>
 					</tr>
 				</thead>
@@ -75,25 +76,6 @@
 			</table>
 		</div>
 	</div>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script>
-		$("#filterByProFamily").change(
-				function() {
-					var selectedFamilyName = $(this).val();
-
-					if (selectedFamilyName === "none") {
-						// Si se selecciona "None", mostrar todas las filas
-						$("#serviceTableBody tr").show();
-					} else {
-						// Ocultar todas las filas y luego mostrar solo las que coinciden con la familia seleccionada
-						$("#serviceTableBody tr").hide();
-						$(
-								"#serviceTableBody tr[data-family-name='"
-										+ selectedFamilyName + "']").show();
-					}
-				});
-	</script>
-
 </body>
 
 </html>

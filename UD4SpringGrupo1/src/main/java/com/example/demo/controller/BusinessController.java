@@ -406,12 +406,6 @@ public class BusinessController {
 			model.addAttribute("businessIdServices",businessIdServices);
 			System.out.println("QUEEE: "+businessIdServices);
 		}
-		 
-		
-		
-		
-		
-		
 		model.addAttribute("username",username);
 
 		return BUSINESS_REPORT_VIEW;
@@ -419,11 +413,44 @@ public class BusinessController {
 
 
 	@GetMapping("/ratedServicios")
-	public String ratedServicios(Model model) {
-		List<Servicio> servicios = servicioRepository.findAll();
-		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
-		model.addAttribute("servicio", servicios);
+	public String ratedServicios(@RequestParam(name="opcion",required=false,defaultValue="0")String opcion, Model model) {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = ((UserDetails) principal).getUsername();
+
+		StudentModel student = studentService.getStudentByName(username);
+		String email = student.getEmail();
+		Business business = businessService.getIdByEmail(email);
+		System.out.println("businessss: "+business);
+		List<ServicioModel> serviceList = servicioService.getServicesByBusinessId(business);
+		System.out.println("serviceListByIDBusiness: "+serviceList);
+		
+		List<ProFamily> profesionalFamilies = proFamilyService.getAll();
 		model.addAttribute("profesionalFamilies", profesionalFamilies);
+		
+		System.out.println("OPCION: "+opcion);
+if(Integer.parseInt(opcion)!=0) {
+			
+			ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
+			String proFamName = profam.getName();
+			System.out.println("proFamName: "+proFamName);
+			List<ServicioModel> servicios =servicioService.findServiciosByProFamily(proFamName);
+			for (ServicioModel s : servicios) {
+				System.out.println("sservicios dentro del if:"+s.getId());
+			}
+			
+			model.addAttribute("servicio", servicios);
+//			List<Servicio> businessIdServices=reports.stream().map(report->report.getServicioId()).collect(Collectors.toList());
+			
+//			model.addAttribute("businessIdServices",businessIdServices);
+//			System.out.println("QUEEE: "+businessIdServices);
+		}else {
+			
+			List<ServicioModel> servicios = servicioService.getAllServicios();
+			model.addAttribute("servicio", servicios);
+		}
+		
+		
+		
 		return BUSINESS_RATED_SERVICES_VIEW;
 	}
 
