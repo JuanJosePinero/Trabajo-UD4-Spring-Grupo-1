@@ -284,8 +284,30 @@ public class BusinessController {
 			System.out.println("proFamName: "+proFamName);
 			List<ServicioModel> servicios =servicioService.findServiciosByProFamily(proFamName);
 			for (ServicioModel s : servicios) {
-				System.out.println("sservicios dentro del if:"+s.getId());
+				System.out.println("/home -- sservicios dentro del if:"+s.getId());
 			}
+			
+//			
+			List<ServicioModel> listServicios = servicioService.getFinishedServiciosByProFamily(proFamName);
+			
+			for (ServicioModel f : listServicios) {
+				System.out.println("/home -- "+f);
+			}
+//			
+			
+//			
+			List<ServicioModel> listServicios2 = servicioService.getUnassignedServiciosByProFamily(proFamName);
+			for (ServicioModel f : listServicios2) {
+				System.out.println("Unassigned -- "+f);
+			}
+//			
+			
+//			
+			List<ServicioModel> listServicios3 = servicioService.getAssignedButUncompletedServiciosByProFamily(proFamName);
+			for (ServicioModel f : listServicios3) {
+				System.out.println("AssignedButUncompleted -- "+f);
+			}
+//			
 			
 			model.addAttribute("servicio", servicios);
 
@@ -318,12 +340,19 @@ public class BusinessController {
 			ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
 			String proFamName = profam.getName();
 			System.out.println("proFamName: "+proFamName);
-			List<ServicioModel> servicios =servicioService.findServiciosByProFamily(proFamName);
-			for (ServicioModel s : servicios) {
-				System.out.println("sservicios dentro del if:"+s.getId());
+			List<ServicioModel> proFamServicios =servicioService.findServiciosByProFamily(proFamName);
+			for (ServicioModel s : proFamServicios) {
+				System.out.println("servicios de proFamServicios:"+s.getId());
 			}
 			
-			model.addAttribute("servicio", servicios);
+//			
+			List<ServicioModel> listServicios = servicioService.getFinishedServiciosByProFamily(proFamName);
+			for (ServicioModel f : listServicios) {
+				System.out.println(f);
+			}
+//			
+			
+			model.addAttribute("servicio", listServicios);
 
 		}else {
 			
@@ -356,8 +385,15 @@ public class BusinessController {
 			System.out.println("proFamName: "+proFamName);
 			List<ServicioModel> servicios =servicioService.findServiciosByProFamily(proFamName);
 			for (ServicioModel s : servicios) {
-				System.out.println("sservicios dentro del if:"+s.getId());
+				System.out.println("/home/unassignedServices -- sservicios dentro del if:"+s.getId());
 			}
+			
+//			
+			List<ServicioModel> listServicios = servicioService.getUnassignedServiciosByProFamily(proFamName);
+			for (ServicioModel f : listServicios) {
+				System.out.println(f);
+			}
+//			
 			
 			model.addAttribute("servicio", servicios);
 
@@ -392,8 +428,15 @@ public class BusinessController {
 			System.out.println("proFamName: "+proFamName);
 			List<ServicioModel> servicios =servicioService.findServiciosByProFamily(proFamName);
 			for (ServicioModel s : servicios) {
-				System.out.println("sservicios dentro del if:"+s.getId());
+				System.out.println("/home/assignedButUncompletedServices -- sservicios dentro del if:"+s.getId());
 			}
+
+//			
+			List<ServicioModel> listServicios = servicioService.getAssignedButUncompletedServiciosByProFamily(proFamName);
+			for (ServicioModel f : listServicios) {
+				System.out.println(f);
+			}
+//			
 			
 			model.addAttribute("servicio", servicios);
 

@@ -129,23 +129,6 @@
 				window.location.href = '/business/home';
 			}
 		}
-
-	</script>
-
-
-	<script>
-		function filterServicesByProFamily(selectedValue) {
-			var tableRows = document.querySelectorAll("tbody#serviceTableBody tr");
-
-			tableRows.forEach(function (row) {
-				var proFamilyCell = row.querySelector("td:nth-child(4)");
-				if (proFamilyCell && proFamilyCell.textContent.trim() === selectedValue) {
-					row.style.display = "";
-				} else {
-					row.style.display = "none";
-				}
-			});
-		}
 	</script>
 	<script>
 		function showErrorMessage() {

@@ -219,4 +219,50 @@ public class ServicioServiceImpl implements ServicioService {
 		return reports;
 	}
 
+	@Override
+	public List<ServicioModel> getFinishedServiciosByProFamily(String familyName) {
+	    List<ServicioModel> servicioModels = new ArrayList<>();
+
+	    List<Servicio> finishedServicios = servicioRepository.findByFinished(1);
+
+	    for (Servicio servicio : finishedServicios) {
+	        if (servicio.getProfesionalFamilyId() != null && servicio.getProfesionalFamilyId().getName().equals(familyName)) {
+	            servicioModels.add(entity2model(servicio));
+	        }
+	    }
+
+	    return servicioModels;
+	}
+	
+	@Override
+	public List<ServicioModel> getUnassignedServiciosByProFamily(String familyName) {
+	    List<ServicioModel> servicioModels = new ArrayList<>();
+
+	    List<Servicio> finishedServicios = servicioRepository.findByStudentIdIsNull();
+
+	    for (Servicio servicio : finishedServicios) {
+	        if (servicio.getProfesionalFamilyId() != null && servicio.getProfesionalFamilyId().getName().equals(familyName)) {
+	            servicioModels.add(entity2model(servicio));
+	        }
+	    }
+
+	    return servicioModels;
+	}
+	
+	@Override
+	public List<ServicioModel> getAssignedButUncompletedServiciosByProFamily(String familyName) {
+	    List<ServicioModel> servicioModels = new ArrayList<>();
+
+	    List<Servicio> finishedServicios = servicioRepository.findByStudentIdIsNotNullAndFinishedIsNot(1);
+
+	    for (Servicio servicio : finishedServicios) {
+	        if (servicio.getProfesionalFamilyId() != null && servicio.getProfesionalFamilyId().getName().equals(familyName)) {
+	            servicioModels.add(entity2model(servicio));
+	        }
+	    }
+
+	    return servicioModels;
+	}
+
+
 }

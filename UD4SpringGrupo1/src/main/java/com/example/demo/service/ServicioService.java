@@ -37,4 +37,10 @@ public interface ServicioService {
 
 	Servicio finishServicio(int servicioId);
 
+	public List<ServicioModel> getFinishedServiciosByProFamily(String familyName);
+
+	List<ServicioModel> getUnassignedServiciosByProFamily(String familyName);
+
+	List<ServicioModel> getAssignedButUncompletedServiciosByProFamily(String familyName);
+
 }
