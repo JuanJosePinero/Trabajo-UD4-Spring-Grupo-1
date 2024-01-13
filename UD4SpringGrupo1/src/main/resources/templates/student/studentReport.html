@@ -12,8 +12,8 @@
 <body class="bodyBusiness">
     <div th:replace="/main/CustomNavbar.html"></div>
    <div class="container mt-5">
-	    <form method="POST" th:action="@{/student/writeReport}"th:object="${reportModel}">
-		    <input th:field="*{servicioId}"type="hidden" name="servicioId" th:value="${servicioId}" />
+	    <form method="POST" th:action="@{/student/writeReport}" th:object="${reportModel}">
+    <input type="hidden" name="servicioId" th:value="${servicioId}" />
 		    <br>
 		    <label for="report">Report:</label>
 		    <textarea th:field="*{report}"name="report" rows="4" cols="32" ></textarea>
@@ -24,5 +24,6 @@
 		    <a th:href="@{/student/viewServices(studentUsername=${#authentication.principal.getUsername()})}" class="btn-cancel">Cancel</a>
 		</form>
 	</div>
+	    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

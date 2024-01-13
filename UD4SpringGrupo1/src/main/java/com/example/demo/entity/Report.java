@@ -1,6 +1,6 @@
 package com.example.demo.entity;
 
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
 

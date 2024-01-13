@@ -10,11 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.ProFamily;
+import com.example.demo.entity.Report;
 import com.example.demo.entity.Servicio;
 import com.example.demo.model.ReportModel;
 import com.example.demo.model.ServicioModel;
@@ -130,29 +132,33 @@ public class StudentController {
 	}
 	
 	@GetMapping("/writeReport/{servicioId}")
-	public String studentReport(@ModelAttribute("servicioId") int servicioId, Model model, @ModelAttribute("reportModel") ReportModel reportModel) {
-		model.addAttribute(reportModel);
-		model.addAttribute(servicioId);
-		System.out.println("SUIWIIIWIWIWWIWIW"+reportModel);
+	public String studentReport(@PathVariable("servicioId") int servicioId, Model model, @ModelAttribute("reportModel") ReportModel reportModel) {
+		Servicio servicio = servicioRepository.findById(servicioId);
+		model.addAttribute("servicio", servicio);
+		model.addAttribute("reportModel", reportModel);
+		model.addAttribute("servicioId", servicioId);
 		return STUDENT_REPORT;
 	}
 
-
+	
 	@PostMapping("/writeReport")
 	public String sendReport(@ModelAttribute("servicioId") int serviceId,
 	                        @ModelAttribute("reportModel") ReportModel reportModel,
 	                        Model model) {
-	    Servicio servicio = servicioRepository.findById(serviceId);
-	    System.out.println("Servicio: "+servicio);
-	    System.out.println("Model: "+reportModel);
-	    if (servicio != null) {
-	        servicio.setFinished(1);
-	        servicioService.updateServicio(servicioServiceImpl.entity2model(servicio));
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    String username = ((UserDetails) principal).getUsername();
+	    System.out.println("UserId " + username);
+	    StudentModel student = studentService.getStudentByName(username);
+	    int studentId = student.getId();
+
+	    Report newReport = servicioService.createReportByServicioId(serviceId, reportModel.getReport(), reportModel.getServiceTime(), studentId);
+
+	    if (newReport != null) {
+	        return "redirect:/student/viewServices";
+	    } else {
+	    	System.out.println("No te cambio nada tonto");
+	    	return "redirect:/student/viewServices";
 	    }
-	    model.addAttribute(servicio);
-	    model.addAttribute(reportModel);
-		reportService.addReport(reportModel);
-	    return "redirect:/student/viewServices";
 	}	
 	
 }

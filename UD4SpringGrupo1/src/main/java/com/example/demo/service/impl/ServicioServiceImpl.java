@@ -14,9 +14,11 @@ import com.example.demo.entity.Business;
 import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Report;
 import com.example.demo.entity.Servicio;
+import com.example.demo.entity.Student;
 import com.example.demo.model.ServicioModel;
 import com.example.demo.repository.ReportRepository;
 import com.example.demo.repository.ServicioRepository;
+import com.example.demo.repository.StudentRepository;
 import com.example.demo.service.ServicioService;
 
 @Configuration
@@ -27,6 +29,9 @@ public class ServicioServiceImpl implements ServicioService {
     
     @Autowired
     private ReportRepository reportRepository;
+    
+    @Autowired
+    private StudentRepository studentRepository;
 
     public ServicioServiceImpl(ServicioRepository servicioRepository) {
         this.servicioRepository = servicioRepository;
@@ -87,6 +92,29 @@ public class ServicioServiceImpl implements ServicioService {
 	    servicio.setDeleted(0);
 	    return servicioRepository.save(servicio);
 	}
+	
+	@Override
+	public Report createReportByServicioId(int servicioId, String reportText, int serviceTime, int studentId) {
+	    Servicio servicio = servicioRepository.findById(servicioId);
+
+	    if (servicio != null) {
+	        Report report = new Report();
+	        report.setServiceTime(serviceTime);
+	        report.setReport(reportText);
+	        Student student = studentRepository.findById(studentId);
+
+	        if (student != null) {
+	            report.setStudentId(student);
+	        }
+
+	        report.setServicioId(servicio);
+	        servicio.setFinished(1);
+	        updateServicio(entity2model(servicio));
+	        return reportRepository.save(report);
+	    }
+	    return null; 
+	}
+
 
 
 	@Override

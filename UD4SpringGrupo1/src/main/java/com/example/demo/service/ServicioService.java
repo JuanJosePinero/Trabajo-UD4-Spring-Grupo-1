@@ -43,4 +43,6 @@ public interface ServicioService {
 
 	List<ServicioModel> getAssignedButUncompletedServiciosByProFamily(String familyName);
 
+	Report createReportByServicioId(int servicioId, String reportText, int serviceTime, int studentId);
+
 }
