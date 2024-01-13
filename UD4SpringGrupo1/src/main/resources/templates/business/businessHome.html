@@ -24,15 +24,19 @@
 				<a th:href="@{/servicio/addServicio}" class="btn-add">Add
 				Servicio</a><br><br></span>
 			<p align="left">
-				<span><label for="filterBy">Filter by:</label> <select id="filterBy" name="filterBy"
-					onchange="filterServices(this.value)">
-					<option value="null">Select an option</option>
-					<option value="all">All Services</option>
-					<option value="finishedServices">Completed Services</option>
-					<option value="asignados_no_realizados">Assigned but
-						Uncompleted Services</option>
-					<option value="no_asignados">Unassigned Services</option>
-				</select></span> <br> <span><form action="#" th:action="@{/business/home}" method="GET" class="form form-signin">
+				<span> <form action="#" th:action="@{/business/home}" method="GET" class="form form-signin">
+                <label for="filterBy">Filter by:</label>
+                <select id="filterBy" name="filterBy">
+                    <option value="null">Select an option</option>
+                    <option value="all">All Services</option>
+                    <option value="finishedServices">Completed Services</option>
+                    <option value="asignados_no_realizados">Assigned but Uncompleted Services</option>
+                    <option value="no_asignados">Unassigned Services</option>
+                </select>
+                
+           </span> <br> <span>
+				
+				
     <div class="form-row align-items-center">
         <div class="col-auto">
             <select id="familiaProfesional" name="opcion" class="form-control">
@@ -46,7 +50,9 @@
             <button class="btn btn-primary btn-sm text-uppercase ml-2" type="submit">Filter</button>
         </div>
     </div>
-</form></span> <br>
+			</form>
+			
+			</span> <br>
 			</p>
 </div>
 
@@ -117,19 +123,6 @@
 	</div>
 	<div id="selectedValue"></div>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script>
-		function filterServices(selectedValue) {
-			if (selectedValue === 'finishedServices') {
-				window.location.href = '/business/home/finishedServices';
-			} else if (selectedValue === 'no_asignados') {
-				window.location.href = '/business/home/unassignedServices';
-			} else if (selectedValue === 'asignados_no_realizados') {
-				window.location.href = '/business/home/assignedButUncompletedServices';
-			} else if (selectedValue === 'all') {
-				window.location.href = '/business/home';
-			}
-		}
-	</script>
 	<script>
 		function showErrorMessage() {
 			alert("You can't valorate because the service is unassigned or is not finished!");
