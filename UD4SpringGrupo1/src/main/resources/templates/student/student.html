@@ -50,9 +50,9 @@
 						</td>
                        <td>
                        <a th:if="${service != null and service.finished != 1}">
-                       <form th:action="@{'/student/sendReport/' + ${service.id}}" method="post">
-								<button type="submit" class="btn btn-blue"> Conclude
-									
+                       <form th:action="@{'/student/writeReport/' + ${service.id}}" method="get">
+								<button type="submit" class="btn btn-blue"> 
+									Conclude	
 								</button>
 							</form>
 							</a>

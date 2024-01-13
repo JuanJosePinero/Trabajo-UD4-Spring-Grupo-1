@@ -1,6 +1,8 @@
 package com.example.demo.entity;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
 import lombok.Data;
 
 @Entity
@@ -79,6 +82,11 @@ public class Report {
 		this.servicioId = servicioId;
 	}
 
+	@PrePersist
+    protected void onCreate() {
+        LocalDate currentDate = LocalDate.now();
+        fullDate = (Date) Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
 	public Report(int id, Date fullDate, int serviceTime, String report, Student studentId, Servicio servicioId) {
 		super();
 		this.id = id;

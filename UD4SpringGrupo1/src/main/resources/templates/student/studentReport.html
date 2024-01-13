@@ -12,11 +12,13 @@
 <body class="bodyBusiness">
     <div th:replace="/main/CustomNavbar.html"></div>
    <div class="container mt-5">
-	    <form method="POST" th:action="@{/student/sendReport}"th:object="${report}">
-		    <input type="hidden" name="servicioId" th:value="${servicioId}" />
+	    <form method="POST" th:action="@{/student/writeReport}"th:object="${reportModel}">
+		    <input th:field="*{servicioId}"type="hidden" name="servicioId" th:value="${servicioId}" />
 		    <br>
 		    <label for="report">Report:</label>
-		    <textarea name="report" rows="4" cols="32" ></textarea>
+		    <textarea th:field="*{report}"name="report" rows="4" cols="32" ></textarea>
+		    <label for="hours">How many hours have you worked?</label>
+		    <input th:field="*{serviceTime}" type="number" name="hours" />
 		    <br><br>
 		    <button type="submit" class="btn-add">Save Report</button>
 		    <a th:href="@{/student/viewServices(studentUsername=${#authentication.principal.getUsername()})}" class="btn-cancel">Cancel</a>

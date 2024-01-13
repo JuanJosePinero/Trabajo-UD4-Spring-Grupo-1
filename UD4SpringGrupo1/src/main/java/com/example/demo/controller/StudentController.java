@@ -10,13 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Servicio;
+import com.example.demo.model.ReportModel;
 import com.example.demo.model.ServicioModel;
 import com.example.demo.model.StudentModel;
 import com.example.demo.repository.BusinessRepository;
@@ -129,28 +129,30 @@ public class StudentController {
 	    return STUDENT_VALORATIONS;
 	}
 	
-	@PostMapping("/sendReport/{servicioId}")
-	public String studentReport(@ModelAttribute("servicioId") int servicioId, Model model,  @ModelAttribute("report") String report) {
-		model.addAttribute(report);
+	@GetMapping("/writeReport/{servicioId}")
+	public String studentReport(@ModelAttribute("servicioId") int servicioId, Model model, @ModelAttribute("reportModel") ReportModel reportModel) {
+		model.addAttribute(reportModel);
 		model.addAttribute(servicioId);
-		System.out.println("INFORME :  "+report);
-		
+		System.out.println("SUIWIIIWIWIWWIWIW"+reportModel);
 		return STUDENT_REPORT;
 	}
 
 
-//	@PostMapping("/student/sendReport")
-//	public String sendReport(@ModelAttribute("servicioId") int serviceId,
-//	                        @ModelAttribute("reportModel") ReportModel reportModel,
-//	                        Model model) {
-//	    Servicio servicio = reportModel.getServicioId();
-//	    if (servicio != null) {
-//	        servicio.setFinished(1);
-//	        servicioService.addServicio(servicioServiceImpl.entity2model(servicio));
-//	    }
-//
-//		    reportService.addReport(reportModel);
-//	    return "redirect:/student/viewServices";
-//	}	
+	@PostMapping("/writeReport")
+	public String sendReport(@ModelAttribute("servicioId") int serviceId,
+	                        @ModelAttribute("reportModel") ReportModel reportModel,
+	                        Model model) {
+	    Servicio servicio = servicioRepository.findById(serviceId);
+	    System.out.println("Servicio: "+servicio);
+	    System.out.println("Model: "+reportModel);
+	    if (servicio != null) {
+	        servicio.setFinished(1);
+	        servicioService.updateServicio(servicioServiceImpl.entity2model(servicio));
+	    }
+	    model.addAttribute(servicio);
+	    model.addAttribute(reportModel);
+		reportService.addReport(reportModel);
+	    return "redirect:/student/viewServices";
+	}	
 	
 }
