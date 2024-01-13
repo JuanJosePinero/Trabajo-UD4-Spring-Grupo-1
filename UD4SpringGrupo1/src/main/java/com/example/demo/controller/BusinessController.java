@@ -263,7 +263,7 @@ public class BusinessController {
 	}
 
 	@GetMapping("/home")
-	public String Business(Model model) {
+	public String Business(@RequestParam(name="opcion",required=false,defaultValue="0")String opcion, Model model) {
 	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    String username = ((UserDetails) principal).getUsername();
 	    System.out.println("UserId " + username);
@@ -272,18 +272,34 @@ public class BusinessController {
 	    System.out.println("EMAIL STUDENT" + email);
 	    Business business = businessService.getIdByEmail(email);
 	    System.out.println("BUSIUNESSSSSSSSSSSSSS" + business);
+	    
+	    List<ProFamily> profesionalFamilies = proFamilyService.getAll();
+		model.addAttribute("profesionalFamilies", profesionalFamilies);
+		
+		System.out.println("OPCION: "+opcion);
+		if(Integer.parseInt(opcion)!=0) {
+			
+			ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
+			String proFamName = profam.getName();
+			System.out.println("proFamName: "+proFamName);
+			List<ServicioModel> servicios =servicioService.findServiciosByProFamily(proFamName);
+			for (ServicioModel s : servicios) {
+				System.out.println("sservicios dentro del if:"+s.getId());
+			}
+			
+			model.addAttribute("servicio", servicios);
 
-	    List<Servicio> servicios = servicioRepository.findAll();
-	    List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
-	    model.addAttribute("servicio", servicios);
-	    model.addAttribute("profesionalFamilies", profesionalFamilies);
+		}else {
+			
+			List<ServicioModel> servicios = servicioService.getAllServicios();
+			model.addAttribute("servicio", servicios);
+		}
 	    model.addAttribute("business", business);
 	    return BUSINESS_HOME_VIEW;
 	}
-
-
+	
 	@GetMapping("/home/finishedServices")
-	public String getFinishedServices(Model model) {
+	public String getFinishedServices(@RequestParam(name="opcion",required=false,defaultValue="0")String opcion, Model model) {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    String username = ((UserDetails) principal).getUsername();
 	    System.out.println("UserId " + username);
@@ -293,16 +309,33 @@ public class BusinessController {
 	    Business business = businessService.getIdByEmail(email);
 	    System.out.println("BUSIUNESSSSSSSSSSSSSS" + business);
 	    
-		List<ServicioModel> finishedServices = servicioService.getFinishedServicios();
-		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
-		model.addAttribute("servicio", finishedServices);
+	    List<ProFamily> profesionalFamilies = proFamilyService.getAll();
 		model.addAttribute("profesionalFamilies", profesionalFamilies);
+		
+		System.out.println("OPCION: "+opcion);
+		if(Integer.parseInt(opcion)!=0) {
+			
+			ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
+			String proFamName = profam.getName();
+			System.out.println("proFamName: "+proFamName);
+			List<ServicioModel> servicios =servicioService.findServiciosByProFamily(proFamName);
+			for (ServicioModel s : servicios) {
+				System.out.println("sservicios dentro del if:"+s.getId());
+			}
+			
+			model.addAttribute("servicio", servicios);
+
+		}else {
+			
+			List<ServicioModel> servicios = servicioService.getFinishedServicios();
+			model.addAttribute("servicio", servicios);
+		}
 	    model.addAttribute("business", business);
 		return BUSINESS_HOME_VIEW;
 	}
 
 	@GetMapping("/home/unassignedServices")
-	public String getUnassignedServices(Model model) {
+	public String getUnassignedServices(@RequestParam(name="opcion",required=false,defaultValue="0")String opcion, Model model) {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    String username = ((UserDetails) principal).getUsername();
 	    System.out.println("UserId " + username);
@@ -312,16 +345,33 @@ public class BusinessController {
 	    Business business = businessService.getIdByEmail(email);
 	    System.out.println("BUSIUNESSSSSSSSSSSSSS" + business);
 	    
-		List<ServicioModel> finishedServices = servicioService.getUnassignedServicios();
-		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
-		model.addAttribute("servicio", finishedServices);
+	    List<ProFamily> profesionalFamilies = proFamilyService.getAll();
 		model.addAttribute("profesionalFamilies", profesionalFamilies);
+		
+		System.out.println("OPCION: "+opcion);
+		if(Integer.parseInt(opcion)!=0) {
+			
+			ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
+			String proFamName = profam.getName();
+			System.out.println("proFamName: "+proFamName);
+			List<ServicioModel> servicios =servicioService.findServiciosByProFamily(proFamName);
+			for (ServicioModel s : servicios) {
+				System.out.println("sservicios dentro del if:"+s.getId());
+			}
+			
+			model.addAttribute("servicio", servicios);
+
+		}else {
+			
+			List<ServicioModel> servicios = servicioService.getUnassignedServicios();
+			model.addAttribute("servicio", servicios);
+		}
 	    model.addAttribute("business", business);
 		return BUSINESS_HOME_VIEW;
 	}
 
 	@GetMapping("/home/assignedButUncompletedServices")
-	public String getAssignedButUncompletedServices(Model model) {
+	public String getAssignedButUncompletedServices(@RequestParam(name="opcion",required=false,defaultValue="0")String opcion, Model model) {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    String username = ((UserDetails) principal).getUsername();
 	    System.out.println("UserId " + username);
@@ -331,28 +381,28 @@ public class BusinessController {
 	    Business business = businessService.getIdByEmail(email);
 	    System.out.println("BUSIUNESSSSSSSSSSSSSS" + business);
 	    
-		List<ServicioModel> finishedServices = servicioService.getAssignedButUncompletedServices();
-		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
-		model.addAttribute("servicio", finishedServices);
+	    List<ProFamily> profesionalFamilies = proFamilyService.getAll();
 		model.addAttribute("profesionalFamilies", profesionalFamilies);
-	    model.addAttribute("business", business);
-		return BUSINESS_HOME_VIEW;
-	}
+		
+		System.out.println("OPCION: "+opcion);
+		if(Integer.parseInt(opcion)!=0) {
+			
+			ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
+			String proFamName = profam.getName();
+			System.out.println("proFamName: "+proFamName);
+			List<ServicioModel> servicios =servicioService.findServiciosByProFamily(proFamName);
+			for (ServicioModel s : servicios) {
+				System.out.println("sservicios dentro del if:"+s.getId());
+			}
+			
+			model.addAttribute("servicio", servicios);
 
-	@GetMapping("/home/findByProFamily")
-	public String getServiciosByProFamily(Model model,
-			@RequestParam(name = "familyName", required = false) String familyName) {
-		List<ServicioModel> servicios;
-
-		if (familyName != null && !familyName.isEmpty()) {
-			servicios = servicioService.findServiciosByProFamily(familyName);
-		} else {
-			servicios = servicioService.getAssignedButUncompletedServices();
+		}else {
+			
+			List<ServicioModel> servicios = servicioService.getAssignedButUncompletedServices();
+			model.addAttribute("servicio", servicios);
 		}
-
-		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
-		model.addAttribute("servicio", servicios);
-		model.addAttribute("profesionalFamilies", profesionalFamilies);
+	    model.addAttribute("business", business);
 		return BUSINESS_HOME_VIEW;
 	}
 
@@ -428,7 +478,7 @@ public class BusinessController {
 		model.addAttribute("profesionalFamilies", profesionalFamilies);
 		
 		System.out.println("OPCION: "+opcion);
-if(Integer.parseInt(opcion)!=0) {
+		if(Integer.parseInt(opcion)!=0) {
 			
 			ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
 			String proFamName = profam.getName();
@@ -439,17 +489,12 @@ if(Integer.parseInt(opcion)!=0) {
 			}
 			
 			model.addAttribute("servicio", servicios);
-//			List<Servicio> businessIdServices=reports.stream().map(report->report.getServicioId()).collect(Collectors.toList());
-			
-//			model.addAttribute("businessIdServices",businessIdServices);
-//			System.out.println("QUEEE: "+businessIdServices);
+
 		}else {
 			
 			List<ServicioModel> servicios = servicioService.getAllServicios();
 			model.addAttribute("servicio", servicios);
 		}
-		
-		
 		
 		return BUSINESS_RATED_SERVICES_VIEW;
 	}
