@@ -49,19 +49,19 @@
 						    <img src="/imgs/assign.png" alt="Asignar" width="40px" onclick="submitAssign(this)" />
 						</td>
                        <td>
-                       <a th:if="${service != null and service.finished != 1}">
-                       <form th:action="@{'/student/writeReport/' + ${service.id}}" method="get">
-								<button type="submit" class="btn btn-blue"> 
-									Conclude	
-								</button>
-							</form>
-							</a>
-
-						    <a th:if="${service.finished == 1}" class="btn btn-success">
-						        Finished
-						    </a>
+						    <th:block th:if="${service.studentId != null and service.finished != 1}">
+						        <form th:action="@{'/student/writeReport/' + ${service.id}}" method="get">
+						            <button type="submit" class="btn btn-blue">Conclude</button>
+						        </form>
+						    </th:block>
+						    <th:block th:if="${service.finished == 1}">
+						        <a href="#" class="btn btn-success">Finished</a>
+						    </th:block>
+						    <th:block th:if="${service.studentId == null}">
+						        <button class="btn btn-danger" onclick="showErrorMessage()">Can't Finish</button>
+						    </th:block>
 						</td>
-                        <td th:if="${service.studentId}" th:text="'You are already assigned'" class="light-red-background"></td>
+                        <td th:if="${service.studentId}" th:text="'You are already assigned '+ ${service.studentId.name}" class="light-red-background"></td>
 
 						<td th:unless="${service.studentId}" th:text="'Not assigned'" class="green-background"></td>
 
@@ -77,6 +77,9 @@
 	</script>
     
     <script>
+    function showErrorMessage(){
+    	 var ErrorMessage = confirm("You cant finish this service because it's not assigned");
+    }
     function submitAssign(element) {
 
         var confirmAssign = confirm("Do you want to assign this service?");
@@ -86,15 +89,6 @@
     }
     function submitCantAssign(element) {
         var confirmAssign = confirm("This services is already assigned!");
-    }
-    function concludeService(element) {
-        // Realiza aquí la lógica para concluir el servicio
-        // Por ejemplo, puedes mostrar un cuadro de diálogo de confirmación
-        var confirmConclude = confirm("Do you want to finish this service?");
-        if (confirmConclude) {
-            // Aquí puedes realizar la conclusión del servicio si el usuario confirma
-            // Ejecutar la conclusión o enviar una solicitud AJAX, según tu lógica
-        }
     }
 </script>
     
