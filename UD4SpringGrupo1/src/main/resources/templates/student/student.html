@@ -51,17 +51,17 @@
                        <td>
 						    <th:block th:if="${service.studentId != null and service.finished != 1}">
 						        <form th:action="@{'/student/writeReport/' + ${service.id}}" method="get">
-						            <button type="submit" class="btn btn-blue">Conclude</button>
+						            <button type="submit" class="btn btn-blue">Finish Service</button>
 						        </form>
 						    </th:block>
 						    <th:block th:if="${service.finished == 1}">
-						        <a href="#" class="btn btn-success">Finished</a>
+						        <a href="#" class="btn btn-success" th:text="'Finished on ' + ${#dates.format(service.happeningDate, 'yyyy-MM-dd')}"></a>
 						    </th:block>
 						    <th:block th:if="${service.studentId == null}">
 						        <button class="btn btn-danger" onclick="showErrorMessage()">Can't Finish</button>
 						    </th:block>
 						</td>
-                        <td th:if="${service.studentId}" th:text="'You are already assigned '+ ${service.studentId.name}" class="light-red-background"></td>
+                        <td th:if="${service.studentId}" th:text="'You are already assigned'" class="light-red-background"></td>
 
 						<td th:unless="${service.studentId}" th:text="'Not assigned'" class="green-background"></td>
 
