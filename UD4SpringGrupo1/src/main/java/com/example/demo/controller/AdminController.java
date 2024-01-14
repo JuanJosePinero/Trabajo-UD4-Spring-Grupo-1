@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.entity.ProFamily;
 import com.example.demo.model.StudentModel;
-import com.example.demo.repository.ProFamilyRepository;
 import com.example.demo.service.ProFamilyService;
 import com.example.demo.service.StudentService;
 
@@ -28,10 +27,6 @@ public class AdminController {
 	@Autowired
 	@Qualifier("studentService")
 	 private StudentService studentService;
-	
-	@Autowired
-	@Qualifier("proFamilyRepository")
-	 private ProFamilyRepository proFamilyRepository;
 	
 	@Autowired
 	@Qualifier("proFamilyService")

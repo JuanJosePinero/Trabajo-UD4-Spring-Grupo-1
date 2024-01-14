@@ -47,8 +47,8 @@ public class ServicioController {
     private BusinessService businessService;
 	
 	@Autowired
-	@Qualifier("proFamilyRepository")
-	 private ProFamilyRepository proFamilyRepository;
+	@Qualifier("proFamilyService")
+	 private ProFamilyService proFamilyService;
 	
 	@Autowired
 	@Qualifier("servicioRepository")
@@ -56,7 +56,7 @@ public class ServicioController {
 	
 	@GetMapping("/addServicio")
 	public String addServicio(Model model) {
-	    List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
+	    List<ProFamily> profesionalFamilies = proFamilyService.getAll();
 	    model.addAttribute("servicioModel", new ServicioModel());
 	    model.addAttribute("profesionalFamilies", profesionalFamilies);
 	    return ADD_SERVICIO_VIEW;
@@ -78,7 +78,7 @@ public class ServicioController {
 
 	@GetMapping("/rateServicio/{servicioId}")
 	public String rateStudent(@PathVariable("servicioId") int servicioId, Model model) {
-	    Servicio servicio = servicioRepository.findById(servicioId);
+	    Servicio servicio = servicioService.getServicioById(servicioId);
 	    model.addAttribute("servicio", servicio);
 	    model.addAttribute("servicioId", servicioId);
 	    return RATE_SERVICIO_VIEW;
@@ -92,7 +92,7 @@ public class ServicioController {
 	
 	@GetMapping("/commentServicio/{servicioId}")
 	public String commentServicio(@PathVariable("servicioId") int servicioId, Model model) {
-	    Servicio servicio = servicioRepository.findById(servicioId);
+	    Servicio servicio = servicioService.getServicioById(servicioId);
 	    model.addAttribute("servicio", servicio);
 	    model.addAttribute("servicioId", servicioId);
 	    return COMMENT_SERVICIO_VIEW;
@@ -106,7 +106,7 @@ public class ServicioController {
 	@GetMapping("/editServicio/{servicioId}")
 	public String editStudent(@PathVariable("servicioId") int servicioId, Model model) {
 		Servicio servicio = servicioRepository.findById(servicioId);
-		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
+		List<ProFamily> profesionalFamilies = proFamilyService.getAll();
 	    model.addAttribute("profesionalFamilies", profesionalFamilies);
 		model.addAttribute("servicio", servicio); 
 	    return EDIT_SERVICIO_VIEW;

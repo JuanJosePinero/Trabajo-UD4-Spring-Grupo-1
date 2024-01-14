@@ -6,6 +6,7 @@ import com.example.demo.entity.Business;
 import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Report;
 import com.example.demo.entity.Servicio;
+import com.example.demo.entity.Student;
 import com.example.demo.model.ServicioModel;
 
 public interface ServicioService {
@@ -17,6 +18,7 @@ public interface ServicioService {
 	Servicio updateServicio(ServicioModel servicioModel);
 	
 	Servicio rateServicio(int servicioId, float valoration);
+	
 	Servicio commentServicio(int servicioId, String comment);
 	
 	public List<ServicioModel> getFinishedServicios();
@@ -46,5 +48,9 @@ public interface ServicioService {
 	Report createReportByServicioId(int servicioId, String reportText, int serviceTime, int studentId);
 
 	Servicio assignStudent(int servicioId, int studentId);
+	
+	List<ServicioModel>findByValorationIsNotNullAndBusinessIdAndProfesionalFamilyId(Business business,ProFamily profamily);
+	
+	List<ServicioModel>findByFinishedAndStudentId(int id, Student student);
 
 }
