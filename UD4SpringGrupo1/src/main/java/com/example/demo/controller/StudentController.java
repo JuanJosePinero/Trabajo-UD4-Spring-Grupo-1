@@ -107,7 +107,8 @@ public class StudentController {
 	    String nameStudent = ((UserDetails) principal).getUsername();		       
         StudentModel student=studentService.getStudentByName(nameStudent);	        
         int idStudent=student.getId();
-	    List<ServicioModel> serviceList = servicioService.findByFinishedAndStudentId(idStudent, studentService.model2entity(student));	    
+	    List<ServicioModel> serviceList = servicioService.findByFinishedAndStudentId(idStudent, studentService.model2entity(student));
+	    System.out.println("QUEEEE: "+serviceList);
 		model.addAttribute("serviceList", serviceList);
 		model.addAttribute("idStudent",idStudent);
 	    return STUDENT_COMMENTS;

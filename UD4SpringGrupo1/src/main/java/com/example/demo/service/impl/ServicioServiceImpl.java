@@ -312,7 +312,8 @@ public class ServicioServiceImpl implements ServicioService {
 	@Override
 	public List<ServicioModel> findByFinishedAndStudentId(int id, Student student) {
 		List<ServicioModel>modelList=new ArrayList<>();
-		List<Servicio>entityList=servicioRepository.findByFinishedAndStudentId(id, student);
+		List<Servicio>entityList=servicioRepository.findByFinishedAndStudentId(1, student);
+		System.out.println("Que imprime esto: "+entityList);
 		for(Servicio servicio: entityList) {
 			modelList.add(entity2model(servicio));
 		}
