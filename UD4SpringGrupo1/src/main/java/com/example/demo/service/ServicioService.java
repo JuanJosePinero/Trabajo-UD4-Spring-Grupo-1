@@ -45,4 +45,6 @@ public interface ServicioService {
 
 	Report createReportByServicioId(int servicioId, String reportText, int serviceTime, int studentId);
 
+	Servicio assignStudent(int servicioId, int studentId);
+
 }
