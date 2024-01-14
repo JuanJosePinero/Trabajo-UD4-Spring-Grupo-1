@@ -36,13 +36,11 @@ public class RegisterController {
 	    public String registerForm(@ModelAttribute("studentModel") StudentModel studentModel, Model model) {
 	        List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
 	        model.addAttribute("profesionalFamilies", profesionalFamilies);
-
 	        return REGISTER_VIEW;
 	    }
 	
 	    @PostMapping("/auth/register")
 	    public String registerSubmit(@ModelAttribute("studentModel") StudentModel studentModel, RedirectAttributes flash, @RequestParam("confirmPassword") String confirmPassword) {	
-	    	System.out.println(studentModel.toString());
 	    	if(studentModel.getName().isEmpty() || studentModel.getPassword().isEmpty() || studentModel.getSurname().isEmpty()){
 	    		flash.addFlashAttribute("error", "Some fields might be empty");
 	    		return "redirect:/auth/register";

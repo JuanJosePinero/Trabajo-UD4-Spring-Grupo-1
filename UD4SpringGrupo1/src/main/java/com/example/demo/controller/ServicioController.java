@@ -66,22 +66,13 @@ public class ServicioController {
 	public String addServicioPost(@ModelAttribute ServicioModel servicioModel, Model model) {
 	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    String username = ((UserDetails) principal).getUsername();
-	    System.out.println("UserId "+username);
 	    StudentModel student = studentService.getStudentByName(username);
-	    String email = student.getEmail();
-	    System.out.println("EMAIL STUDENT"+email);
-	    
+	    String email = student.getEmail();	    
 	    Business business = businessService.getIdByEmail(email);
-	    System.out.println("BUSIUNESSSSSSSSSSSSSS"+business);
-
 	    servicioModel.setBusinessId(business);
-
 	    model.addAttribute("servicioModel", servicioModel);
-
 	    model.addAttribute("business", business);
-
 	    servicioService.addServicio(servicioModel);
-
 	    return "redirect:/business/home";
 	}
 

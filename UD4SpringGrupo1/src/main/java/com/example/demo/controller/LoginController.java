@@ -21,10 +21,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/")
 public class LoginController {
-
 	private static final String LOGIN_VIEW = "auth/login.html";
 	private static final String USER_VIEW = "main/userScreen.html";
-	
 	@Autowired
 	@Qualifier("studentService")
 	 private StudentService studentService;
@@ -33,7 +31,6 @@ public class LoginController {
 	public String login(Model model, @RequestParam(name = "error", required = false) String error,
 	        @RequestParam(name = "logout", required = false) String logout) {
 	    model.addAttribute("student", new Student());
-	    
 	    if (error != null) {
 	        if (error.equals("notActivated")) {
 	            model.addAttribute("error", "notActivated");
@@ -45,17 +42,9 @@ public class LoginController {
 
 	    if (principal instanceof UserDetails) {
 	        String userId = ((UserDetails) principal).getUsername();
-	       
 	        StudentModel student=studentService.getStudentByName(userId);
-	        System.out.println("INFORMACION: "+student);
 	        if (student != null) {
-	            // El objeto student no es nulo, puedes acceder a sus propiedades de manera segura
-	            System.out.println("INFORMACION: " + student);
 	            int id=student.getId();
-	            System.out.println("IDDDDD: "+id);
-	        } else {
-	            // El objeto student es nulo, manejar el caso en el que no se encuentra al estudiante
-	            System.out.println("INFORMACION: Estudiante no encontrado para el nombre de usuario: " + userId);
 	        }
 	    }
 
@@ -64,8 +53,6 @@ public class LoginController {
 	    return LOGIN_VIEW;
 	}
 
-
-	
 	@GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response, Model model) {
         org.springframework.security.core.Authentication auth = SecurityContextHolder.getContext().getAuthentication();

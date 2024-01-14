@@ -78,27 +78,18 @@ public class ProFamilyController {
 
 	            if (updatedProFamily != null) {
 	                flash.addFlashAttribute("success", "ProFamily updated successfully!");
-	                System.out.println("Success: ProFamily updated. ID: " + updatedProFamily.getId() + ", Name: " + updatedProFamily.getName());
 	            } else {
 	                flash.addFlashAttribute("error", "Failed to update ProFamily.");
-	                System.out.println("Failed: Unable to update ProFamily.");
 	            }
 	        } else {
 	            flash.addFlashAttribute("error", "ProFamily not found.");
-	            System.out.println("Failed: ProFamily not found.");
 	        }
 	    } else {
 	        flash.addFlashAttribute("error", "Invalid ProFamily ID.");
-	        System.out.println("Failed: Invalid ProFamily ID.");
 	    }
 
 	    return "redirect:/proFamily/list";
 	}
-
-
-
-
-
 	@PostMapping("/deleteProFamily/{proFamilyId}")
 	public String delete(@PathVariable("proFamilyId") int proFamilyId, Model model) {
 		proFamilyService.deleteProFamily(proFamilyId);

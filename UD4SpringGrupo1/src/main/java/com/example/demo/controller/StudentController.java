@@ -74,18 +74,13 @@ public class StudentController {
 	@GetMapping("/viewServices")
 	public String student(@RequestParam("studentUsername") String name, Model model) {
 	    System.out.println("Nombre: " + name);
-
 	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    String nameStudent = ((UserDetails) principal).getUsername();  
         StudentModel student=studentService.getStudentByName(nameStudent);
-        int idStudent=student.getId();
-        System.out.println("idStudent: "+idStudent);
-   
+        int idStudent=student.getId();   
 	    ProFamily proFamily = student.getProfesionalFamily();
-	    System.out.println("famlia: "+proFamily);
 		if (proFamily != null) {
-		    List<ServicioModel> serviceList = studentService.getServiceByStudentProfesionalFamily(idStudent);
-		    
+		    List<ServicioModel> serviceList = studentService.getServiceByStudentProfesionalFamily(idStudent); 
 		    model.addAttribute("serviceList", serviceList);
 		    model.addAttribute("idStudent",idStudent);
 		} else {
@@ -101,8 +96,6 @@ public class StudentController {
 	    String nameStudent = ((UserDetails) principal).getUsername();  
         StudentModel student=studentService.getStudentByName(nameStudent);
         int idStudent=student.getId();   
-        System.out.println("Id del servicio:"+serviceId);
-        System.out.println("Id del estudiante:"+idStudent);
         servicioService.assignStudent(serviceId, idStudent);
 	    ProFamily proFamily = student.getProfesionalFamily();
 		if (proFamily != null) {
@@ -157,7 +150,6 @@ public class StudentController {
 	                        Model model) throws ParseException {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    String username = ((UserDetails) principal).getUsername();
-	    System.out.println("UserId " + username);
 	    StudentModel student = studentService.getStudentByName(username);
 	    int studentId = student.getId();
 
@@ -172,9 +164,8 @@ public class StudentController {
 
 	    if (newReport != null) {
 	        return "redirect:/student/viewServices?studentUsername="+username;
-	    } else {
+	    } else 
 	    	return "redirect:/student/viewServices?studentUsername="+username;
 	    }
-	}
-	
+
 }
