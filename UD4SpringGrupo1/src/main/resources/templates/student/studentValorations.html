@@ -45,7 +45,12 @@
         <div class="info-block2">
             <p>Here are all the valorations that you set to your services</p>
             <hr>
-            <table class="tableBusiness">
+            <table class="tableBusiness" th:if="${#lists.isEmpty(serviceList)}">
+                <tr>
+                    <td colspan="2"><br><h2>No valorations available</h2><br></td>
+                </tr>
+            </table>
+            <table class="tableBusiness" th:unless="${#lists.isEmpty(serviceList)}">
                 <thead>
                     <tr>
                         <th>Service Title</th>

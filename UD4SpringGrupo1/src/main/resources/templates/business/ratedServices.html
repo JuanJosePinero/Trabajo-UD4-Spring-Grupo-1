@@ -48,32 +48,31 @@
 			</div>
 			<br>
 
-			<table class="table tableBusiness">
-				<thead>
-					<tr>
-						<th>Service Title</th>
-						<th>Student</th>
-						<th>Prfesional Family</th>
-						<th>Valoration</th>
-					</tr>
-				</thead>
-				<tbody id="serviceTableBody">
-					<tr th:each="service : ${servicio}"
-						th:if="${service.deleted != 1 and service.studentId != null and service.finished == 1}">
-						<td th:hidden="${service.id}"></td>
-						<td th:text="${service.title}"></td>
-						<td
-							th:text="${service.studentId != null ? service.studentId.name : 'Not assigned'}"></td>
-						<td th:text="${service.profesionalFamilyId.name}"></td>
-						<td><img
-							th:src="@{'/imgs/stars/e' + ${service.valoration.toString().replace('.', '_')} + '.jpeg'}"
-							alt="Estrella" width="250px" /></td>
+			<table class="table tableBusiness" th:if="${not #lists.isEmpty(servicio) or servicio.![valoration == 0].isEmpty()}">
+    <thead>
+        <tr>
+            <th>Service Title</th>
+            <th>Student</th>
+            <th>Prfesional Family</th>
+            <th>Valoration</th>
+        </tr>
+    </thead>
+    <tbody id="serviceTableBody">
+        <tr th:each="service : ${servicio}" th:if="${service.deleted != 1 and service.studentId != null and service.finished == 1}">
+            <td th:hidden="${service.id}"></td>
+            <td th:text="${service.title}"></td>
+            <td th:text="${service.studentId != null ? service.studentId.name : 'Not assigned'}"></td>
+            <td th:text="${service.profesionalFamilyId.name}"></td>
+            <td><img th:src="@{'/imgs/stars/e' + ${service.valoration.toString().replace('.', '_')} + '.jpeg'}" alt="Estrella" width="250px" /></td>
+        </tr>
+    </tbody>
+    <tfoot th:if="${#lists.isEmpty(servicio) or servicio.![valoration == 0].isEmpty()}">
+        <tr>
+            <td colspan="4"><h2>No rated services available</h2></td>
+        </tr>
+    </tfoot>
+</table>
 
-
-					</tr>
-				</tbody>
-
-			</table>
 		</div>
 	</div>
 </body>

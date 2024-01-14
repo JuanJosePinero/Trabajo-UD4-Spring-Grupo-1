@@ -53,7 +53,12 @@
         <div class="info-block2">
             <p>Here are all the comments that you wrote to your services</p>
             <hr>
-            <table class="tableBusiness">
+            <table class="tableBusiness" th:if="${#lists.isEmpty(serviceList)}">
+                <tr>
+                    <td colspan="2"><br><h2>No comments available</h2><br></td>
+                </tr>
+            </table>
+            <table class="tableBusiness" th:unless="${#lists.isEmpty(serviceList)}">
                 <thead>
                     <tr>
                         <th>Service</th>

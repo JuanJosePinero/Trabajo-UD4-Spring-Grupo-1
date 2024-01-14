@@ -65,6 +65,9 @@
 					</tr>
 				</thead>
 				<tbody id="serviceTableBody">
+					<tr th:if="${servicio.isEmpty()}" class="centered-row">
+				        <td colspan="9"><br><h2>No services available</h2><br></td>
+				    </tr>
 					<tr th:each="service : ${servicio}" th:if="${service.deleted != 1 and service.businessId?.id == business.id}">
 						<td th:hidden="${service.id}"></td>
 						<td th:text="${service.title}"></td>

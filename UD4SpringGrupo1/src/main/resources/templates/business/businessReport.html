@@ -23,7 +23,7 @@
     <div class="form-row align-items-center">
         <div class="col-auto">
             <select id="familiaProfesional" name="opcion" class="form-control">
-                <option value="">Seleccione una familia profesional</option>
+                <option value="">Select a profesional family</option>
                 <th:block th:each="family : ${profesionalFamilies}">
                     <option th:value="${family.id}" th:text="${family.name}"></option>
                 </th:block>
@@ -40,25 +40,31 @@
 			</div>
 <br>
 			<table class="tableBusiness">
-				<thead>
-					<tr>
-						<th>Date</th>
-						<th>Service Name</th>
-						<th>Report</th>
-						<th>Student Name</th>
-						<th>Service Time</th>
-					</tr>
-				</thead>
-				<tbody id="reportTableBody" th:each="report : ${report}">
-					<tr>
-						<td th:text="${#dates.format(report.fullDate, 'dd/MM/yyyy')}"></td>
-						<td th:text="${report.servicioId != null ? report.servicioId.title : ''}"></td>
-						<td th:text="${report.report}"></td>
-						<td th:text="${report.studentId != null ? report.studentId.name : ''}"></td>
-						<td th:text="'&#x231A; ' + ${report.serviceTime} + ' hours'"></td>
-					</tr>
-				</tbody>
-			</table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Service Name</th>
+            <th>Report</th>
+            <th>Student Name</th>
+            <th>Service Time</th>
+        </tr>
+    </thead>
+    <tbody id="reportTableBody" th:if="${not #lists.isEmpty(report)}" th:each="report : ${report}">
+        <tr>
+            <td th:text="${#dates.format(report.fullDate, 'dd/MM/yyyy')}"></td>
+            <td th:text="${report.servicioId != null ? report.servicioId.title : ''}"></td>
+            <td th:text="${report.report}"></td>
+            <td th:text="${report.studentId != null ? report.studentId.name : ''}"></td>
+            <td th:text="'&#x231A; ' + ${report.serviceTime} + ' hours'"></td>
+        </tr>
+    </tbody>
+    <tbody id="noReportMessage" th:if="${#lists.isEmpty(report)}">
+        <tr>
+            <td colspan="5"><br><h2>No reports available</h2><br></td>
+        </tr>
+    </tbody>
+</table>
+
 		</div>
 	</div>
 
