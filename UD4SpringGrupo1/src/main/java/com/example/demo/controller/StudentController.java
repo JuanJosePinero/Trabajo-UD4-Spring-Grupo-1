@@ -1,5 +1,8 @@
 package com.example.demo.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,7 +166,7 @@ public class StudentController {
 	@PostMapping("/writeReport")
 	public String sendReport(@ModelAttribute("servicioId") int serviceId,
 	                        @ModelAttribute("reportModel") ReportModel reportModel,
-	                        Model model) {
+	                        Model model) throws ParseException {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    String username = ((UserDetails) principal).getUsername();
 	    System.out.println("UserId " + username);
@@ -171,12 +174,19 @@ public class StudentController {
 	    int studentId = student.getId();
 
 	    Report newReport = servicioService.createReportByServicioId(serviceId, reportModel.getReport(), reportModel.getServiceTime(), studentId);
+	    Date d = newReport.getFullDate();
+	    Servicio s = servicioService.getServicioById(serviceId);
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    String formattedDate = dateFormat.format(d);
+	    s.setHappeningDate(dateFormat.parse(formattedDate));
+	    servicioService.updateServicio(servicioServiceImpl.entity2model(s));
+
 
 	    if (newReport != null) {
 	        return "redirect:/student/viewServices?studentUsername="+username;
 	    } else {
 	    	return "redirect:/student/viewServices?studentUsername="+username;
 	    }
-	}	
+	}
 	
 }

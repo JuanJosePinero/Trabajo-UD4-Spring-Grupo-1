@@ -33,7 +33,7 @@
     <div class="form-row align-items-center">
         <div class="col-auto">
             <select id="familiaProfesional" name="opcion" class="form-control">
-                <option value="">Seleccione una familia profesional</option>
+                <option value="">Select a profesional family</option>
                 <th:block th:each="family : ${profesionalFamilies}">
                     <option th:value="${family.id}" th:text="${family.name}"></option>
                 </th:block>
