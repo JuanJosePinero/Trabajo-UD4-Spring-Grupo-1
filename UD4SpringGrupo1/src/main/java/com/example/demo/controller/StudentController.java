@@ -157,6 +157,7 @@ public class StudentController {
 
 	    redirectAttributes.addFlashAttribute("successMessage", "Service finished correctly");
 	    return "redirect:/student/viewServices?studentUsername="+username;
+	    //
 	}
 	
 }
