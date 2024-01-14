@@ -102,7 +102,7 @@ public class BusinessController {
 
 	@GetMapping("/list")
 	public String business(Model model) {
-		List<Business> businessList = businessRepository.findAll();
+		List<Business> businessList = businessService.getAllBusiness();
 		model.addAttribute("business1", businessList);
 		return BUSINESS_VIEW;
 	}
