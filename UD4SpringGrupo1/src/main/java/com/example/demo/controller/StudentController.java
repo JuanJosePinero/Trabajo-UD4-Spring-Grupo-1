@@ -107,6 +107,25 @@ public class StudentController {
 	    return STUDENT_SERVICES;
 	}
 	
+	@GetMapping("/viewServices/assigned")
+	public String studentAssigned(@RequestParam("studentUsername") String name, Model model) {
+	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    String nameStudent = ((UserDetails) principal).getUsername();  
+        StudentModel student=studentService.getStudentByName(nameStudent);
+        int idStudent=student.getId();   
+	    ProFamily proFamily = student.getProfesionalFamily();
+		if (proFamily != null) {
+		    List<ServicioModel> serviceList = studentService.getServiceByStudentProfesionalFamily(idStudent);
+		    
+		    model.addAttribute("serviceList", serviceList);
+		    model.addAttribute("idStudent",idStudent);
+		} else {
+		    model.addAttribute("error", "Student does not have any services.");
+		}
+
+	    return STUDENT_SERVICES;
+	}
+	
 	@GetMapping("/viewComments")
 	public String studentComments(@RequestParam("studentUsername") String name, Model model) {
 	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -154,10 +173,9 @@ public class StudentController {
 	    Report newReport = servicioService.createReportByServicioId(serviceId, reportModel.getReport(), reportModel.getServiceTime(), studentId);
 
 	    if (newReport != null) {
-	        return "redirect:/student/viewServices";
+	        return "redirect:/student/viewServices?studentUsername="+username;
 	    } else {
-	    	System.out.println("No te cambio nada tonto");
-	    	return "redirect:/student/viewServices";
+	    	return "redirect:/student/viewServices?studentUsername="+username;
 	    }
 	}	
 	
