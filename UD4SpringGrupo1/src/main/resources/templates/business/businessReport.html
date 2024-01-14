@@ -34,11 +34,11 @@
         </div>
     </div>
 </form>
-
+<br>
 			<div style="display: flex; justify-content: space-between;">
 				<span>Table with all your reports</span>
 			</div>
-
+<br>
 			<table class="tableBusiness">
 				<thead>
 					<tr>
@@ -51,7 +51,7 @@
 				</thead>
 				<tbody id="reportTableBody" th:each="report : ${report}">
 					<tr>
-						<td th:text="${report.fullDate}"></td>
+						<td th:text="${#dates.format(report.fullDate, 'dd/MM/yyyy')}"></td>
 						<td th:text="${report.servicioId != null ? report.servicioId.title : ''}"></td>
 						<td th:text="${report.report}"></td>
 						<td th:text="${report.studentId != null ? report.studentId.name : ''}"></td>
