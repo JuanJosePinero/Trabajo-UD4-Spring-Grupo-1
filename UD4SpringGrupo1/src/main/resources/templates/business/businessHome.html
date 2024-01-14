@@ -112,8 +112,9 @@
 						</a></td>
 
 						<td>
-							<form th:action="@{'/servicio/editServicio/' + ${service.id}}"
-								method="get">
+							<form th:action="@{'/servicio/editServicio/'}"
+								method="post">
+								<input type="hidden" th:value="${service.id}" name="servicioId">
 								<button type="submit" class="btn btn-link p-0 m-0">
 									<img src="/imgs/edit.png" alt="Edit img" width="30px">
 								</button>

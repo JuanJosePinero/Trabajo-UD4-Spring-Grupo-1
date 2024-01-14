@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Business;
 import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Servicio;
 import com.example.demo.model.ServicioModel;
 import com.example.demo.model.StudentModel;
-import com.example.demo.repository.ProFamilyRepository;
 import com.example.demo.repository.ServicioRepository;
 import com.example.demo.service.BusinessService;
 import com.example.demo.service.ProFamilyService;
@@ -103,16 +103,16 @@ public class ServicioController {
 	    servicioService.commentServicio(servicioId, comment);
 	    return "redirect:/business/home";
 	}
-	@GetMapping("/editServicio/{servicioId}")
-	public String editStudent(@PathVariable("servicioId") int servicioId, Model model) {
-		Servicio servicio = servicioRepository.findById(servicioId);
+	@PostMapping("/editServicio/")
+	public String editStudent(@RequestParam("servicioId") int servicioId, Model model) {
+		Servicio servicio = servicioService.getServicioById(servicioId);
 		List<ProFamily> profesionalFamilies = proFamilyService.getAll();
 	    model.addAttribute("profesionalFamilies", profesionalFamilies);
 		model.addAttribute("servicio", servicio); 
 	    return EDIT_SERVICIO_VIEW;
 	}
 	
-	@PostMapping("/editServicio")
+	@PostMapping("/editServicio2")
     public String saveEditedServicio(@ModelAttribute ServicioModel servicioModel) {
 		servicioService.updateServicio(servicioModel);
         return "redirect:/business/home";
