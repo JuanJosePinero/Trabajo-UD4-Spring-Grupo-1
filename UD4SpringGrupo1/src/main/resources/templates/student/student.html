@@ -43,10 +43,12 @@
                         <td th:text="${service.title}"></td>
                         <td th:text="${service.description}"></td>
 						<td th:if="${service.studentId}">
-						    <img src="/imgs/cantAssign.png" alt="No puedes" width="40px" onclick="submitCantAssign(this)" />
+						    <img src="/imgs/cantAssign.png" alt="No puedes" width="40px"/>
 						</td>
 						<td th:unless="${service.studentId}">
-						    <img src="/imgs/assign.png" alt="Asignar" width="40px" onclick="submitAssign(this)" />
+							<a th:href="@{'/student/viewServices/assign/' + ${service.id}}">
+								<img src="/imgs/assign.png" alt="Asignar" width="40px"/>
+                			</a>
 						</td>
                        <td>
 						    <th:block th:if="${service.studentId != null and service.finished != 1}">
@@ -61,36 +63,14 @@
 						        <button class="btn btn-danger" onclick="showErrorMessage()">Can't Finish</button>
 						    </th:block>
 						</td>
-                        <td th:if="${service.studentId}" th:text="'You are already assigned'" class="light-red-background"></td>
+                        <td th:if="${service.studentId}" th:text="'You are already assigned'" class="green-background"></td>
 
-						<td th:unless="${service.studentId}" th:text="'Not assigned'" class="green-background"></td>
+						<td th:unless="${service.studentId}" th:text="'Not assigned'" class="light-red-background"></td>
 
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
-    <script type="text/javascript">
-    function redirectToSendReport(button, serviceId) {
-        window.location.href = '/student/sendReport?serviceId=' + serviceId;
-    }
-	</script>
-    
-    <script>
-    function showErrorMessage(){
-    	 var ErrorMessage = confirm("You cant finish this service because it's not assigned");
-    }
-    function submitAssign(element) {
-
-        var confirmAssign = confirm("Do you want to assign this service?");
-        if (confirmAssign) {
-        	
-        }
-    }
-    function submitCantAssign(element) {
-        var confirmAssign = confirm("This services is already assigned!");
-    }
-</script>
-    
 </body>
 </html>

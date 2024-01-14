@@ -292,5 +292,12 @@ public class ServicioServiceImpl implements ServicioService {
 	    return servicioModels;
 	}
 
+	@Override
+	public Servicio assignStudent(int servicioId, int studentId) {
+		Servicio servicio = servicioRepository.findById(servicioId);
+		servicio.setStudentId(studentRepository.findById(studentId));
+		 return servicioRepository.save(servicio);
+	}
+
 
 }

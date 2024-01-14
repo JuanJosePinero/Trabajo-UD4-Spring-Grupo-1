@@ -383,32 +383,18 @@ public class BusinessController {
 		StudentModel student = studentService.getStudentByName(username);
 		String email = student.getEmail();
 		Business business = businessService.getIdByEmail(email);
-		System.out.println("businessss: "+business);
-		List<ServicioModel> serviceList = servicioService.getServicesByBusinessId(business);
-		System.out.println("serviceListByIDBusiness: "+serviceList);
-		
+		List<ServicioModel> serviceList = servicioService.getServicesByBusinessId(business);		
 		List<ProFamily> profesionalFamilies = proFamilyService.getAll();
 		model.addAttribute("profesionalFamilies", profesionalFamilies);
-		
-		System.out.println("OPCION: "+opcion);
 		if(Integer.parseInt(opcion)!=0) {
-			
 			ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
-			String proFamName = profam.getName();
-			System.out.println("proFamName: "+proFamName);
-			List<ServicioModel> servicios =servicioService.findServiciosByProFamily(proFamName);
-			for (ServicioModel s : servicios) {
-				System.out.println("sservicios dentro del if:"+s.getId());
-			}
-			
+			List<Servicio> servicios = servicioRepository.findByValorationIsNotNullAndBusinessIdAndProfesionalFamilyId(business, profam);
 			model.addAttribute("servicio", servicios);
-
-		}else {
-			
-			List<ServicioModel> servicios = servicioService.getAllServicios();
+		}else {	
+			ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
+			List<Servicio> servicios =servicioRepository.findByValorationIsNotNullAndBusinessIdAndProfesionalFamilyId(business, profam);
 			model.addAttribute("servicio", servicios);
 		}
-		
 		return BUSINESS_RATED_SERVICES_VIEW;
 	}
 

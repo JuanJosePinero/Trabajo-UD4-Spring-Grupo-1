@@ -110,12 +110,15 @@ public class StudentController {
 	    return STUDENT_SERVICES;
 	}
 	
-	@GetMapping("/viewServices/assigned")
-	public String studentAssigned(@RequestParam("studentUsername") String name, Model model) {
+	@GetMapping("/viewServices/assign/{serviceId}")
+	public String studentAssigned(@PathVariable("serviceId") int serviceId, Model model) {
 	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    String nameStudent = ((UserDetails) principal).getUsername();  
         StudentModel student=studentService.getStudentByName(nameStudent);
         int idStudent=student.getId();   
+        System.out.println("Id del servicio:"+serviceId);
+        System.out.println("Id del estudiante:"+idStudent);
+        servicioService.assignStudent(serviceId, idStudent);
 	    ProFamily proFamily = student.getProfesionalFamily();
 		if (proFamily != null) {
 		    List<ServicioModel> serviceList = studentService.getServiceByStudentProfesionalFamily(idStudent);
