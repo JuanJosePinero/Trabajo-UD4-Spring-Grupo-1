@@ -16,12 +16,14 @@
 
 	<div class="info-container2">
 		<div class="info-block-head">
-			<h3>Your Services</h3>
-		</div>
+    <h3>Your Services</h3>
+    
+</div>
+<div th:if="${successMessage}" class="alert alert-success">
+        <p th:text="${successMessage}"></p>
+    </div>
+    
 		<div class="info-block2">
-
-
-
 			<p align="left">
 			<div class="form-row align-items-center">
 				<span> <a th:href="@{/servicio/addServicio}" class="btn-add">Add
