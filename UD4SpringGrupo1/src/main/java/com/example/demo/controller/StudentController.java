@@ -48,10 +48,7 @@ public class StudentController {
 	@Autowired
 	@Qualifier("businessService")
 	 private BusinessService businessService;
-	
-	@Autowired
-	@Qualifier("businessRepository")
-	 private BusinessRepository businessRepository;
+
 	
 	@Autowired
 	@Qualifier("servicioService")
@@ -64,19 +61,7 @@ public class StudentController {
 	@Autowired
 	@Qualifier("servicioRepository")
 	 private ServicioRepository servicioRepository;
-	
-	@Autowired
-	@Qualifier("reportService")
-	private ReportService reportService;
-	
-	@Autowired
-	@Qualifier("proFamilyRepository")
-	private ProFamilyRepository proFamilyRepository;
-	
-	@Autowired
-	@Qualifier("proFamilyService")
-	private ProFamilyService proFamilyService;
-	
+
 	@Autowired
 	@Qualifier("studentService")
 	private StudentService studentService;

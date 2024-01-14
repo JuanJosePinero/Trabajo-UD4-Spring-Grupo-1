@@ -264,14 +264,9 @@ public class BusinessController {
 	    System.out.println("UserId " + username);
 	    StudentModel student = studentService.getStudentByName(username);
 	    String email = student.getEmail();
-	    System.out.println("EMAIL STUDENT" + email);
 	    Business business = businessService.getIdByEmail(email);
-	    System.out.println("BUSIUNESSSSSSSSSSSSSS" + business);
-
 	    List<ProFamily> profesionalFamilies = proFamilyService.getAll();
 	    model.addAttribute("profesionalFamilies", profesionalFamilies);
-
-	    System.out.println("OPCION: " + opcion);
 	    
 	    if (!filterBy.equals("null")) {
 	    	if (filterBy.equals("finishedServices")) {
@@ -360,14 +355,13 @@ public class BusinessController {
 			List<Servicio> businessIdServices=reports.stream().map(report->report.getServicioId()).collect(Collectors.toList());
 			
 			model.addAttribute("businessIdServices",businessIdServices);
-			System.out.println("QUEEE: "+businessIdServices);
+
 		}else {
 			
 			List<Report> reports = servicioService.getReportsForServicesByBusinessId(business);
 			model.addAttribute("report", reports);
 			List<Servicio> businessIdServices=reports.stream().map(report->report.getServicioId()).collect(Collectors.toList());
 			model.addAttribute("businessIdServices",businessIdServices);
-			System.out.println("QUEEE: "+businessIdServices);
 		}
 		model.addAttribute("username",username);
 
@@ -391,8 +385,7 @@ public class BusinessController {
 			List<Servicio> servicios = servicioRepository.findByValorationIsNotNullAndBusinessIdAndProfesionalFamilyId(business, profam);
 			model.addAttribute("servicio", servicios);
 		}else {	
-			ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
-			List<Servicio> servicios =servicioRepository.findByValorationIsNotNullAndBusinessIdAndProfesionalFamilyId(business, profam);
+			List<Servicio> servicios =servicioRepository.findByBusinessId(business);
 			model.addAttribute("servicio", servicios);
 		}
 		return BUSINESS_RATED_SERVICES_VIEW;

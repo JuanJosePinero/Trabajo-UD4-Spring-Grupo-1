@@ -37,11 +37,7 @@ public class ServicioController {
 	@Autowired
 	@Qualifier("servicioService")
 	 private ServicioService servicioService;
-	
-	@Autowired
-	@Qualifier("proFamilyService")
-    private ProFamilyService proFamilyService;
-	
+
 	@Autowired
 	@Qualifier("studentService")
     private StudentService studentService;
@@ -60,17 +56,9 @@ public class ServicioController {
 	
 	@GetMapping("/addServicio")
 	public String addServicio(Model model) {
-		
-//		org.springframework.security.core.Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String username = authentication.getName();
-//        int userId = obtenerIdUsuarioPorNombre(username);
-//        List<Servicio> servicios = servicioService.obtenerServiciosPorUsuario(userId);
 	    List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
 	    model.addAttribute("servicioModel", new ServicioModel());
 	    model.addAttribute("profesionalFamilies", profesionalFamilies);
-	    // Puedes configurar la fecha actual aquí antes de mostrar el formulario
-//	    LocalDate currentDate = LocalDate.now();
-//	    model.addAttribute("currentDate", currentDate);
 	    return ADD_SERVICIO_VIEW;
 	}
 

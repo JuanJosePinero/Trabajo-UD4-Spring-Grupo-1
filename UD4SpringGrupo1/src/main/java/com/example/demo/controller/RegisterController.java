@@ -31,9 +31,6 @@ public class RegisterController {
 	 @Autowired
 	 @Qualifier("proFamilyRepository")
 	 private ProFamilyRepository proFamilyRepository;
-	
-	 @Autowired
-	    private ProFamilyService proFamilyService;
 
 	    @GetMapping("/auth/register")
 	    public String registerForm(@ModelAttribute("studentModel") StudentModel studentModel, Model model) {
