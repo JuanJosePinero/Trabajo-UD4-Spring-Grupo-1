@@ -208,7 +208,6 @@ public class ServicioServiceImpl implements ServicioService {
 	public List<ServicioModel> getServicesByBusinessId(Business business) {
 		List<Servicio>modelServices=servicioRepository.findAll();
 		List<ServicioModel>services=new ArrayList<>();
-		System.out.println("FJDSFJ: "+business.getId());
 		for(Servicio servicio: modelServices) {
 			if(servicio.getBusinessId()!=null && servicio.getBusinessId().getId() == business.getId()) {
 			ServicioModel servicioModel = entity2model(servicio);
@@ -297,6 +296,27 @@ public class ServicioServiceImpl implements ServicioService {
 		Servicio servicio = servicioRepository.findById(servicioId);
 		servicio.setStudentId(studentRepository.findById(studentId));
 		 return servicioRepository.save(servicio);
+	}
+
+	@Override
+	public List<ServicioModel> findByValorationIsNotNullAndBusinessIdAndProfesionalFamilyId(Business business,
+			ProFamily profamily) {
+		List<ServicioModel>listModel=new ArrayList<>();
+		List<Servicio>entityList=servicioRepository.findByValorationIsNotNullAndBusinessIdAndProfesionalFamilyId(business, profamily);
+		for(Servicio servicio: entityList) {
+			listModel.add(entity2model(servicio));
+		}
+		return listModel;
+	}
+
+	@Override
+	public List<ServicioModel> findByFinishedAndStudentId(int id, Student student) {
+		List<ServicioModel>modelList=new ArrayList<>();
+		List<Servicio>entityList=servicioRepository.findByFinishedAndStudentId(id, student);
+		for(Servicio servicio: entityList) {
+			modelList.add(entity2model(servicio));
+		}
+		return modelList;
 	}
 
 

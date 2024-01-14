@@ -62,8 +62,6 @@ public class ReportServiceImpl implements ReportService{
 	            reports.remove(report);
 	        }
 	    }
-	    System.out.println("REPORTEEEES: " + reports);
-
 	    return reports;
 	}
 

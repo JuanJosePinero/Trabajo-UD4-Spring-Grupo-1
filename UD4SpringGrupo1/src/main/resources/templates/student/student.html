@@ -7,16 +7,16 @@
         href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
         crossorigin="anonymous">
-  <link href="/css/styles.css" rel="stylesheet">
-  <style
-  >.green-background {
-    background-color: lightgreen;
-}
+<link href="/css/styles.css" rel="stylesheet">
+<style>
+    .green-background {
+        background-color: lightgreen;
+    }
 
-.light-red-background {
-    background-color: lightcoral;
-}
-  </style>
+    .light-red-background {
+        background-color: lightcoral;
+    }
+</style>
 </head>
 <body class="bodyBusiness">
     <div th:replace="/main/CustomNavbar.html"></div>
@@ -26,7 +26,7 @@
             <h3>Your Services</h3>
         </div>
         <div class="info-block2">
-            <p>List of your services from your Profesional Family</p>
+            <p>List of your services from your Professional Family</p>
             <table class="tableBusiness">
                 <thead>
                     <tr>
@@ -38,39 +38,45 @@
                     </tr>
                 </thead>
                 <tbody id="serviceTableBody" th:each="service : ${serviceList}">
-                    <tr data-family-name="${service.profesionalFamilyId.name}" th:if="${service.deleted != 1 and service.studentId?.id == idStudent or service.studentId == null}">
+                    <tr data-family-name="${service.profesionalFamilyId.name}" th:if="${service.deleted != 1 and (service.studentId?.id == idStudent or service.studentId == null)}">
                         <td th:hidden="${service.id}"></td>
                         <td th:text="${service.title}"></td>
                         <td th:text="${service.description}"></td>
-						<td th:if="${service.studentId}">
-						    <img src="/imgs/cantAssign.png" alt="No puedes" width="40px"/>
-						</td>
-						<td th:unless="${service.studentId}">
-							<a th:href="@{'/student/viewServices/assign/' + ${service.id}}">
-								<img src="/imgs/assign.png" alt="Asignar" width="40px"/>
-                			</a>
-						</td>
-                       <td>
-						    <th:block th:if="${service.studentId != null and service.finished != 1}">
-						        <form th:action="@{'/student/writeReport/' + ${service.id}}" method="get">
-						            <button type="submit" class="btn btn-blue">Finish Service</button>
-						        </form>
-						    </th:block>
-						    <th:block th:if="${service.finished == 1}">
-						        <a href="#" class="btn btn-success" th:text="'Finished on ' + ${#dates.format(service.happeningDate, 'yyyy-MM-dd')}"></a>
-						    </th:block>
-						    <th:block th:if="${service.studentId == null}">
-						        <button class="btn btn-danger" onclick="showErrorMessage()">Can't Finish</button>
-						    </th:block>
-						</td>
+                        <td th:if="${service.studentId}">
+                            <img src="/imgs/cantAssign.png" alt="No puedes" width="40px"/>
+                        </td>
+                        <td th:unless="${service.studentId}">
+                            <a th:href="@{'/student/viewServices/assign/' + ${service.id}}">
+                                <img src="/imgs/assign.png" alt="Asignar" width="40px"/>
+                            </a>
+                        </td>
+                        <td>
+                            <th:block th:if="${service.studentId != null and service.finished != 1}">
+                                <form th:action="@{'/student/writeReport/' + ${service.id}}" method="get">
+                                    <button type="submit" class="btn btn-blue">Finish Service</button>
+                                </form>
+                            </th:block>
+                            <th:block th:if="${service.finished == 1}">
+                                <a href="#" class="btn btn-success" onclick="submitCantAssign()" th:text="'Finished on ' + ${#dates.format(service.happeningDate, 'yyyy-MM-dd')}"></a>
+                            </th:block>
+                            <th:block th:if="${service.studentId == null}">
+                                <button class="btn btn-danger" onclick="showErrorMessage()">Can't Finish</button>
+                            </th:block>
+                        </td>
                         <td th:if="${service.studentId}" th:text="'You are already assigned'" class="green-background"></td>
-
-						<td th:unless="${service.studentId}" th:text="'Not assigned'" class="light-red-background"></td>
-
+                        <td th:unless="${service.studentId}" th:text="'Not assigned'" class="light-red-background"></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+    <script>
+        function showErrorMessage(){
+            var ErrorMessage = confirm("You can't finish this service because it's not assigned");
+        }
+        function submitCantAssign(element) {
+            var confirmAssign = confirm("This service is already assigned!");
+        }
+    </script>
 </body>
 </html>

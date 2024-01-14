@@ -3,7 +3,6 @@ package com.example.demo.service.impl;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,6 @@ public class ProFamilyServiceImpl implements ProFamilyService {
 
     private final ProFamilyRepository proFamilyRepository;
 
-    @Autowired
     public ProFamilyServiceImpl(ProFamilyRepository proFamilyRepository) {
         this.proFamilyRepository = proFamilyRepository;
     }

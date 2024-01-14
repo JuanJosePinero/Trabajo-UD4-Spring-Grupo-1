@@ -9,9 +9,12 @@ import com.example.demo.model.StudentModel;
 public interface StudentService {
 
 	List<StudentModel> listAllStudents();
+	
 	List<StudentModel> listAllEnabledOrDisabledStudents();
 	
 	StudentModel getStudentById(int id);
+	
+	Student model2entity(StudentModel studentModel);
 
 	public Student register(StudentModel studentModel);
 
@@ -34,4 +37,6 @@ public interface StudentService {
 	public StudentModel getStudentByName(String name);
 	
 	public List<ServicioModel> getServiceByStudentProfesionalFamily(int id);
+	
+	public StudentModel getStudentByEmail(String email);
 }

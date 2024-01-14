@@ -37,11 +37,7 @@ public class ServicioController {
 	@Autowired
 	@Qualifier("servicioService")
 	 private ServicioService servicioService;
-	
-	@Autowired
-	@Qualifier("proFamilyService")
-    private ProFamilyService proFamilyService;
-	
+
 	@Autowired
 	@Qualifier("studentService")
     private StudentService studentService;
@@ -51,8 +47,8 @@ public class ServicioController {
     private BusinessService businessService;
 	
 	@Autowired
-	@Qualifier("proFamilyRepository")
-	 private ProFamilyRepository proFamilyRepository;
+	@Qualifier("proFamilyService")
+	 private ProFamilyService proFamilyService;
 	
 	@Autowired
 	@Qualifier("servicioRepository")
@@ -60,17 +56,9 @@ public class ServicioController {
 	
 	@GetMapping("/addServicio")
 	public String addServicio(Model model) {
-		
-//		org.springframework.security.core.Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String username = authentication.getName();
-//        int userId = obtenerIdUsuarioPorNombre(username);
-//        List<Servicio> servicios = servicioService.obtenerServiciosPorUsuario(userId);
-	    List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
+	    List<ProFamily> profesionalFamilies = proFamilyService.getAll();
 	    model.addAttribute("servicioModel", new ServicioModel());
 	    model.addAttribute("profesionalFamilies", profesionalFamilies);
-	    // Puedes configurar la fecha actual aquí antes de mostrar el formulario
-//	    LocalDate currentDate = LocalDate.now();
-//	    model.addAttribute("currentDate", currentDate);
 	    return ADD_SERVICIO_VIEW;
 	}
 
@@ -78,28 +66,19 @@ public class ServicioController {
 	public String addServicioPost(@ModelAttribute ServicioModel servicioModel, Model model) {
 	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    String username = ((UserDetails) principal).getUsername();
-	    System.out.println("UserId "+username);
 	    StudentModel student = studentService.getStudentByName(username);
-	    String email = student.getEmail();
-	    System.out.println("EMAIL STUDENT"+email);
-	    
+	    String email = student.getEmail();	    
 	    Business business = businessService.getIdByEmail(email);
-	    System.out.println("BUSIUNESSSSSSSSSSSSSS"+business);
-
 	    servicioModel.setBusinessId(business);
-
 	    model.addAttribute("servicioModel", servicioModel);
-
 	    model.addAttribute("business", business);
-
 	    servicioService.addServicio(servicioModel);
-
 	    return "redirect:/business/home";
 	}
 
 	@GetMapping("/rateServicio/{servicioId}")
 	public String rateStudent(@PathVariable("servicioId") int servicioId, Model model) {
-	    Servicio servicio = servicioRepository.findById(servicioId);
+	    Servicio servicio = servicioService.getServicioById(servicioId);
 	    model.addAttribute("servicio", servicio);
 	    model.addAttribute("servicioId", servicioId);
 	    return RATE_SERVICIO_VIEW;
@@ -113,7 +92,7 @@ public class ServicioController {
 	
 	@GetMapping("/commentServicio/{servicioId}")
 	public String commentServicio(@PathVariable("servicioId") int servicioId, Model model) {
-	    Servicio servicio = servicioRepository.findById(servicioId);
+	    Servicio servicio = servicioService.getServicioById(servicioId);
 	    model.addAttribute("servicio", servicio);
 	    model.addAttribute("servicioId", servicioId);
 	    return COMMENT_SERVICIO_VIEW;
@@ -127,7 +106,7 @@ public class ServicioController {
 	@GetMapping("/editServicio/{servicioId}")
 	public String editStudent(@PathVariable("servicioId") int servicioId, Model model) {
 		Servicio servicio = servicioRepository.findById(servicioId);
-		List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
+		List<ProFamily> profesionalFamilies = proFamilyService.getAll();
 	    model.addAttribute("profesionalFamilies", profesionalFamilies);
 		model.addAttribute("servicio", servicio); 
 	    return EDIT_SERVICIO_VIEW;

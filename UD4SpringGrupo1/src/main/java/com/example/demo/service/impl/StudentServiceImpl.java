@@ -27,7 +27,6 @@ import com.example.demo.model.StudentModel;
 import com.example.demo.repository.ProFamilyRepository;
 import com.example.demo.repository.ServicioRepository;
 import com.example.demo.repository.StudentRepository;
-import com.example.demo.service.ServicioService;
 import com.example.demo.service.StudentService;
 
 @Configuration
@@ -50,7 +49,7 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 	@Qualifier("servicioService")
 	private ServicioServiceImpl servicioService;
 
-	private Student model2entity(StudentModel studentModel) {
+	public Student model2entity(StudentModel studentModel) {
 		ModelMapper mapper = new ModelMapper();
 		return mapper.map(studentModel, Student.class);
 	}
@@ -208,6 +207,10 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 			servicioLista.add(servicioService.entity2model(servicio));
 		}
 		return servicioLista;
+	}
+	@Override
+	public StudentModel getStudentByEmail(String email) {
+		return entity2model(studentRepository.findByEmail(email));
 	}
 	
 

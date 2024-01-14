@@ -15,7 +15,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.ProFamily;
 import com.example.demo.model.StudentModel;
-import com.example.demo.repository.ProFamilyRepository;
 import com.example.demo.service.ProFamilyService;
 import com.example.demo.service.StudentService;
 
@@ -29,23 +28,18 @@ public class RegisterController {
 	 private StudentService studentService;
 	 
 	 @Autowired
-	 @Qualifier("proFamilyRepository")
-	 private ProFamilyRepository proFamilyRepository;
-	
-	 @Autowired
-	    private ProFamilyService proFamilyService;
+	 @Qualifier("proFamilyService")
+	 private ProFamilyService proFamilyService;
 
 	    @GetMapping("/auth/register")
 	    public String registerForm(@ModelAttribute("studentModel") StudentModel studentModel, Model model) {
-	        List<ProFamily> profesionalFamilies = proFamilyRepository.findAll();
+	        List<ProFamily> profesionalFamilies = proFamilyService.getAll();
 	        model.addAttribute("profesionalFamilies", profesionalFamilies);
-
 	        return REGISTER_VIEW;
 	    }
 	
 	    @PostMapping("/auth/register")
 	    public String registerSubmit(@ModelAttribute("studentModel") StudentModel studentModel, RedirectAttributes flash, @RequestParam("confirmPassword") String confirmPassword) {	
-	    	System.out.println(studentModel.toString());
 	    	if(studentModel.getName().isEmpty() || studentModel.getPassword().isEmpty() || studentModel.getSurname().isEmpty()){
 	    		flash.addFlashAttribute("error", "Some fields might be empty");
 	    		return "redirect:/auth/register";

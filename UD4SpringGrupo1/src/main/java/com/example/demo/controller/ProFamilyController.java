@@ -15,7 +15,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.ProFamily;
 import com.example.demo.model.ProFamilyModel;
-import com.example.demo.repository.ProFamilyRepository;
 import com.example.demo.service.ProFamilyService;
 
 @Controller
@@ -29,14 +28,11 @@ public class ProFamilyController {
 	@Autowired
 	@Qualifier("proFamilyService")
 	 private ProFamilyService proFamilyService;
-	
-	@Autowired
-	@Qualifier("proFamilyRepository")
-	 private ProFamilyRepository proFamilyRepository;
+
 	
 	@GetMapping("/list")
 	public String proFamily(Model model) {
-		List<ProFamily> proFamilyList = proFamilyRepository.findAll();
+		List<ProFamily> proFamilyList = proFamilyService.getAll();
 		model.addAttribute("profesionalFamilies", proFamilyList); 
 	    return PRO_FAMILY_VIEW;
 	}
@@ -55,7 +51,7 @@ public class ProFamilyController {
 	
 	@GetMapping("/editProFamily/{proFamilyId}")
 	public String editProFamily(@PathVariable("proFamilyId") int proFamilyId, Model model) {
-	    ProFamily proFamily = proFamilyRepository.findById(proFamilyId);
+	    ProFamily proFamily = proFamilyService.findById(proFamilyId);
 
 	    if (proFamily != null) {
 	        ProFamilyModel proFamilyModel = new ProFamilyModel();
@@ -70,7 +66,7 @@ public class ProFamilyController {
 	@PostMapping("/editProFamily")
 	public String saveEditedProFamily(@ModelAttribute ProFamilyModel proFamilyModel, RedirectAttributes flash) {
 	    if (proFamilyModel.getId() > 0) {
-	        ProFamily proFamily = proFamilyRepository.findById(proFamilyModel.getId());
+	        ProFamily proFamily = proFamilyService.findById(proFamilyModel.getId());
 
 	        if (proFamily != null) {
 	            proFamily.setName(proFamilyModel.getName());
@@ -78,18 +74,14 @@ public class ProFamilyController {
 
 	            if (updatedProFamily != null) {
 	                flash.addFlashAttribute("success", "ProFamily updated successfully!");
-	                System.out.println("Success: ProFamily updated. ID: " + updatedProFamily.getId() + ", Name: " + updatedProFamily.getName());
 	            } else {
 	                flash.addFlashAttribute("error", "Failed to update ProFamily.");
-	                System.out.println("Failed: Unable to update ProFamily.");
 	            }
 	        } else {
 	            flash.addFlashAttribute("error", "ProFamily not found.");
-	            System.out.println("Failed: ProFamily not found.");
 	        }
 	    } else {
 	        flash.addFlashAttribute("error", "Invalid ProFamily ID.");
-	        System.out.println("Failed: Invalid ProFamily ID.");
 	    }
 
 	    return "redirect:/proFamily/list";

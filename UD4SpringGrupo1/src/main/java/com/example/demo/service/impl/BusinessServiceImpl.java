@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,6 @@ public class BusinessServiceImpl implements BusinessService {
 	
 	private final BusinessRepository businessRepository;
 
-    @Autowired
     public BusinessServiceImpl(BusinessRepository businessRepository) {
         this.businessRepository = businessRepository;
     }
@@ -71,14 +69,12 @@ public class BusinessServiceImpl implements BusinessService {
         Business existingBusiness = businessRepository.findById(business.getId())
                 .orElseThrow(() -> new RuntimeException("Business not found"));
 
-        // Actualiza los campos necesarios
         existingBusiness.setName(business.getName());
         existingBusiness.setAddress(business.getAddress());
         existingBusiness.setEmail(business.getEmail());
         existingBusiness.setPhone(business.getPhone());
         existingBusiness.setLogo(business.getLogo());
 
-        // Guarda el Business actualizado en el repositorio
         return businessRepository.save(existingBusiness);
     }
 

@@ -24,13 +24,7 @@ import com.example.demo.entity.Servicio;
 import com.example.demo.model.ReportModel;
 import com.example.demo.model.ServicioModel;
 import com.example.demo.model.StudentModel;
-import com.example.demo.repository.BusinessRepository;
-import com.example.demo.repository.ProFamilyRepository;
-import com.example.demo.repository.ServicioRepository;
-import com.example.demo.repository.StudentRepository;
 import com.example.demo.service.BusinessService;
-import com.example.demo.service.ProFamilyService;
-import com.example.demo.service.ReportService;
 import com.example.demo.service.ServicioService;
 import com.example.demo.service.StudentService;
 import com.example.demo.service.impl.ServicioServiceImpl;
@@ -48,56 +42,33 @@ public class StudentController {
 	@Autowired
 	@Qualifier("businessService")
 	 private BusinessService businessService;
-	
-	@Autowired
-	@Qualifier("businessRepository")
-	 private BusinessRepository businessRepository;
+
 	
 	@Autowired
 	@Qualifier("servicioService")
 	 private ServicioService servicioService;
 	
+	
+	
 	@Autowired
 	@Qualifier("servicioService")
 	 private ServicioServiceImpl servicioServiceImpl;
-	
-	@Autowired
-	@Qualifier("servicioRepository")
-	 private ServicioRepository servicioRepository;
-	
-	@Autowired
-	@Qualifier("reportService")
-	private ReportService reportService;
-	
-	@Autowired
-	@Qualifier("proFamilyRepository")
-	private ProFamilyRepository proFamilyRepository;
-	
-	@Autowired
-	@Qualifier("proFamilyService")
-	private ProFamilyService proFamilyService;
-	
+
 	@Autowired
 	@Qualifier("studentService")
 	private StudentService studentService;
 	
-	@Autowired
-	@Qualifier("studentRepository")
-	private StudentRepository studentRepository;
 	
 	
 	@GetMapping("/viewServices")
 	public String student(@RequestParam("studentUsername") String name, Model model) {
-	    System.out.println("Nombre: " + name);
 
 	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    String nameStudent = ((UserDetails) principal).getUsername();  
         StudentModel student=studentService.getStudentByName(nameStudent);
         int idStudent=student.getId();
-        System.out.println("idStudent: "+idStudent);
    
 	    ProFamily proFamily = student.getProfesionalFamily();
-	    System.out.println("famlia: "+proFamily);
 		if (proFamily != null) {
 		    List<ServicioModel> serviceList = studentService.getServiceByStudentProfesionalFamily(idStudent);
 		    
@@ -116,8 +87,6 @@ public class StudentController {
 	    String nameStudent = ((UserDetails) principal).getUsername();  
         StudentModel student=studentService.getStudentByName(nameStudent);
         int idStudent=student.getId();   
-        System.out.println("Id del servicio:"+serviceId);
-        System.out.println("Id del estudiante:"+idStudent);
         servicioService.assignStudent(serviceId, idStudent);
 	    ProFamily proFamily = student.getProfesionalFamily();
 		if (proFamily != null) {
@@ -138,7 +107,7 @@ public class StudentController {
 	    String nameStudent = ((UserDetails) principal).getUsername();		       
         StudentModel student=studentService.getStudentByName(nameStudent);	        
         int idStudent=student.getId();
-	    List<Servicio> serviceList = servicioRepository.findByFinishedAndStudentId(1 , studentRepository.findById(idStudent));			    
+	    List<ServicioModel> serviceList = servicioService.findByFinishedAndStudentId(idStudent, studentService.model2entity(student));	    
 		model.addAttribute("serviceList", serviceList);
 		model.addAttribute("idStudent",idStudent);
 	    return STUDENT_COMMENTS;
@@ -150,7 +119,7 @@ public class StudentController {
 	    String nameStudent = ((UserDetails) principal).getUsername();		       
         StudentModel student=studentService.getStudentByName(nameStudent);	        
         int idStudent=student.getId();
-	    List<Servicio> serviceList = servicioRepository.findByFinishedAndStudentId(1 , studentRepository.findById(idStudent));			    
+	    List<ServicioModel> serviceList = servicioService.findByFinishedAndStudentId(idStudent, studentService.model2entity(student));				    
 		model.addAttribute("serviceList", serviceList);
 		model.addAttribute("idStudent",idStudent);
 	    return STUDENT_VALORATIONS;
@@ -158,7 +127,7 @@ public class StudentController {
 	
 	@GetMapping("/writeReport/{servicioId}")
 	public String studentReport(@PathVariable("servicioId") int servicioId, Model model, @ModelAttribute("reportModel") ReportModel reportModel) {
-		Servicio servicio = servicioRepository.findById(servicioId);
+		Servicio servicio = servicioService.getServicioById(servicioId);
 		model.addAttribute("servicio", servicio);
 		model.addAttribute("reportModel", reportModel);
 		model.addAttribute("servicioId", servicioId);
@@ -172,7 +141,6 @@ public class StudentController {
 	                        Model model) throws ParseException {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    String username = ((UserDetails) principal).getUsername();
-	    System.out.println("UserId " + username);
 	    StudentModel student = studentService.getStudentByName(username);
 	    int studentId = student.getId();
 
@@ -185,11 +153,7 @@ public class StudentController {
 	    servicioService.updateServicio(servicioServiceImpl.entity2model(s));
 
 
-	    if (newReport != null) {
-	        return "redirect:/student/viewServices?studentUsername="+username;
-	    } else {
-	    	return "redirect:/student/viewServices?studentUsername="+username;
-	    }
+	    return "redirect:/student/viewServices?studentUsername="+username;
 	}
 	
 }

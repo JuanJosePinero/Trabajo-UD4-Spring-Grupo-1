@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Student;
-import com.example.demo.model.StudentModel;
 import com.example.demo.service.StudentService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,25 +39,7 @@ public class LoginController {
 	            model.addAttribute("error", "badCredentials");
 	        }
 	    }
-	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-	    if (principal instanceof UserDetails) {
-	        String userId = ((UserDetails) principal).getUsername();
-	       
-	        StudentModel student=studentService.getStudentByName(userId);
-	        System.out.println("INFORMACION: "+student);
-	        if (student != null) {
-	            // El objeto student no es nulo, puedes acceder a sus propiedades de manera segura
-	            System.out.println("INFORMACION: " + student);
-	            int id=student.getId();
-	            System.out.println("IDDDDD: "+id);
-	        } else {
-	            // El objeto student es nulo, manejar el caso en el que no se encuentra al estudiante
-	            System.out.println("INFORMACION: Estudiante no encontrado para el nombre de usuario: " + userId);
-	        }
-	    }
-
-
+	    
 	    model.addAttribute("logout", logout);
 	    return LOGIN_VIEW;
 	}

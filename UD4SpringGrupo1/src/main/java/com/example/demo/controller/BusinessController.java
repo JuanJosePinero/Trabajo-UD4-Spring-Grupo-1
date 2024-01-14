@@ -24,17 +24,10 @@ import com.example.demo.entity.Business;
 import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Report;
 import com.example.demo.entity.Servicio;
-import com.example.demo.entity.Student;
 import com.example.demo.model.BusinessModel;
 import com.example.demo.model.ServicioModel;
 import com.example.demo.model.StudentModel;
-import com.example.demo.repository.BusinessRepository;
-import com.example.demo.repository.ProFamilyRepository;
-import com.example.demo.repository.ReportRepository;
-import com.example.demo.repository.ServicioRepository;
-import com.example.demo.repository.StudentRepository;
 import com.example.demo.service.BusinessService;
-import com.example.demo.service.FilesStorageService;
 import com.example.demo.service.ProFamilyService;
 import com.example.demo.service.ReportService;
 import com.example.demo.service.ServicioService;
@@ -61,48 +54,24 @@ public class BusinessController {
 	private ReportService reportService;
 
 	@Autowired
-	@Qualifier("businessRepository")
-	private BusinessRepository businessRepository;
-
-	@Autowired
 	@Qualifier("servicioService")
 	private ServicioService servicioService;
 	
 	@Autowired
 	@Qualifier("servicioService")
 	private ServicioServiceImpl servicioServiceImpl;
-
-	@Autowired
-	@Qualifier("servicioRepository")
-	private ServicioRepository servicioRepository;
-
-	@Autowired
-	@Qualifier("proFamilyRepository")
-	private ProFamilyRepository proFamilyRepository;
 	
 	@Autowired
 	@Qualifier("proFamilyService")
 	private ProFamilyService proFamilyService;
 
 	@Autowired
-	@Qualifier("studentRepository")
-	private StudentRepository studentRepository;
-
-	@Autowired
-	@Qualifier("reportRepository")
-	private ReportRepository reportRepository;
-
-	@Autowired
 	@Qualifier("studentService")
 	private StudentService studentService;
 
-	@Autowired
-	@Qualifier("filesStorageService")
-	private FilesStorageService storageService;
-
 	@GetMapping("/list")
 	public String business(Model model) {
-		List<Business> businessList = businessRepository.findAll();
+		List<Business> businessList = businessService.getAllBusiness();
 		model.addAttribute("business1", businessList);
 		return BUSINESS_VIEW;
 	}
@@ -110,7 +79,7 @@ public class BusinessController {
 	@GetMapping("/addBusiness")
 	public String addBusiness(Model model) {
 		model.addAttribute("businessModel", new BusinessModel());
-		List<Student> studentEmails = studentRepository.findAll();
+		List<StudentModel> studentEmails = studentService.listAllStudents();
 		model.addAttribute("studentEmails", studentEmails);
 		return ADD_BUSINESS_VIEW;
 	}
@@ -141,13 +110,13 @@ public class BusinessController {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				Student student = studentRepository.findByEmail(businessModel.getEmail());
+				StudentModel student = studentService.getStudentByEmail(businessModel.getEmail());
 				if (student != null) {
 					student.setRole("ROLE_BUSINESS");
 					student.setEnabled(1);
 					student.setDeleted(0);
-					StudentModel studentBusiness = studentService.entity2model(student);
-					studentService.updateStudent(studentBusiness);
+					
+					studentService.updateStudent(student);
 				}
 				businessModel.setLogo(logoName);
 
@@ -170,7 +139,7 @@ public class BusinessController {
 	public String saveEditedBusiness(@ModelAttribute BusinessModel businessModel, RedirectAttributes flash,
 			@RequestParam("logoImagen") MultipartFile file, @RequestParam("logo") String logoName) {
 		if (businessModel.getId() > 0) {
-			Business business = businessRepository.findById(businessModel.getId()).orElse(null);
+			Business business = businessService.getBusinessById(businessModel.getId());
 
 			if (business != null) {
 
@@ -210,19 +179,14 @@ public class BusinessController {
 					}
 
 					flash.addFlashAttribute("success", "Business updated successfully!");
-					System.out.println("Success: Business updated. ID: " + updatedBusiness.getId() + ", Name: "
-							+ updatedBusiness.getName());
 				} else {
 					flash.addFlashAttribute("error", "Failed to update Business.");
-					System.out.println("Failed: Unable to update Business.");
 				}
 			} else {
 				flash.addFlashAttribute("error", "Business not found.");
-				System.out.println("Failed: Business not found.");
 			}
 		} else {
 			flash.addFlashAttribute("error", "Invalid Business ID.");
-			System.out.println("Failed: Invalid Business ID.");
 		}
 
 		return "redirect:/business/list";
@@ -261,17 +225,11 @@ public class BusinessController {
 	                       Model model) {
 	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    String username = ((UserDetails) principal).getUsername();
-	    System.out.println("UserId " + username);
 	    StudentModel student = studentService.getStudentByName(username);
 	    String email = student.getEmail();
-	    System.out.println("EMAIL STUDENT" + email);
 	    Business business = businessService.getIdByEmail(email);
-	    System.out.println("BUSIUNESSSSSSSSSSSSSS" + business);
-
 	    List<ProFamily> profesionalFamilies = proFamilyService.getAll();
 	    model.addAttribute("profesionalFamilies", profesionalFamilies);
-
-	    System.out.println("OPCION: " + opcion);
 	    
 	    if (!filterBy.equals("null")) {
 	    	if (filterBy.equals("finishedServices")) {
@@ -279,60 +237,45 @@ public class BusinessController {
 	            if (Integer.parseInt(opcion) != 0) {
 	                ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
 	                String proFamName = profam.getName();
-	                System.out.println("proFamName: " + proFamName);
 	                listServicios = servicioService.getFinishedServiciosByProFamily(proFamName);
 	            } else {
 	                listServicios = servicioService.getFinishedServicios();
 	            }
-	            System.out.println("getFinishedServicios -- " + listServicios);
 	            model.addAttribute("servicio", listServicios);
 	        } else if (filterBy.equals("asignados_no_realizados")) {
 	            List<ServicioModel> listServicios;
 	            if (Integer.parseInt(opcion) != 0) {
 	                ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
 	                String proFamName = profam.getName();
-	                System.out.println("proFamName: " + proFamName);
 	                listServicios = servicioService.getAssignedButUncompletedServiciosByProFamily(proFamName);
 	            } else {
 	                listServicios = servicioService.getAssignedButUncompletedServices();
 	            }
-	            System.out.println("getAssignedButUncompleted -- " + listServicios);
 	            model.addAttribute("servicio", listServicios);
 	        } else if (filterBy.equals("no_asignados")) {
 	            List<ServicioModel> listServicios;
 	            if (Integer.parseInt(opcion) != 0) {
 	                ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
 	                String proFamName = profam.getName();
-	                System.out.println("proFamName: " + proFamName);
 	                listServicios = servicioService.getUnassignedServiciosByProFamily(proFamName);
 	            } else {
 	                listServicios = servicioService.getUnassignedServicios();
 	            }
-	            System.out.println("getUnassigned -- " + listServicios);
 	            model.addAttribute("servicio", listServicios);
 	        } else {
 	            List<ServicioModel> servicios = servicioService.getAllServicios();
-	            System.out.println("getAll 1er if -- "+servicios);
 	            model.addAttribute("servicio", servicios);
 	        }
 	    } else if (Integer.parseInt(opcion) != 0) {
 	        ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
 	        String proFamName = profam.getName();
-	        System.out.println("proFamName: " + proFamName);
-	        List<ServicioModel> proFamServicios = servicioService.findServiciosByProFamily(proFamName);
-	        for (ServicioModel s : proFamServicios) {
-	            System.out.println(" elseif 1 servicios de proFamServicios:" + s.getId());
-	        }
-
+	        
 	        List<ServicioModel> listServicios = servicioService.findServiciosByProFamily(proFamName);
-	        for (ServicioModel f : listServicios) {
-	        	System.out.println(" elseif 1 getFinishedServiciosByProFamily:" + f);
-	        }
+	        
 
 	        model.addAttribute("servicio", listServicios);
 	    } else {
 	        List<ServicioModel> servicios = servicioService.getAllServicios();
-	        System.out.println("getAll ultimo else -- "+servicios);
 	        model.addAttribute("servicio", servicios);
 	    }
 	    model.addAttribute("business", business);
@@ -351,7 +294,6 @@ public class BusinessController {
 		List<ProFamily> profesionalFamilies = proFamilyService.getAll();
 		model.addAttribute("profesionalFamilies", profesionalFamilies);
 		
-		System.out.println("OPCION: "+opcion);
 		if(Integer.parseInt(opcion)!=0) {
 			
 			ProFamily profam=proFamilyService.findById(Integer.parseInt(opcion));
@@ -360,14 +302,13 @@ public class BusinessController {
 			List<Servicio> businessIdServices=reports.stream().map(report->report.getServicioId()).collect(Collectors.toList());
 			
 			model.addAttribute("businessIdServices",businessIdServices);
-			System.out.println("QUEEE: "+businessIdServices);
+
 		}else {
 			
 			List<Report> reports = servicioService.getReportsForServicesByBusinessId(business);
 			model.addAttribute("report", reports);
 			List<Servicio> businessIdServices=reports.stream().map(report->report.getServicioId()).collect(Collectors.toList());
 			model.addAttribute("businessIdServices",businessIdServices);
-			System.out.println("QUEEE: "+businessIdServices);
 		}
 		model.addAttribute("username",username);
 
@@ -382,17 +323,15 @@ public class BusinessController {
 
 		StudentModel student = studentService.getStudentByName(username);
 		String email = student.getEmail();
-		Business business = businessService.getIdByEmail(email);
-		List<ServicioModel> serviceList = servicioService.getServicesByBusinessId(business);		
+		Business business = businessService.getIdByEmail(email);		
 		List<ProFamily> profesionalFamilies = proFamilyService.getAll();
 		model.addAttribute("profesionalFamilies", profesionalFamilies);
 		if(Integer.parseInt(opcion)!=0) {
 			ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
-			List<Servicio> servicios = servicioRepository.findByValorationIsNotNullAndBusinessIdAndProfesionalFamilyId(business, profam);
+			List<ServicioModel> servicios = servicioService.findByValorationIsNotNullAndBusinessIdAndProfesionalFamilyId(business, profam);
 			model.addAttribute("servicio", servicios);
 		}else {	
-			ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
-			List<Servicio> servicios =servicioRepository.findByValorationIsNotNullAndBusinessIdAndProfesionalFamilyId(business, profam);
+			List<ServicioModel> servicios =servicioService.getServicesByBusinessId(business);
 			model.addAttribute("servicio", servicios);
 		}
 		return BUSINESS_RATED_SERVICES_VIEW;
