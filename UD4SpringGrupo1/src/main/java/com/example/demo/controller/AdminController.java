@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.entity.ProFamily;
+import com.example.demo.entity.Student;
 import com.example.demo.model.StudentModel;
 import com.example.demo.service.ProFamilyService;
 import com.example.demo.service.StudentService;
@@ -38,6 +39,21 @@ public class AdminController {
 	    model.addAttribute("students", students);
 	    return ADMIN_VIEW;
 	}
+	
+	@GetMapping("/adminScreen/orderValorationAsc")
+	public String viewStudentsOrderedAsc(Model model) {
+	    List<Student> students = studentService.getStudentsOrderedByValorationAsc();
+	    model.addAttribute("students", students);
+	    return ADMIN_VIEW;
+	}
+	
+	@GetMapping("/adminScreen/orderValorationDesc")
+	public String viewStudentsOrderedDesc(Model model) {
+	    List<Student> students = studentService.getStudentsOrderedByValorationDesc();
+	    model.addAttribute("students", students);
+	    return ADMIN_VIEW;
+	}
+
 
 	
 	@GetMapping("/editStudent/{studentId}")

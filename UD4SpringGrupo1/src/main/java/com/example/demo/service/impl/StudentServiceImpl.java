@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -212,7 +213,42 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 	public StudentModel getStudentByEmail(String email) {
 		return entity2model(studentRepository.findByEmail(email));
 	}
+	@SuppressWarnings("null")
+	@Override
+	public List<Student> getStudentsOrderedByValorationAsc() {  
+        List<Student> students = studentRepository.findAll();
+        List<Student> studentsWithRatedServices = new ArrayList<>();
+        for (Student student : students) {
+        	if(!student.getServicios().isEmpty())
+        		studentsWithRatedServices.add(student);	
+		}
+        studentsWithRatedServices.sort(Comparator.comparingDouble(this::calculateAverageRating).reversed());
+        return studentsWithRatedServices;
+    }
 	
+	@SuppressWarnings("null")
+	@Override
+	public List<Student> getStudentsOrderedByValorationDesc() {  
+        List<Student> students = studentRepository.findAll();
+        List<Student> studentsWithRatedServices = new ArrayList<>();
+        for (Student student : students) {
+        	if(!student.getServicios().isEmpty())
+        		studentsWithRatedServices.add(student);	
+		}
+        studentsWithRatedServices.sort(Comparator.comparingDouble(this::calculateAverageRating));
+        return studentsWithRatedServices;
+    }
 
-	
+
+    private double calculateAverageRating(Student student) {
+    	List<Servicio> studentServices = student.getServicios();
+    	double suma = 0;
+    	double cont = 0;
+    	for (Servicio servicio : studentServices) {
+    		suma += servicio.getValoration();
+    		cont++;	
+		}
+    	double average = suma / cont;
+    	return average;
+    }	
 }

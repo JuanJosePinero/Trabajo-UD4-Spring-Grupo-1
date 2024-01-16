@@ -39,4 +39,9 @@ public interface StudentService {
 	public List<ServicioModel> getServiceByStudentProfesionalFamily(int id);
 	
 	public StudentModel getStudentByEmail(String email);
+	
+	public List<Student> getStudentsOrderedByValorationAsc();
+	
+	public List<Student> getStudentsOrderedByValorationDesc();
+
 }

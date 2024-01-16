@@ -12,7 +12,12 @@
 <div th:replace="/main/CustomNavbar.html"></div>
 <div class="container mt-5">
     <h2 class="text-center">List of Students</h2>
-
+    <a class="btn btn-warning" th:href="@{/admin/adminScreen/orderValorationAsc}">
+    Valoraciones más positivas
+    </a>
+	<a class="btn btn-warning" th:href="@{/admin/adminScreen/orderValorationDesc}">
+    Valoraciones menos positivas
+    </a>
     <table class="table">
         <thead>
         <tr>
