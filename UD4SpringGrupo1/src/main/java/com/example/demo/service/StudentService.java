@@ -43,5 +43,7 @@ public interface StudentService {
 	public List<Student> getStudentsOrderedByValorationAsc();
 	
 	public List<Student> getStudentsOrderedByValorationDesc();
+	
+	public List<Student> getStudentsOrderedByServiceAmount();
 
 }

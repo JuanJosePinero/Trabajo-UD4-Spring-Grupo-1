@@ -239,7 +239,6 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
         return studentsWithRatedServices;
     }
 
-
     private double calculateAverageRating(Student student) {
     	List<Servicio> studentServices = student.getServicios();
     	double suma = 0;
@@ -251,4 +250,29 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
     	double average = suma / cont;
     	return average;
     }	
+    
+    @Override
+    public List<Student>getStudentsOrderedByServiceAmount(){
+    	List<Student> students = studentRepository.findAll();
+        List<Student> studentsWithServices = new ArrayList<>();
+        for (Student student : students) {
+        	if(!student.getServicios().isEmpty())
+        		studentsWithServices.add(student);	
+		}
+        studentsWithServices.sort(Comparator.comparingInt(this::getNumberOfServices).reversed());
+        return studentsWithServices;
+    	
+    }
+    
+    private int getNumberOfServices(Student student) {
+    	List<Servicio> studentServices = student.getServicios();
+    	return studentServices.size();
+    }	
+    
+    
+    
+    
 }
+
+
+

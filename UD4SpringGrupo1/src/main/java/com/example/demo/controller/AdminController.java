@@ -53,7 +53,13 @@ public class AdminController {
 	    model.addAttribute("students", students);
 	    return ADMIN_VIEW;
 	}
-
+	
+	@GetMapping("/adminScreen/orderByServiceAmount")
+	public String viewStudentsOrderedServices(Model model) {
+	    List<Student> students = studentService.getStudentsOrderedByServiceAmount();
+	    model.addAttribute("students", students);
+	    return ADMIN_VIEW;
+	}
 
 	
 	@GetMapping("/editStudent/{studentId}")
