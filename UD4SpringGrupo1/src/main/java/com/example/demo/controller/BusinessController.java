@@ -75,6 +75,20 @@ public class BusinessController {
 		model.addAttribute("business1", businessList);
 		return BUSINESS_VIEW;
 	}
+	
+	@GetMapping("/list/orderByServiceAmount")
+	public String orderByServiceAmount(Model model) {
+		List<Business> businessList = businessService.getBusinessOrderedByServiceAmount();
+		model.addAttribute("business1", businessList);
+		return BUSINESS_VIEW;
+	}
+	
+	@GetMapping("/list/orderByServiceFinished")
+	public String orderByServiceFinsihed(Model model) {
+		List<Business> businessList = businessService.getBusinessOrderedByServiceFinished();
+		model.addAttribute("business1", businessList);
+		return BUSINESS_VIEW;
+	}
 
 	@GetMapping("/addBusiness")
 	public String addBusiness(Model model) {
@@ -336,5 +350,7 @@ public class BusinessController {
 		}
 		return BUSINESS_RATED_SERVICES_VIEW;
 	}
+	
+	
 //
 }

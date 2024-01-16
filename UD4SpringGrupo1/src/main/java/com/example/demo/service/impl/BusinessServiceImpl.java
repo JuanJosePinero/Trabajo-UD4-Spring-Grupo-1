@@ -1,15 +1,21 @@
 package com.example.demo.service.impl;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Business;
+import com.example.demo.entity.Servicio;
 import com.example.demo.model.BusinessModel;
 import com.example.demo.repository.BusinessRepository;
+import com.example.demo.repository.ServicioRepository;
 import com.example.demo.service.BusinessService;
 
 @Configuration
@@ -18,6 +24,10 @@ public class BusinessServiceImpl implements BusinessService {
 
 	
 	private final BusinessRepository businessRepository;
+	
+	@Autowired
+	@Qualifier("servicioRepository")
+	 private ServicioRepository servicioRepository;
 
     public BusinessServiceImpl(BusinessRepository businessRepository) {
         this.businessRepository = businessRepository;
@@ -97,5 +107,52 @@ public class BusinessServiceImpl implements BusinessService {
 		Business business=businessRepository.findByEmail(email);
 		return business;
 	}
+	
+	
+	@Override
+    public List<Business> getBusinessOrderedByServiceAmount(){
+    	List<Business> businessList = businessRepository.findAll();
+        List<Business> businessWithServices = new ArrayList<>();
+        for (Business b : businessList) {
+        	if(!b.getServicioList().isEmpty())
+        		businessWithServices.add(b);	
+		}
+        businessWithServices.sort(Comparator.comparingInt(this::getNumberOfServices).reversed());
+        return businessWithServices;
+    	
+    }
+	
+	@Override
+    public List<Business> getBusinessOrderedByServiceFinished(){
+    	List<Business> businessList = businessRepository.findAll();
+        List<Business> businessWithServicesFinished = new ArrayList<>();
+        
+        for (Business b : businessList) {
+        	if(!b.getServicioList().isEmpty())
+        		businessWithServicesFinished.add(b);	
+		}
+	        
+        businessWithServicesFinished.sort(Comparator.comparingInt(this::getNumberOfFinishedServices).reversed());
+        System.out.println("getBusinessOrderedByServiceAmount: "+businessWithServicesFinished);
+        return businessWithServicesFinished;
+    	
+    }
+	
+	private int getNumberOfFinishedServices(Business business) {
+    	List<Servicio> businessServices = business.getServicioList();
+    	List<Servicio> finishedServices  = new ArrayList<>();
+    	
+    	for (Servicio s : businessServices) {
+			if(s.getFinished() == 1)
+				finishedServices.add(s);
+		}
+    	return finishedServices.size();
+    }	
+	
+	
+	private int getNumberOfServices(Business business) {
+    	List<Servicio> businessServices = business.getServicioList();
+    	return businessServices.size();
+    }	
 
 }

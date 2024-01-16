@@ -13,8 +13,18 @@
 		<div th:if="${success}" class="alert alert-success">
 			<p th:text="${success}"></p>
 		</div>
-		<a th:href="@{/business/addBusiness}" class="btn btn-primary mb-2">Add Business</a>
-		<h2 class="text-center">List of Business</h2>
+		<a th:href="@{/business/list}" class="btn btn-warning">All businesses</a>
+		<a th:href="@{/business/list/orderByServiceAmount}" class="btn btn-warning">Number of services (+ to -)</a>
+		<a th:href="@{/business/list/orderByServiceFinished}" class="btn btn-warning">Number of finished services (+ to -)</a>
+		<hr>
+		<div style="display: flex; justify-content: space-between;" class="ml-4">
+			<span>
+			<h2 class="text-center">List of Business</h2>
+			</span>
+			<span>
+			<a th:href="@{/business/addBusiness}" class="btn btn-primary">Add Business</a>
+			</span>
+		</div>
 		<table class="table">
 			<thead>
 				<tr>

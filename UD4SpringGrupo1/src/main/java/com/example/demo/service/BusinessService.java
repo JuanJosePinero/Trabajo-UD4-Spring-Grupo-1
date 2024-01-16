@@ -32,5 +32,9 @@ public interface BusinessService {
 	
 	public Business getIdByEmail(String email);
 
+	List<Business> getBusinessOrderedByServiceAmount();
+
+	List<Business> getBusinessOrderedByServiceFinished();
+
 
 }
