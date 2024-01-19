@@ -6,47 +6,44 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 	integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
 	crossorigin="anonymous">
+	<link href="/css/adminStyles.css" rel="stylesheet">
 </head>
 
 <body>
 	<div th:replace="/main/CustomNavbar.html"></div>
 	<br>
-		<div class="container mt-5">
-		
-	</div>
 	<div class="container mt-5">
-	<div style="display: flex; justify-content: space-between;"
-		class="ml-4">
-		<span>
-		<h2 class="text-center">List of Students</h2>
-		</span>
-		<span>
-	<div th:if="${success}" class="alert alert-success">
-			<p th:text="${success}"></p>
-		</div>
-		<form action="#" th:action="@{/admin/adminScreen}" method="GET"
-			class="row">
-			<div class="col-auto">
-				<select id="filterBy" name="filterBy" class="form-control">
-					<option value="null">Select an option</option>
-					<option value="all">All Services</option>
-					<option value="MorePositiveValorations">More positive
-						valorations</option>
-					<option value="LessPositiveValorations">Less positive
-						valorations</option>
-					<option value="NumberOfServices">Number of services (+ to
-						-)</option>
-				</select>
-			</div>
+		<div style="display: flex; justify-content: space-between;"
+			class="ml-4">
+			<span>
+				<h2 class="text-center">List of Students</h2>
+			</span> <span>
+				<div th:if="${success}" class="alert alert-success">
+					<p th:text="${success}"></p>
+				</div>
+				<form action="#" th:action="@{/admin/adminScreen}" method="GET"
+					class="row">
+					<div class="col-auto">
+						<select id="filterBy" name="filterBy" class="form-control">
+							<option value="null">Select an option</option>
+							<option value="all">All Services</option>
+							<option value="MorePositiveValorations">More positive
+								valorations</option>
+							<option value="LessPositiveValorations">Less positive
+								valorations</option>
+							<option value="NumberOfServices">Number of services (+
+								to -)</option>
+						</select>
+					</div>
 
-			<div class="col-auto">
-				<button class="btn btn-primary btn-sm text-uppercase ml-2"
-					type="submit">Filter</button>
-			</div>
-		</form>
-		</span>
-			</div>
-			<br>
+					<div class="col-auto">
+						<button class="btn btn-primary btn-sm text-uppercase ml-2"
+							type="submit">Filter</button>
+					</div>
+				</form>
+			</span>
+		</div>
+		<br>
 		<table class="table">
 			<thead>
 				<tr>
@@ -100,6 +97,7 @@
 			</tbody>
 		</table>
 	</div>
+
 
 
 </body>
