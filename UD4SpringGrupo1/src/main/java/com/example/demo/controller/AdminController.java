@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.entity.Business;
 import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Student;
 import com.example.demo.model.StudentModel;
@@ -34,9 +36,25 @@ public class AdminController {
 	 private ProFamilyService proFamilyService;
 	
 	@GetMapping("/adminScreen")
-	public String adminScreen(Model model) {
-	    List<StudentModel> students = studentService.listAllStudents();
-	    model.addAttribute("students", students);
+	public String adminScreen(Model model, @RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy) {
+		
+		if(filterBy.equals("all")) {
+			List<StudentModel> students = studentService.listAllStudents();
+			model.addAttribute("students", students);
+		}else if(filterBy.equals("MorePositiveValorations")) {
+			List<Student> students = studentService.getStudentsOrderedByValorationAsc();
+		    model.addAttribute("students", students);
+		}else if(filterBy.equals("LessPositiveValorations")) {
+			List<Student> students = studentService.getStudentsOrderedByValorationDesc();
+		    model.addAttribute("students", students);
+		}else if(filterBy.equals("NumberOfServices")) {
+			List<Student> students = studentService.getStudentsOrderedByServiceAmount();
+		    model.addAttribute("students", students);
+		}else {
+			List<StudentModel> students = studentService.listAllStudents();
+			model.addAttribute("students", students);
+		}
+
 	    return ADMIN_VIEW;
 	}
 	
@@ -78,11 +96,11 @@ public class AdminController {
     }
 	
 	@PostMapping("/enabled/{studentId}")
-	public String enable(@PathVariable("studentId") int studentId, Model model) {
+	public String enable(@PathVariable("studentId") int studentId, Model model, @RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy) {
 		
 		studentService.enableStudent(studentId);
 		    
-	    return "redirect:/admin/adminScreen";
+	    return "redirect:/admin/adminScreen?filterBy="+filterBy;
 	}
 	
 	@PostMapping("/deleteStudent/{studentId}")

@@ -81,6 +81,9 @@ public class BusinessController {
 		}else if(filterBy.equals("NumberOfFinished")) {
 			List<Business> businessList = businessService.getBusinessOrderedByServiceFinished();
 			model.addAttribute("business1", businessList);
+		}else {
+			List<Business> businessList = businessService.getAllBusiness();
+			model.addAttribute("business1", businessList);
 		}
 		
 		return BUSINESS_VIEW;
