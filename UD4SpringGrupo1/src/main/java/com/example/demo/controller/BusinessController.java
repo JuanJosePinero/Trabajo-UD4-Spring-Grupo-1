@@ -70,9 +70,19 @@ public class BusinessController {
 	private StudentService studentService;
 
 	@GetMapping("/list")
-	public String business(Model model) {
-		List<Business> businessList = businessService.getAllBusiness();
-		model.addAttribute("business1", businessList);
+	public String business(Model model, @RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy) {
+		
+		if(filterBy.equals("all")) {
+			List<Business> businessList = businessService.getAllBusiness();
+			model.addAttribute("business1", businessList);
+		}else if(filterBy.equals("NumberOfServices")) {
+			List<Business> businessList = businessService.getBusinessOrderedByServiceAmount();
+			model.addAttribute("business1", businessList);
+		}else if(filterBy.equals("NumberOfFinished")) {
+			List<Business> businessList = businessService.getBusinessOrderedByServiceFinished();
+			model.addAttribute("business1", businessList);
+		}
+		
 		return BUSINESS_VIEW;
 	}
 	
