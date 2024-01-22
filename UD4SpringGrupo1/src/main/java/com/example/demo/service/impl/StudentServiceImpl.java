@@ -270,7 +270,37 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
     }	
     
     
-    
+    @Override
+    public List<Student> getAdminScreenFilterBy(String opcion) {
+        List<Student> students = new ArrayList<>();
+
+        if ("all".equals(opcion)) {
+            List<StudentModel> studentModels = listAllStudents();
+            students = entityListToStudentList(studentModels);
+        } else if ("MorePositiveValorations".equals(opcion)) {
+            students = getStudentsOrderedByValorationAsc();
+        } else if ("LessPositiveValorations".equals(opcion)) {
+            students = getStudentsOrderedByValorationDesc();
+        } else if ("NumberOfServices".equals(opcion)) {
+            students = getStudentsOrderedByServiceAmount();
+        } else {
+            List<StudentModel> studentModels = listAllStudents();
+            students = entityListToStudentList(studentModels);
+        }
+
+        return students;
+    }
+
+    private List<Student> entityListToStudentList(List<StudentModel> studentModels) {
+        List<Student> students = new ArrayList<>();
+        for (StudentModel studentModel : studentModels) {
+            students.add(model2entity(studentModel));
+        }
+        return students;
+    }
+
+
+
     
 }
 

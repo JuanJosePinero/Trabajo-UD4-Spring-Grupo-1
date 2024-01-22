@@ -37,24 +37,8 @@ public class AdminController {
 	
 	@GetMapping("/adminScreen")
 	public String adminScreen(Model model, @RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy) {
-		
-		if(filterBy.equals("all")) {
-			List<StudentModel> students = studentService.listAllStudents();
-			model.addAttribute("students", students);
-		}else if(filterBy.equals("MorePositiveValorations")) {
-			List<Student> students = studentService.getStudentsOrderedByValorationAsc();
-		    model.addAttribute("students", students);
-		}else if(filterBy.equals("LessPositiveValorations")) {
-			List<Student> students = studentService.getStudentsOrderedByValorationDesc();
-		    model.addAttribute("students", students);
-		}else if(filterBy.equals("NumberOfServices")) {
-			List<Student> students = studentService.getStudentsOrderedByServiceAmount();
-		    model.addAttribute("students", students);
-		}else {
-			List<StudentModel> students = studentService.listAllStudents();
-			model.addAttribute("students", students);
-		}
-
+	    List<Student> students = studentService.getAdminScreenFilterBy(filterBy);
+	    model.addAttribute("students", students);
 	    return ADMIN_VIEW;
 	}
 	

@@ -46,4 +46,6 @@ public interface StudentService {
 	
 	public List<Student> getStudentsOrderedByServiceAmount();
 
+	List<Student> getAdminScreenFilterBy(String opcion);
+
 }
