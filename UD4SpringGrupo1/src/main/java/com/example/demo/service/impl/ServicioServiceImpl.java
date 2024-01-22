@@ -19,6 +19,7 @@ import com.example.demo.model.ServicioModel;
 import com.example.demo.repository.ReportRepository;
 import com.example.demo.repository.ServicioRepository;
 import com.example.demo.repository.StudentRepository;
+import com.example.demo.service.ProFamilyService;
 import com.example.demo.service.ServicioService;
 
 @Configuration
@@ -32,6 +33,9 @@ public class ServicioServiceImpl implements ServicioService {
     
     @Autowired
     private StudentRepository studentRepository;
+    
+    @Autowired
+    private ProFamilyService proFamilyService;
 
     public ServicioServiceImpl(ServicioRepository servicioRepository) {
         this.servicioRepository = servicioRepository;
@@ -320,5 +324,47 @@ public class ServicioServiceImpl implements ServicioService {
 		return modelList;
 	}
 
+	@Override
+	public List<ServicioModel> getFilteredServices(String opcion, String filterBy) {
+		List<ServicioModel> listServicios = new ArrayList<>();
+
+	    if (!filterBy.equals("null")) {
+	        if (filterBy.equals("finishedServices")) {
+	            if (Integer.parseInt(opcion) != 0) {
+	                ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
+	                String proFamName = profam.getName();
+	                listServicios = getFinishedServiciosByProFamily(proFamName);
+	            } else {
+	                listServicios = getFinishedServicios();
+	            }
+	        } else if (filterBy.equals("asignados_no_realizados")) {
+	            if (Integer.parseInt(opcion) != 0) {
+	                ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
+	                String proFamName = profam.getName();
+	                listServicios = getAssignedButUncompletedServiciosByProFamily(proFamName);
+	            } else {
+	                listServicios = getAssignedButUncompletedServices();
+	            }
+	        } else if (filterBy.equals("no_asignados")) {
+	            if (Integer.parseInt(opcion) != 0) {
+	                ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
+	                String proFamName = profam.getName();
+	                listServicios = getUnassignedServiciosByProFamily(proFamName);
+	            } else {
+	                listServicios = getUnassignedServicios();
+	            }
+	        }else if(filterBy.equals("all")) {
+	        	listServicios = getAllServicios();
+	        }
+	    } else if (Integer.parseInt(opcion) != 0) {
+	        ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
+	        String proFamName = profam.getName();
+	        listServicios = findServiciosByProFamily(proFamName);
+	    } else {
+	        listServicios = getAllServicios();
+	    }
+
+	    return listServicios;
+	}
 
 }

@@ -258,53 +258,8 @@ public class BusinessController {
 	    List<ProFamily> profesionalFamilies = proFamilyService.getAll();
 	    model.addAttribute("profesionalFamilies", profesionalFamilies);
 	    
-	    if (!filterBy.equals("null")) {
-	    	if (filterBy.equals("finishedServices")) {
-	            List<ServicioModel> listServicios;
-	            if (Integer.parseInt(opcion) != 0) {
-	                ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
-	                String proFamName = profam.getName();
-	                listServicios = servicioService.getFinishedServiciosByProFamily(proFamName);
-	            } else {
-	                listServicios = servicioService.getFinishedServicios();
-	            }
-	            model.addAttribute("servicio", listServicios);
-	        } else if (filterBy.equals("asignados_no_realizados")) {
-	            List<ServicioModel> listServicios;
-	            if (Integer.parseInt(opcion) != 0) {
-	                ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
-	                String proFamName = profam.getName();
-	                listServicios = servicioService.getAssignedButUncompletedServiciosByProFamily(proFamName);
-	            } else {
-	                listServicios = servicioService.getAssignedButUncompletedServices();
-	            }
-	            model.addAttribute("servicio", listServicios);
-	        } else if (filterBy.equals("no_asignados")) {
-	            List<ServicioModel> listServicios;
-	            if (Integer.parseInt(opcion) != 0) {
-	                ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
-	                String proFamName = profam.getName();
-	                listServicios = servicioService.getUnassignedServiciosByProFamily(proFamName);
-	            } else {
-	                listServicios = servicioService.getUnassignedServicios();
-	            }
-	            model.addAttribute("servicio", listServicios);
-	        } else {
-	            List<ServicioModel> servicios = servicioService.getAllServicios();
-	            model.addAttribute("servicio", servicios);
-	        }
-	    } else if (Integer.parseInt(opcion) != 0) {
-	        ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
-	        String proFamName = profam.getName();
-	        
-	        List<ServicioModel> listServicios = servicioService.findServiciosByProFamily(proFamName);
-	        
-
-	        model.addAttribute("servicio", listServicios);
-	    } else {
-	        List<ServicioModel> servicios = servicioService.getAllServicios();
-	        model.addAttribute("servicio", servicios);
-	    }
+	    List<ServicioModel> listServicios = servicioService.getFilteredServices(opcion, filterBy);
+	    model.addAttribute("servicio", listServicios);
 	    model.addAttribute("business", business);
 	    return BUSINESS_HOME_VIEW;
 	}

@@ -53,4 +53,6 @@ public interface ServicioService {
 	
 	List<ServicioModel>findByFinishedAndStudentId(int id, Student student);
 
+	List<ServicioModel> getFilteredServices(String opcion, String filterBy);
+
 }
