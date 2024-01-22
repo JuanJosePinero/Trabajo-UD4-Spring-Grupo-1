@@ -41,27 +41,6 @@ public class AdminController {
 	    model.addAttribute("students", students);
 	    return ADMIN_VIEW;
 	}
-	
-	@GetMapping("/adminScreen/orderValorationAsc")
-	public String viewStudentsOrderedAsc(Model model) {
-	    List<Student> students = studentService.getStudentsOrderedByValorationAsc();
-	    model.addAttribute("students", students);
-	    return ADMIN_VIEW;
-	}
-	
-	@GetMapping("/adminScreen/orderValorationDesc")
-	public String viewStudentsOrderedDesc(Model model) {
-	    List<Student> students = studentService.getStudentsOrderedByValorationDesc();
-	    model.addAttribute("students", students);
-	    return ADMIN_VIEW;
-	}
-	
-	@GetMapping("/adminScreen/orderByServiceAmount")
-	public String viewStudentsOrderedServices(Model model) {
-	    List<Student> students = studentService.getStudentsOrderedByServiceAmount();
-	    model.addAttribute("students", students);
-	    return ADMIN_VIEW;
-	}
 
 	
 	@GetMapping("/editStudent/{studentId}")
