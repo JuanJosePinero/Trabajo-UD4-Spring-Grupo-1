@@ -96,8 +96,12 @@ public class ServicioController {
 	@GetMapping("/commentServicio/{servicioId}")
 	public String commentServicio(@PathVariable("servicioId") int servicioId, Model model) {
 	    Servicio servicio = servicioService.getServicioById(servicioId);
-	    model.addAttribute("servicio", servicio);
-	    model.addAttribute("servicioId", servicioId);
+	    if(servicio.getFinished()!=1) {
+	    	return "redirect:/error/404";
+	    }else {
+	    	model.addAttribute("servicio", servicio);
+		    model.addAttribute("servicioId", servicioId);
+	    }
 	    return COMMENT_SERVICIO_VIEW;
 	}
 
