@@ -29,7 +29,7 @@
 				<span> <a th:href="@{/servicio/addServicio}" class="btn-add">Add
 						Servicio</a></span>
 				<div style="display: flex; justify-content: space-between;" class="ml-4">
-					<form action="#" th:action="@{/business/home}" method="GET" class="row">
+					<form th:action="@{/business/home}" method="POST" class="row">
 						<div class="col-auto">
 							<select id="filterBy" name="filterBy" class="form-control">
 								<option value="null">Select an option</option>

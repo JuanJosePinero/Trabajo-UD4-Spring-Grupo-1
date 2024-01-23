@@ -247,78 +247,110 @@ public class BusinessController {
 	}
 	
 	@GetMapping("/home")
-	public String Business(@RequestParam(name="opcion", required=false, defaultValue="0") String opcion, 
-	                       @RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy, 
-	                       Model model) {
-	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	    String username = ((UserDetails) principal).getUsername();
-	    StudentModel student = studentService.getStudentByName(username);
-	    String email = student.getEmail();
-	    Business business = businessService.getIdByEmail(email);
-	    List<ProFamily> profesionalFamilies = proFamilyService.getAll();
-	    model.addAttribute("profesionalFamilies", profesionalFamilies);
-	    
-	    List<ServicioModel> listServicios = servicioService.getFilteredServices(opcion, filterBy);
-	    model.addAttribute("servicio", listServicios);
-	    model.addAttribute("business", business);
-	    return BUSINESS_HOME_VIEW;
-	}
+    public String getBusiness(@RequestParam(name="opcion", required=false, defaultValue="0") String opcion, 
+                              @RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy, 
+                              Model model) {
+        return processBusiness(opcion, filterBy, model);
+    }
 
-	@GetMapping("/reports")
-	public String Reports(@RequestParam(name="opcion",required=false,defaultValue="0")String opcion,Model model) {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String username = ((UserDetails) principal).getUsername();
+    @PostMapping("/home")
+    public String postBusiness(@RequestParam(name="opcion", required=false, defaultValue="0") String opcion, 
+                               @RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy, 
+                               Model model) {
+        return processBusiness(opcion, filterBy, model);
+    }
 
-		StudentModel student = studentService.getStudentByName(username);
-		String email = student.getEmail();
-		Business business = businessService.getIdByEmail(email);
-		
-		List<ProFamily> profesionalFamilies = proFamilyService.getAll();
-		model.addAttribute("profesionalFamilies", profesionalFamilies);
-		
-		if(Integer.parseInt(opcion)!=0) {
-			
-			ProFamily profam=proFamilyService.findById(Integer.parseInt(opcion));
-			List<Report>reports=reportService.findReportsByServiceProFamily(profam.getName(),business);
-			model.addAttribute("report", reports);
-			List<Servicio> businessIdServices=reports.stream().map(report->report.getServicioId()).collect(Collectors.toList());
-			
-			model.addAttribute("businessIdServices",businessIdServices);
+    private String processBusiness(String opcion, String filterBy, Model model) {
+    	
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
+        StudentModel student = studentService.getStudentByName(username);
+        String email = student.getEmail();
+        Business business = businessService.getIdByEmail(email);
+        List<ProFamily> profesionalFamilies = proFamilyService.getAll();
+        model.addAttribute("profesionalFamilies", profesionalFamilies);
+        
+        List<ServicioModel> listServicios = servicioService.getFilteredServices(opcion, filterBy);
+        model.addAttribute("servicio", listServicios);
+        model.addAttribute("business", business);
 
-		}else {
-			
-			List<Report> reports = servicioService.getReportsForServicesByBusinessId(business);
-			model.addAttribute("report", reports);
-			List<Servicio> businessIdServices=reports.stream().map(report->report.getServicioId()).collect(Collectors.toList());
-			model.addAttribute("businessIdServices",businessIdServices);
-		}
-		model.addAttribute("username",username);
+        return BUSINESS_HOME_VIEW;
+    }
+	
+    @PostMapping("/reports")
+    public String reportsPost(@RequestParam(name = "opcion", required = false, defaultValue = "0") String opcion, Model model) {
+        return processReports(opcion, model);
+    }
 
-		return BUSINESS_REPORT_VIEW;
-	}
+    @GetMapping("/reports")
+    public String reports(@RequestParam(name = "opcion", required = false, defaultValue = "0") String opcion, Model model) {
+        return processReports(opcion, model);
+    }
 
 
-	@GetMapping("/ratedServicios")
-	public String ratedServicios(@RequestParam(name="opcion",required=false,defaultValue="0")String opcion, Model model) {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String username = ((UserDetails) principal).getUsername();
+    private String processReports(String opcion, Model model) {
+    	
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
 
-		StudentModel student = studentService.getStudentByName(username);
-		String email = student.getEmail();
-		Business business = businessService.getIdByEmail(email);		
-		List<ProFamily> profesionalFamilies = proFamilyService.getAll();
-		model.addAttribute("profesionalFamilies", profesionalFamilies);
-		if(Integer.parseInt(opcion)!=0) {
-			ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
-			List<ServicioModel> servicios = servicioService.findByValorationIsNotNullAndBusinessIdAndProfesionalFamilyId(business, profam);
-			model.addAttribute("servicio", servicios);
-		}else {	
-			List<ServicioModel> servicios =servicioService.getServicesByBusinessId(business);
-			model.addAttribute("servicio", servicios);
-		}
-		return BUSINESS_RATED_SERVICES_VIEW;
-	}
+        StudentModel student = studentService.getStudentByName(username);
+        String email = student.getEmail();
+        Business business = businessService.getIdByEmail(email);
+
+        List<ProFamily> profesionalFamilies = proFamilyService.getAll();
+        model.addAttribute("profesionalFamilies", profesionalFamilies);
+
+        if (Integer.parseInt(opcion) != 0) {
+            ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
+            List<Report> reports = reportService.findReportsByServiceProFamily(profam.getName(), business);
+            model.addAttribute("report", reports);
+            List<Servicio> businessIdServices = reports.stream().map(report -> report.getServicioId()).collect(Collectors.toList());
+            model.addAttribute("businessIdServices", businessIdServices);
+
+        } else {
+            List<Report> reports = servicioService.getReportsForServicesByBusinessId(business);
+            model.addAttribute("report", reports);
+            List<Servicio> businessIdServices = reports.stream().map(report -> report.getServicioId()).collect(Collectors.toList());
+            model.addAttribute("businessIdServices", businessIdServices);
+        }
+        model.addAttribute("username", username);
+
+        return BUSINESS_REPORT_VIEW;
+    }
+    
+    @GetMapping("/ratedServicios")
+    public String ratedServicios(@RequestParam(name = "opcion", required = false, defaultValue = "0") String opcion, Model model) {
+        return processRatedServicios(opcion, model);
+    }
+
+    @PostMapping("/ratedServicios")
+    public String ratedServiciosPost(@RequestParam(name = "opcion", required = false, defaultValue = "0") String opcion, Model model) {
+        return processRatedServicios(opcion, model);
+    }
+
+    private String processRatedServicios(String opcion, Model model) {
+    	
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
+
+        StudentModel student = studentService.getStudentByName(username);
+        String email = student.getEmail();
+        Business business = businessService.getIdByEmail(email);
+        List<ProFamily> profesionalFamilies = proFamilyService.getAll();
+        model.addAttribute("profesionalFamilies", profesionalFamilies);
+
+        if (Integer.parseInt(opcion) != 0) {
+            ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
+            List<ServicioModel> servicios = servicioService.findByValorationIsNotNullAndBusinessIdAndProfesionalFamilyId(business, profam);
+            model.addAttribute("servicio", servicios);
+        } else {
+            List<ServicioModel> servicios = servicioService.getServicesByBusinessId(business);
+            model.addAttribute("servicio", servicios);
+        }
+
+        return BUSINESS_RATED_SERVICES_VIEW;
+    }
 	
 	
-//
+
 }

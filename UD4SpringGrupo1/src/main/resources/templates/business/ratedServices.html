@@ -2,20 +2,21 @@
 <html>
 
 <head>
-<meta charset="UTF-8">
-<title>Your reports</title>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-	integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-	crossorigin="anonymous">
-<link href="/css/styles.css" rel="stylesheet">
-<style>
-.tableBusiness {
-	font-size: 14px; /* Tamaño de fuente */
-	width: 80%; /* Ancho de la tabla */
-	margin: 0 auto; /* Centrar la tabla horizontalmente */
-}
-</style>
+	<meta charset="UTF-8">
+	<title>Your reports</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+		integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<link href="/css/styles.css" rel="stylesheet">
+	<style>
+		.tableBusiness {
+			font-size: 14px;
+			/* Tamaño de fuente */
+			width: 80%;
+			/* Ancho de la tabla */
+			margin: 0 auto;
+			/* Centrar la tabla horizontalmente */
+		}
+	</style>
 </head>
 
 <body class="bodyBusiness">
@@ -27,51 +28,56 @@
 		</div>
 		<div class="info-block2">
 			<div style="display: flex; justify-content: space-between;">
-<span>Table with all your rated services</span> 
-				
-<form action="#" th:action="@{/business/ratedServicios}" method="GET" class="form form-signin">
-    <div class="form-row align-items-center">
-        <div class="col-auto">
-            <select id="familiaProfesional" name="opcion" class="form-control">
-                <option value="">Select a profesional family</option>
-                <th:block th:each="family : ${profesionalFamilies}">
-                    <option th:value="${family.id}" th:text="${family.name}"></option>
-                </th:block>
-            </select>
-        </div>
-        <div class="col-auto">
-            <button class="btn btn-primary btn-sm text-uppercase ml-2" type="submit">Filter</button>
-        </div>
-    </div>
-</form> <br>
+				<span>Table with all your rated services</span>
+
+				<form th:action="@{/business/ratedServicios}" method="POST" class="form form-signin">
+					<div class="form-row align-items-center">
+						<div class="col-auto">
+							<select id="familiaProfesional" name="opcion" class="form-control">
+								<option value="">Select a profesional family</option>
+								<th:block th:each="family : ${profesionalFamilies}">
+									<option th:value="${family.id}" th:text="${family.name}"></option>
+								</th:block>
+							</select>
+						</div>
+						<div class="col-auto">
+							<button class="btn btn-primary btn-sm text-uppercase ml-2" type="submit">Filter</button>
+						</div>
+					</div>
+				</form> <br>
 
 			</div>
 			<br>
 
-			<table class="table tableBusiness" th:if="${not #lists.isEmpty(servicio) or servicio.![valoration == 0].isEmpty()}">
-    <thead>
-        <tr>
-            <th>Service Title</th>
-            <th>Student</th>
-            <th>Profesional Family</th>
-            <th>Valoration</th>
-        </tr>
-    </thead>
-    <tbody id="serviceTableBody">
-        <tr th:each="service : ${servicio}" th:if="${service.deleted != 1 and service.studentId != null and service.finished == 1}">
-            <td th:hidden="${service.id}"></td>
-            <td th:text="${service.title}"></td>
-            <td th:text="${service.studentId != null ? service.studentId.name : 'Not assigned'}"></td>
-            <td th:text="${service.profesionalFamilyId.name}"></td>
-            <td><img th:src="@{'/imgs/stars/e' + ${service.valoration.toString().replace('.', '_')} + '.jpeg'}" alt="Estrella" width="250px" /></td>
-        </tr>
-    </tbody>
-    <tfoot th:if="${#lists.isEmpty(servicio) or servicio.![valoration == 0].isEmpty()}">
-        <tr>
-            <td colspan="4"><h2>No rated services available</h2></td>
-        </tr>
-    </tfoot>
-</table>
+			<table class="table tableBusiness"
+				th:if="${not #lists.isEmpty(servicio) or servicio.![valoration == 0].isEmpty()}">
+				<thead>
+					<tr>
+						<th>Service Title</th>
+						<th>Student</th>
+						<th>Profesional Family</th>
+						<th>Valoration</th>
+					</tr>
+				</thead>
+				<tbody id="serviceTableBody">
+					<tr th:each="service : ${servicio}"
+						th:if="${service.deleted != 1 and service.studentId != null and service.finished == 1}">
+						<td th:hidden="${service.id}"></td>
+						<td th:text="${service.title}"></td>
+						<td th:text="${service.studentId != null ? service.studentId.name : 'Not assigned'}"></td>
+						<td th:text="${service.profesionalFamilyId.name}"></td>
+						<td><img th:src="@{'/imgs/stars/e' + ${service.valoration.toString().replace('.', '_')} + '.jpeg'}"
+								alt="Estrella" width="250px" /></td>
+					</tr>
+				</tbody>
+				<tfoot th:if="${#lists.isEmpty(servicio) or servicio.![valoration == 0].isEmpty()}">
+					<tr>
+						<td colspan="4">
+							<h2>No rated services available</h2>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
 
 		</div>
 	</div>
