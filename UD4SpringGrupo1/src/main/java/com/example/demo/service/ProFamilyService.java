@@ -18,4 +18,6 @@ public interface ProFamilyService {
 	ProFamily findById(int id);
 	
 	List<ProFamily>getAll();
+	
+	List<ProFamily> getAllNotEmpty();
 }

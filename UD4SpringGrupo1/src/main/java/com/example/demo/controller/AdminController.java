@@ -39,6 +39,10 @@ public class AdminController {
 	public String adminScreen(Model model, @RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy) {
 	    List<Student> students = studentService.getAdminScreenFilterBy(filterBy);
 	    model.addAttribute("students", students);
+	    
+	    List<ProFamily> proFamilies = proFamilyService.getAllNotEmpty();
+	    model.addAttribute("proFamilies", proFamilies);
+
 	    return ADMIN_VIEW;
 	}
 
