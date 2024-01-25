@@ -82,9 +82,7 @@ public class ProFamilyServiceImpl implements ProFamilyService {
         Map<ProFamily, Integer> familyCounts = new HashMap<>();
         List<Student> allStudents = studentRepository.findAll();
         for (Student student : allStudents) {
-        	System.out.println(student+"\n");
-        	if(student.getRole() == "ROLE_STUDENT") {
-            	System.out.println("YIPEEEEEEEEEEEEE");
+        	if(student.getRole().equalsIgnoreCase("ROLE_STUDENT")) {
 	            ProFamily family = student.getProfesionalFamily();
 	            if (family != null) {
 	                familyCounts.put(family, familyCounts.getOrDefault(family, 0) + 1);

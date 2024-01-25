@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rating a service</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body class="bodyAuth">
+<div th:replace="/main/CustomNavbar.html"></div>
+
+     <h1 style="color: black; background-color: rgba(255, 255, 255, 0.5);">Rate the Service</h1>
+    <br><br><br>
+    <div class="container mt-5">
+	    <form method="POST" th:action="@{/servicio/rateServicio}" th:object="${servicioModel}">
+	        <input type="hidden" name="servicioId" th:value="${servicio.id}" />
+	        <img id="valorationImage" src="jpeg" alt="Estrella" width="250px"/>
+	        <br><br>
+	        <label for="valoration">Valoration=</label><span id="valorationSpan"></span>
+			<input type="range" name="valoration" min="0" max="5" step="0.5" th:value="${servicio.valoration}" oninput="updateValoration(this.value)" />
+	        <br><br>
+	        <button type="submit" class="btn-add">Save Valoration</button>
+	        <a th:href="@{/business/home}" class="btn-cancel">Cancel</a>
+	    </form>
+	    </div>
+
+
+    <script>
+    function updateValoration(value) {
+        let imageName = "/imgs/stars/e" + value.replace(".", "_") + ".jpeg";
+        
+        document.getElementById("valorationImage").src = imageName;
+
+        document.getElementById("valorationSpan").textContent = value;
+    }
+
+    updateValoration("0");
+
+    </script>
+</body>
+</html>

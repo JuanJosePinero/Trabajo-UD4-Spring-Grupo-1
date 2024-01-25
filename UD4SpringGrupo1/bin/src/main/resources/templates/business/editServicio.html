@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Servicio</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+          crossorigin="anonymous">
+    <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body class="bodyAuth">
+    <br><br>
+    <div class="container mt-5 login-container">
+        <h2>Edit Service</h2>
+        <form id="servicioForm" th:object="${servicio}" method="post" th:action="@{/servicio/editServicio2}">
+            <input type="hidden" id="id" name="id" th:field="*{id}">
+            
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" th:field="*{title}" class="form-control" required>
+            
+            <label for="description">Description:</label>
+            <input type="text" id="description" name="description" th:field="*{description}" class="form-control" required>
+            
+           	<label for="profesionalFamily">Profesional Family:</label> 
+           	<select name="profesionalFamilyId" class="form-control">
+    			<option th:each="proFamily : ${profesionalFamilies}" th:value="${proFamily.id}" th:text="${proFamily.name}"></option>
+			</select>
+            
+            <!-- Agrega los campos para studentId, businessId, valoration, finished, y comment aquí -->
+			<input type="hidden" name="comment" th:value="*{comment}" />
+			<input type="hidden" name="studentId" th:value="*{studentId != null ? studentId.id : null}" />
+			<input type="hidden" name="businessId" th:value="*{businessId != null ? businessId.id : null}" />
+			<input type="hidden" name="valoration" th:field="*{valoration}" />
+			<input type="hidden" name="finished" th:field="*{finished}" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+            <br><br>
+            <button class="btn-add" type="submit">Save</button>
+            <a class="btn btn-cancel" th:href="@{/business/home}">Cancel</a>
+        </form>
+    </div>
+    
+    <script>
+        // Obtener la fecha actual
+        var currentDate = new Date();
+        
+        // Formatear la fecha como "YYYY-MM-DD"
+        var formattedDate = currentDate.toISOString().split('T')[0];
+        
+        // Establecer el valor en el campo "Register Date"
+        document.getElementById("registerDate").value = formattedDate;
+    </script>
+</body>
+</html>

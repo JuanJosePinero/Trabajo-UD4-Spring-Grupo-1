@@ -1,0 +1,12 @@
+@charset "UTF-8";
+
+
+body {
+    background-color: #e0f2f1;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.7); 
+    padding: 20px; 
+    border-radius: 10px; 
+}
