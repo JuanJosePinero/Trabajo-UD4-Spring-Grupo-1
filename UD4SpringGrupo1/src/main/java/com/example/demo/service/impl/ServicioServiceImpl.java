@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -365,6 +366,15 @@ public class ServicioServiceImpl implements ServicioService {
 	    }
 
 	    return listServicios;
+	}
+
+	public List<ServicioModel> getServicesByTwoDates(Date registerDateBegin, Date registerDateEnd) {
+		List<Servicio>listService=servicioRepository.findByRegisterDateBetween(registerDateBegin, registerDateEnd);
+		List<ServicioModel>listServiceModel=new ArrayList<>();
+		for(Servicio servicio:listService) {
+			listServiceModel.add(entity2model(servicio));
+		}
+		return listServiceModel;
 	}
 
 }

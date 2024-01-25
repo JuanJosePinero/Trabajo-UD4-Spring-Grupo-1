@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.example.demo.entity.Business;
@@ -54,5 +55,7 @@ public interface ServicioService {
 	List<ServicioModel>findByFinishedAndStudentId(int id, Student student);
 
 	List<ServicioModel> getFilteredServices(String opcion, String filterBy);
+	
+	List<ServicioModel> getServicesByTwoDates(Date registerDateBegin,Date registerDateEnd);
 
 }

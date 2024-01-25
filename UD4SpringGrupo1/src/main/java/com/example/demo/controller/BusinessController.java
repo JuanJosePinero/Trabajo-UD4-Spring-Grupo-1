@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -267,13 +268,13 @@ public class BusinessController {
         StudentModel student = studentService.getStudentByName(username);
         String email = student.getEmail();
         Business business = businessService.getIdByEmail(email);
-        List<ProFamily> profesionalFamilies = proFamilyService.getAll();
+        List<ProFamily> profesionalFamilies = proFamilyService.getAllNotEmpty();
         model.addAttribute("profesionalFamilies", profesionalFamilies);
         
         List<ServicioModel> listServicios = servicioService.getFilteredServices(opcion, filterBy);
         model.addAttribute("servicio", listServicios);
         model.addAttribute("business", business);
-
+       
         return BUSINESS_HOME_VIEW;
     }
 	
@@ -297,7 +298,7 @@ public class BusinessController {
         String email = student.getEmail();
         Business business = businessService.getIdByEmail(email);
 
-        List<ProFamily> profesionalFamilies = proFamilyService.getAll();
+        List<ProFamily> profesionalFamilies = proFamilyService.getAllNotEmpty();
         model.addAttribute("profesionalFamilies", profesionalFamilies);
 
         if (Integer.parseInt(opcion) != 0) {
@@ -336,7 +337,7 @@ public class BusinessController {
         StudentModel student = studentService.getStudentByName(username);
         String email = student.getEmail();
         Business business = businessService.getIdByEmail(email);
-        List<ProFamily> profesionalFamilies = proFamilyService.getAll();
+        List<ProFamily> profesionalFamilies = proFamilyService.getAllNotEmpty();
         model.addAttribute("profesionalFamilies", profesionalFamilies);
 
         if (Integer.parseInt(opcion) != 0) {
