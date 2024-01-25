@@ -36,8 +36,10 @@ public class AdminController {
 	 private ProFamilyService proFamilyService;
 	
 	@GetMapping("/adminScreen")
-	public String adminScreen(Model model, @RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy) {
-	    List<Student> students = studentService.getAdminScreenFilterBy(filterBy);
+	public String adminScreen(Model model, 
+			@RequestParam(name="opcion", required=false, defaultValue="null") String opcion,
+			@RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy) {
+	    List<Student> students = studentService.getAdminScreenFilterBy(opcion, filterBy);
 	    model.addAttribute("students", students);
 	    
 	    List<ProFamily> proFamilies = proFamilyService.getAllNotEmpty();

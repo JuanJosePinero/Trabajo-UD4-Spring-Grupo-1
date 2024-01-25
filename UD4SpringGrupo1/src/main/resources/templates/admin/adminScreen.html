@@ -25,15 +25,12 @@
 					class="row">
 					<div class="form-row align-items-center">
 						<div class="col-auto">
-							<select id="familiaProfesional" name="opcion" class="form-control">
+							<select id="opcion" name="opcion" class="form-control">
 								<option value="">Select a profesional family</option>
 								<th:block th:each="family : ${proFamilies}">
 									<option th:value="${family.id}" th:text="${family.name}"></option>
 								</th:block>
 							</select>
-						</div>
-						<div class="col-auto">
-							<button class="btn btn-primary btn-sm text-uppercase ml-2" type="submit">Filter</button>
 						</div>
 					</div>
 					<div class="col-auto">

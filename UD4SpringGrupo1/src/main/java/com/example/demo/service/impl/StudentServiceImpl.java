@@ -21,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Servicio;
 import com.example.demo.entity.Student;
 import com.example.demo.model.ServicioModel;
@@ -271,23 +272,32 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
     
     
     @Override
-    public List<Student> getAdminScreenFilterBy(String opcion) {
+    public List<Student> getAdminScreenFilterBy(String opcion, String filterBy) {
+    	
+    	System.out.println("familiaProf: "+opcion);
+    	System.out.println("Opcion: "+filterBy);
+
         List<Student> students = new ArrayList<>();
-
-        if ("all".equals(opcion)) {
-            List<StudentModel> studentModels = listAllStudents();
-            students = entityListToStudentList(studentModels);
-        } else if ("MorePositiveValorations".equals(opcion)) {
-            students = getStudentsOrderedByValorationAsc();
-        } else if ("LessPositiveValorations".equals(opcion)) {
-            students = getStudentsOrderedByValorationDesc();
-        } else if ("NumberOfServices".equals(opcion)) {
-            students = getStudentsOrderedByServiceAmount();
-        } else {
-            List<StudentModel> studentModels = listAllStudents();
-            students = entityListToStudentList(studentModels);
+        if(opcion == null) {
+	        if ("all".equals(filterBy)) {
+	            List<StudentModel> studentModels = listAllStudents();
+	            students = entityListToStudentList(studentModels);
+	        } else if ("MorePositiveValorations".equals(filterBy)) {
+	            students = getStudentsOrderedByValorationAsc();
+	        } else if ("LessPositiveValorations".equals(filterBy)) {
+	            students = getStudentsOrderedByValorationDesc();
+	        } else if ("NumberOfServices".equals(filterBy)) {
+	            students = getStudentsOrderedByServiceAmount();
+	        } else if(filterBy == null){
+	            List<StudentModel> studentModels = listAllStudents();
+	            students = entityListToStudentList(studentModels);
+	        }
+        }else {
+        	
+        	students = getStudentsByProFamily(Integer.parseInt(opcion));
+        	
         }
-
+        	
         return students;
     }
 
@@ -298,6 +308,14 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
         }
         return students;
     }
+    
+	@Override
+	public List<Student> getStudentsByProFamily(int proFamilyId) {
+    	ProFamily proFam = proFamilyRepository.findById(proFamilyId);
+    	System.out.println("Familia profesional "+proFam);
+		List<Student> students = studentRepository.findByProfesionalFamily(proFam);
+		return students;
+	}
 
 
 

@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Student;
 import com.example.demo.model.ServicioModel;
 import com.example.demo.model.StudentModel;
@@ -45,7 +46,9 @@ public interface StudentService {
 	public List<Student> getStudentsOrderedByValorationDesc();
 	
 	public List<Student> getStudentsOrderedByServiceAmount();
+	
+	public List<Student> getStudentsByProFamily(int proFamilyId);
 
-	List<Student> getAdminScreenFilterBy(String opcion);
+	List<Student> getAdminScreenFilterBy(String opcion, String familiaProf);
 
 }
