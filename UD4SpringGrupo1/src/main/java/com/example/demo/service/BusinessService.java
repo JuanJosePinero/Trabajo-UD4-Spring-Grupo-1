@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,6 +38,10 @@ public interface BusinessService {
 	List<Business> getBusinessOrderedByServiceFinished();
 
 	List<Business> getBusinessList(String filterBy);
+
+	Map<Integer, Integer> getAllNumberOfServices(List<Business> business);
+
+	Map<Integer, Integer> getAllNumberOfFinishedServices(List<Business> business);
 
 
 }

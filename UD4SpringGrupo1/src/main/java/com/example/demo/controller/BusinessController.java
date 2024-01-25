@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,8 +76,16 @@ public class BusinessController {
 	@GetMapping("/list")
 	public String business(Model model, @RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy) {
 		
-		 List<Business> businessList = businessService.getBusinessList(filterBy);
+		 	List<Business> businessList = businessService.getBusinessList(filterBy);
 		    model.addAttribute("business1", businessList);
+		    
+		    Map<Integer, Integer> numberOfServices = businessService.getAllNumberOfServices(businessList);
+		    model.addAttribute("numberOfServices", numberOfServices);
+		    
+		    System.out.println("desde controlador = "+numberOfServices);
+		    
+		    Map<Integer, Integer> numberOfFinishedServices = businessService.getAllNumberOfFinishedServices(businessList);
+		    model.addAttribute("numberOfFinishedServices", numberOfFinishedServices);
 		    return BUSINESS_VIEW;
 	}
 	

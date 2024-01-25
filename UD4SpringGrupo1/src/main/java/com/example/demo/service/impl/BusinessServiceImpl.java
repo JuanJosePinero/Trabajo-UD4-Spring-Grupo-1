@@ -2,7 +2,9 @@ package com.example.demo.service.impl;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -13,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Business;
 import com.example.demo.entity.Servicio;
-import com.example.demo.entity.Student;
 import com.example.demo.model.BusinessModel;
 import com.example.demo.repository.BusinessRepository;
 import com.example.demo.repository.ServicioRepository;
@@ -155,6 +156,40 @@ public class BusinessServiceImpl implements BusinessService {
 
 	    return businessList;
 	}
+	
+	@Override
+    public Map<Integer, Integer> getAllNumberOfServices(List<Business> business) {
+        Map<Integer, Integer> numberOfServices = new HashMap<>();
+
+        for (Business b : business) {
+        	 List<Servicio> businessServices = b.getServicioList();
+             int numService = businessServices.size();
+             numberOfServices.put(b.getId(), numService);
+        }
+        
+        return numberOfServices;
+    }
+	
+	@Override
+	public Map<Integer, Integer> getAllNumberOfFinishedServices(List<Business> businessList) {
+	    Map<Integer, Integer> numberOfFinishedServices = new HashMap<>();
+
+	    for (Business business : businessList) {
+	        List<Servicio> businessServices = business.getServicioList();
+	        int numFinishedService = 0;
+
+	        for (Servicio servicio : businessServices) {
+	            if (servicio.getFinished() == 1) {
+	                numFinishedService++;
+	            }
+	        }
+
+	        numberOfFinishedServices.put(business.getId(), numFinishedService);
+	    }
+
+	    return numberOfFinishedServices;
+	}
+
 
 	
 	private int getNumberOfFinishedServices(Business business) {
