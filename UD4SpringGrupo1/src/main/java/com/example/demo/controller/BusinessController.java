@@ -3,11 +3,13 @@ package com.example.demo.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -249,19 +251,26 @@ public class BusinessController {
 	
 	@GetMapping("/home")
     public String getBusiness(@RequestParam(name="opcion", required=false, defaultValue="0") String opcion, 
-                              @RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy, 
+                              @RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy,
+                              @RequestParam(name="startDate", required=false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+                              @RequestParam(name="endDate", required=false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
                               Model model) {
-        return processBusiness(opcion, filterBy, model);
+        return processBusiness(opcion, filterBy, startDate, endDate, model);
     }
 
     @PostMapping("/home")
     public String postBusiness(@RequestParam(name="opcion", required=false, defaultValue="0") String opcion, 
-                               @RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy, 
+                               @RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy,
+                               @RequestParam(name="startDate", required=false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+                               @RequestParam(name="endDate", required=false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
                                Model model) {
-        return processBusiness(opcion, filterBy, model);
+        return processBusiness(opcion, filterBy, startDate, endDate, model);
     }
 
-    private String processBusiness(String opcion, String filterBy, Model model) {
+    private String processBusiness(String opcion, String filterBy,Date startDate,Date endDate, Model model) {
+    	
+    	System.out.println("QUE PASA cn la opcion "+opcion);
+    	System.out.println("QUE PASA cn el filtro "+filterBy);
     	
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails) principal).getUsername();
@@ -271,7 +280,7 @@ public class BusinessController {
         List<ProFamily> profesionalFamilies = proFamilyService.getAllNotEmpty();
         model.addAttribute("profesionalFamilies", profesionalFamilies);
         
-        List<ServicioModel> listServicios = servicioService.getFilteredServices(opcion, filterBy);
+        List<ServicioModel> listServicios = servicioService.getFilteredServices(opcion, filterBy,startDate,endDate);
         model.addAttribute("servicio", listServicios);
         model.addAttribute("business", business);
        

@@ -54,7 +54,7 @@ public interface ServicioService {
 	
 	List<ServicioModel>findByFinishedAndStudentId(int id, Student student);
 
-	List<ServicioModel> getFilteredServices(String opcion, String filterBy);
+	List<ServicioModel> getFilteredServices(String opcion, String filterBy,Date startDate, Date endDate);
 	
 	List<ServicioModel> getServicesByTwoDates(Date registerDateBegin,Date registerDateEnd);
 

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -326,7 +327,7 @@ public class ServicioServiceImpl implements ServicioService {
 	}
 
 	@Override
-	public List<ServicioModel> getFilteredServices(String opcion, String filterBy) {
+	public List<ServicioModel> getFilteredServices(String opcion, String filterBy,Date startDate, Date endDate) {
 		List<ServicioModel> listServicios = new ArrayList<>();
 
 	    if (!filterBy.equals("null")) {
@@ -364,12 +365,18 @@ public class ServicioServiceImpl implements ServicioService {
 	    } else {
 	        listServicios = getAllServicios();
 	    }
+	    
+	    if (startDate != null && endDate != null) {
+	        listServicios = listServicios.stream()
+	                .filter(servicio -> servicio.getRegisterDate().after(startDate) && servicio.getRegisterDate().before(endDate))
+	                .collect(Collectors.toList());
+	    }
 
 	    return listServicios;
 	}
 
 	public List<ServicioModel> getServicesByTwoDates(Date registerDateBegin, Date registerDateEnd) {
-		List<Servicio>listService=servicioRepository.findByRegisterDateBetween(registerDateBegin, registerDateEnd);
+		List<Servicio>listService=servicioRepository.findByHappeningDateBetween(registerDateBegin, registerDateEnd);
 		List<ServicioModel>listServiceModel=new ArrayList<>();
 		for(Servicio servicio:listService) {
 			listServiceModel.add(entity2model(servicio));

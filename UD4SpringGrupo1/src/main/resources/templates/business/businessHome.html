@@ -2,13 +2,11 @@
 <html>
 
 <head>
-<meta charset="UTF-8">
-<title>Your business</title>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-	integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-	crossorigin="anonymous">
-<link href="/css/styles.css" rel="stylesheet">
+	<meta charset="UTF-8">
+	<title>Your business</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+		integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<link href="/css/styles.css" rel="stylesheet">
 </head>
 
 <body class="bodyBusiness">
@@ -16,13 +14,13 @@
 
 	<div class="info-container2">
 		<div class="info-block-head">
-    <h3>Your Services</h3>
-    
-</div>
-<div th:if="${successMessage}" class="alert alert-success">
-        <p th:text="${successMessage}"></p>
-    </div>
-    
+			<h3>Your Services</h3>
+
+		</div>
+		<div th:if="${successMessage}" class="alert alert-success">
+			<p th:text="${successMessage}"></p>
+		</div>
+
 		<div class="info-block2">
 			<p align="left">
 			<div class="form-row align-items-center">
@@ -42,8 +40,7 @@
 						</div>
 						<br>
 						<div class="col-auto">
-							<select id="familiaProfesional" name="opcion"
-								class="form-control">
+							<select id="familiaProfesional" name="opcion" class="form-control">
 								<option value="">Select a profesional Family</option>
 								<th:block th:each="family : ${profesionalFamilies}">
 									<option th:value="${family.id}" th:text="${family.name}"></option>
@@ -52,16 +49,16 @@
 						</div>
 						<br>
 						<div class="col-auto">
-    <input type="date" id="startDate" class="form-control">
-</div>
-<div class="col-auto">
-    <input type="date" id="endDate" class="form-control">
-</div>
-						
+							<input type="date" id="startDate" name="startDate" class="form-control">
+						</div>
+
+						<div class="col-auto">
+							<input type="date" id="endDate" name="endDate" class="form-control">
+						</div>
+
 						<br>
 						<div class="col-auto">
-							<button class="btn btn-primary btn-sm text-uppercase ml-2"
-								type="submit">Filter</button>
+							<button class="btn btn-primary btn-sm text-uppercase ml-2" type="submit">Filter</button>
 						</div>
 					</form>
 				</div>
@@ -85,45 +82,37 @@
 				<tbody id="serviceTableBody">
 					<tr th:if="${servicio.isEmpty()}" class="centered-row">
 						<td colspan="9"><br>
-						<h2>No services available</h2>
-							<br></td>
+							<h2>No services available</h2>
+							<br>
+						</td>
 					</tr>
 					<tr th:each="service : ${servicio}"
 						th:if="${service.deleted != 1 and service.businessId?.id == business.id}">
 						<td th:hidden="${service.id}"></td>
 						<td th:text="${service.title}"></td>
 						<td th:text="${service.description}"></td>
-						<td
-							th:text="${service.studentId != null ? service.studentId.name : 'Not assigned'}"></td>
+						<td th:text="${service.studentId != null ? service.studentId.name : 'Not assigned'}"></td>
 						<td th:text="${service.profesionalFamilyId.name}"></td>
-						<td><img th:if="${service.finished == 1}"
-							src="/imgs/tick.png" alt="Sí" width="30px" /> <img
-							th:if="${service.finished != 1}" src="/imgs/cross.png" alt="No"
-							width="30px" /></td>
-						<td><a th:href="@{'/servicio/rateServicio/' + ${service.id}}"
-							class="btn btn-link p-0 m-0"
-							th:if="${service.finished == 1 and service.studentId != null}">
+						<td><img th:if="${service.finished == 1}" src="/imgs/tick.png" alt="Sí" width="30px" /> <img
+								th:if="${service.finished != 1}" src="/imgs/cross.png" alt="No" width="30px" /></td>
+						<td><a th:href="@{'/servicio/rateServicio/' + ${service.id}}" class="btn btn-link p-0 m-0"
+								th:if="${service.finished == 1 and service.studentId != null}">
 								<img src="/imgs/estrella.png" alt="Star img" width="30px">
-						</a> <a href="#" onclick="return showErrorMessage();"
-							th:unless="${service.finished == 1 and service.studentId != null}">
-								<img src="/imgs/estrellaVacia.png" alt="Empty Star img"
-								width="30px">
-						</a></td>
+							</a> <a href="#" onclick="return showErrorMessage();"
+								th:unless="${service.finished == 1 and service.studentId != null}">
+								<img src="/imgs/estrellaVacia.png" alt="Empty Star img" width="30px">
+							</a></td>
 
-						<td><a
-							th:href="@{'/servicio/commentServicio/' + ${service.id}}"
-							class="btn btn-link p-0 m-0"
-							th:if="${service.studentId != null and service.finished == 1}">
-								<img src="/imgs/comentDone.png" alt="Comment Done img"
-								width="30px">
-						</a> <a href="#" onclick="return showCommentErrorMessage();"
-							th:unless="${service.studentId != null and service.finished == 1}">
+						<td><a th:href="@{'/servicio/commentServicio/' + ${service.id}}" class="btn btn-link p-0 m-0"
+								th:if="${service.studentId != null and service.finished == 1}">
+								<img src="/imgs/comentDone.png" alt="Comment Done img" width="30px">
+							</a> <a href="#" onclick="return showCommentErrorMessage();"
+								th:unless="${service.studentId != null and service.finished == 1}">
 								<img src="/imgs/coment.png" alt="Comment img" width="30px">
-						</a></td>
+							</a></td>
 
 						<td>
-							<form th:action="@{'/servicio/editServicio/'}"
-								method="post">
+							<form th:action="@{'/servicio/editServicio/'}" method="post">
 								<input type="hidden" th:value="${service.id}" name="servicioId">
 								<button type="submit" class="btn btn-link p-0 m-0">
 									<img src="/imgs/edit.png" alt="Edit img" width="30px">
@@ -131,8 +120,7 @@
 							</form>
 						</td>
 						<td>
-							<form th:action="@{'/servicio/deleteServicio/' + ${service.id}}"
-								method="post"
+							<form th:action="@{'/servicio/deleteServicio/' + ${service.id}}" method="post"
 								onsubmit="return confirm('¿Estás seguro que quieres cambiar su estado?');">
 								<button type="submit" class="btn btn-link p-0 m-0">
 									<img src="/imgs/delete.png" alt="Edit img" width="30px">
