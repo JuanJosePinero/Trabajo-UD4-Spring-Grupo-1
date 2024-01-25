@@ -36,5 +36,7 @@ public interface BusinessService {
 
 	List<Business> getBusinessOrderedByServiceFinished();
 
+	List<Business> getBusinessList(String filterBy);
+
 
 }

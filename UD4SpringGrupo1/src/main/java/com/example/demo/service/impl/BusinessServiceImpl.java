@@ -139,6 +139,24 @@ public class BusinessServiceImpl implements BusinessService {
     	
     }
 	
+	@Override
+	public List<Business> getBusinessList(String filterBy) {
+	    List<Business> businessList;
+
+	    if ("all".equals(filterBy)) {
+	        businessList = getAllBusiness();
+	    } else if ("NumberOfServices".equals(filterBy)) {
+	        businessList = getBusinessOrderedByServiceAmount();
+	    } else if ("NumberOfFinished".equals(filterBy)) {
+	        businessList = getBusinessOrderedByServiceFinished();
+	    } else {
+	        businessList = getAllBusiness();
+	    }
+
+	    return businessList;
+	}
+
+	
 	private int getNumberOfFinishedServices(Business business) {
     	List<Servicio> businessServices = business.getServicioList();
     	List<Servicio> finishedServices  = new ArrayList<>();

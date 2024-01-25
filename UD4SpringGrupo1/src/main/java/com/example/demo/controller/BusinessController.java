@@ -75,36 +75,24 @@ public class BusinessController {
 	@GetMapping("/list")
 	public String business(Model model, @RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy) {
 		
-		if(filterBy.equals("all")) {
-			List<Business> businessList = businessService.getAllBusiness();
-			model.addAttribute("business1", businessList);
-		}else if(filterBy.equals("NumberOfServices")) {
-			List<Business> businessList = businessService.getBusinessOrderedByServiceAmount();
-			model.addAttribute("business1", businessList);
-		}else if(filterBy.equals("NumberOfFinished")) {
-			List<Business> businessList = businessService.getBusinessOrderedByServiceFinished();
-			model.addAttribute("business1", businessList);
-		}else {
-			List<Business> businessList = businessService.getAllBusiness();
-			model.addAttribute("business1", businessList);
-		}
-		
-		return BUSINESS_VIEW;
+		 List<Business> businessList = businessService.getBusinessList(filterBy);
+		    model.addAttribute("business1", businessList);
+		    return BUSINESS_VIEW;
 	}
 	
-	@GetMapping("/list/orderByServiceAmount")
-	public String orderByServiceAmount(Model model) {
-		List<Business> businessList = businessService.getBusinessOrderedByServiceAmount();
-		model.addAttribute("business1", businessList);
-		return BUSINESS_VIEW;
-	}
-	
-	@GetMapping("/list/orderByServiceFinished")
-	public String orderByServiceFinsihed(Model model) {
-		List<Business> businessList = businessService.getBusinessOrderedByServiceFinished();
-		model.addAttribute("business1", businessList);
-		return BUSINESS_VIEW;
-	}
+//	@GetMapping("/list/orderByServiceAmount")
+//	public String orderByServiceAmount(Model model) {
+//		List<Business> businessList = businessService.getBusinessOrderedByServiceAmount();
+//		model.addAttribute("business1", businessList);
+//		return BUSINESS_VIEW;
+//	}
+//	
+//	@GetMapping("/list/orderByServiceFinished")
+//	public String orderByServiceFinsihed(Model model) {
+//		List<Business> businessList = businessService.getBusinessOrderedByServiceFinished();
+//		model.addAttribute("business1", businessList);
+//		return BUSINESS_VIEW;
+//	}
 
 	@GetMapping("/addBusiness")
 	public String addBusiness(Model model) {
