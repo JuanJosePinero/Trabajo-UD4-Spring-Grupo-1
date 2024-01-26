@@ -214,7 +214,6 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 	public StudentModel getStudentByEmail(String email) {
 		return entity2model(studentRepository.findByEmail(email));
 	}
-	@SuppressWarnings("null")
 	@Override
 	public List<Student> getStudentsOrderedByValorationAsc() {  
         List<Student> students = studentRepository.findAll();
@@ -227,7 +226,6 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
         return studentsWithRatedServices;
     }
 	
-	@SuppressWarnings("null")
 	@Override
 	public List<Student> getStudentsOrderedByValorationDesc() {  
         List<Student> students = studentRepository.findAll();
@@ -272,40 +270,30 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
     
     
     @Override
-    public List<Student> getAdminScreenFilterBy(String opcion, String filterBy) {
-    	
-    	System.out.println("familiaProf: "+opcion);
-    	System.out.println("Opcion: "+filterBy);
-
+    public List<Student> getAdminScreenFilterBy(String filterBy, String opcion) {
         List<Student> students = new ArrayList<>();
-        if(opcion == null) {
-	        if ("all".equals(filterBy)) {
-	            List<StudentModel> studentModels = listAllStudents();
-	            students = entityListToStudentList(studentModels);
-	        } else if ("MorePositiveValorations".equals(filterBy)) {
-	            students = getStudentsOrderedByValorationAsc();
-	        } else if ("LessPositiveValorations".equals(filterBy)) {
-	            students = getStudentsOrderedByValorationDesc();
-	        } else if ("NumberOfServices".equals(filterBy)) {
-	            students = getStudentsOrderedByServiceAmount();
-	        } else if(filterBy == null){
-	            List<StudentModel> studentModels = listAllStudents();
-	            students = entityListToStudentList(studentModels);
-	        }
-        }else {
-        	
-        	students = getStudentsByProFamily(Integer.parseInt(opcion));
-        	
-        }
-        	
-        return students;
-    }
 
-    private List<Student> entityListToStudentList(List<StudentModel> studentModels) {
-        List<Student> students = new ArrayList<>();
-        for (StudentModel studentModel : studentModels) {
-            students.add(model2entity(studentModel));
+        if (!opcion.equalsIgnoreCase("null")) {
+            if ("MorePositiveValorations".equals(opcion)) {
+                students = getStudentsOrderedByValorationAsc();
+            } else if ("LessPositiveValorations".equals(opcion)) {
+                students = getStudentsOrderedByValorationDesc();
+            } else if ("NumberOfServices".equals(opcion)) {
+                students = getStudentsOrderedByServiceAmount();
+            } else {
+                students = studentRepository.findAll();
+            }
+        } else {
+        	  students = studentRepository.findAll();
         }
+
+        if (!filterBy.equalsIgnoreCase("null")) {
+            students = students.stream()
+                    .filter(student -> student.getProfesionalFamily() != null &&
+                            student.getProfesionalFamily().getId() == Integer.parseInt(filterBy))
+                    .collect(Collectors.toList());
+        }
+
         return students;
     }
     
