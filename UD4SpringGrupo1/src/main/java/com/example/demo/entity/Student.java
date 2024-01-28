@@ -2,7 +2,6 @@ package com.example.demo.entity;
 
 import java.util.Collection;
 import java.util.List;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -33,10 +32,6 @@ public class Student extends User implements UserDetails{
     @OneToMany(mappedBy = "studentId")
     private List<Servicio> servicios;
     
-    
-
-	
-
 	public String getName() {
 		return name;
 	}

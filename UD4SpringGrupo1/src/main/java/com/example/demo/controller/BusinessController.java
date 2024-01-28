@@ -28,6 +28,7 @@ import com.example.demo.entity.Business;
 import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Report;
 import com.example.demo.entity.Servicio;
+import com.example.demo.entity.Student;
 import com.example.demo.model.BusinessModel;
 import com.example.demo.model.ServicioModel;
 import com.example.demo.model.StudentModel;
@@ -82,7 +83,6 @@ public class BusinessController {
 		    Map<Integer, Integer> numberOfServices = businessService.getAllNumberOfServices(businessList);
 		    model.addAttribute("numberOfServices", numberOfServices);
 		    
-		    System.out.println("desde controlador = "+numberOfServices);
 		    
 		    Map<Integer, Integer> numberOfFinishedServices = businessService.getAllNumberOfFinishedServices(businessList);
 		    model.addAttribute("numberOfFinishedServices", numberOfFinishedServices);
@@ -106,7 +106,7 @@ public class BusinessController {
 	@GetMapping("/addBusiness")
 	public String addBusiness(Model model) {
 		model.addAttribute("businessModel", new BusinessModel());
-		List<StudentModel> studentEmails = studentService.listAllStudents();
+		List<Student> studentEmails = studentService.listAllStudents();
 		model.addAttribute("studentEmails", studentEmails);
 		return ADD_BUSINESS_VIEW;
 	}

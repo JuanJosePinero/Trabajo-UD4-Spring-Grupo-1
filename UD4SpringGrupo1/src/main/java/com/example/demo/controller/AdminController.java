@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,6 +26,7 @@ import com.example.demo.service.StudentService;
 public class AdminController {
 
 	private static final String ADMIN_VIEW = "admin/adminScreen";
+	private static final String ADMIN_STUDENTS = "admin/studentStats";
 	private static final String EDIT_STUDENT_VIEW = "admin/editStudent";
 	
 	@Autowired
@@ -36,7 +38,7 @@ public class AdminController {
 	 private ProFamilyService proFamilyService;
 	
 	@GetMapping("/adminScreen")
-	public String adminScreen(Model model, 
+	public String adminScreen(Model model,
 			@RequestParam(name="opcion", required=false, defaultValue="null") String opcion,
 			@RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy) {
 	    List<Student> students = studentService.getAdminScreenFilterBy(opcion, filterBy);
@@ -46,6 +48,25 @@ public class AdminController {
 	    model.addAttribute("proFamilies", proFamilies);
 
 	    return ADMIN_VIEW;
+	}
+	
+	@GetMapping("/studentStats")
+	public String adminStudentsList(Model model, 
+			@RequestParam(name="opcion", required=false, defaultValue="null") String opcion,
+			@RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy) {
+	    List<Student> students = studentService.getAdminScreenFilterBy(opcion, filterBy);
+	    model.addAttribute("students", students);
+	    
+	    List<ProFamily> proFamilies = proFamilyService.getAllNotEmpty();
+	    model.addAttribute("proFamilies", proFamilies);
+	 	    
+	    Map<Integer, Double> averageValorations = studentService.getAverageValoration(students);
+	    model.addAttribute("averageValorations", averageValorations);
+	    	    
+	    Map<Integer, Integer> numberOfFinishedServices = studentService.getNumberOfFinishedServices(students);
+	    model.addAttribute("numberOfFinishedServices", numberOfFinishedServices);
+
+	    return ADMIN_STUDENTS;
 	}
 
 	

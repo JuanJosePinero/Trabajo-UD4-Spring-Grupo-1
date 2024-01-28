@@ -3,7 +3,9 @@ package com.example.demo.service.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -21,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entity.Business;
 import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Servicio;
 import com.example.demo.entity.Student;
@@ -80,10 +83,10 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 	}
 
 	@Override
-	public List<StudentModel> listAllStudents() {
-	    List<StudentModel> students = new ArrayList<>();
+	public List<Student> listAllStudents() {
+	    List<Student> students = new ArrayList<>();
 	    for (Student s : studentRepository.findAll()) {
-	        students.add(entity2model(s));
+	        students.add(s);
 	    }
 	    return students;
 	}
@@ -238,17 +241,18 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
         return studentsWithRatedServices;
     }
 
-    private double calculateAverageRating(Student student) {
-    	List<Servicio> studentServices = student.getServicios();
-    	double suma = 0;
-    	double cont = 0;
-    	for (Servicio servicio : studentServices) {
-    		suma += servicio.getValoration();
-    		cont++;	
-		}
-    	double average = suma / cont;
-    	return average;
-    }	
+	private double calculateAverageRating(Student student) {
+	    List<Servicio> studentServices = student.getServicios();
+	    if (studentServices == null || studentServices.isEmpty()) {
+	        return -1; 
+	    }
+	    double suma = 0;
+	    for (Servicio servicio : studentServices) {
+	        suma += servicio.getValoration();
+	    }
+	    return suma / studentServices.size(); 
+	}
+
     
     @Override
     public List<Student>getStudentsOrderedByServiceAmount(){
@@ -258,7 +262,7 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
         	if(!student.getServicios().isEmpty())
         		studentsWithServices.add(student);	
 		}
-        studentsWithServices.sort(Comparator.comparingInt(this::getNumberOfServices).reversed());
+        studentsWithServices.sort(Comparator.comparingInt(this::getNumberOfServices));
         return studentsWithServices;
     	
     }
@@ -304,7 +308,43 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
 		List<Student> students = studentRepository.findByProfesionalFamily(proFam);
 		return students;
 	}
+	
+	@Override
+	public Map<Integer, Integer> getNumberOfFinishedServices(List<Student> studentList) {
+	    Map<Integer, Integer> numberOfFinishedServices = new HashMap<>();
 
+	    for (Student student : studentList) {
+	        List<Servicio> studentServices = student.getServicios();
+	        int numFinishedService = 0;
+
+	        for (Servicio servicio : studentServices) {
+	            if (servicio.getFinished() == 1) {
+	                numFinishedService++;
+	            }
+	        }
+
+	        numberOfFinishedServices.put(studentRepository.findByName(student.getName()).getId() , numFinishedService);
+	    }
+
+	    return numberOfFinishedServices;
+	}
+	
+	@Override
+	public Map<Integer, Double> getAverageValoration(List<Student> studentList) {
+	    Map<Integer, Double> averageValorations = new HashMap<>();
+
+	    for (Student student : studentList) {
+	        List<Servicio> studentServices = student.getServicios();
+
+	        Double avgRating = calculateAverageRating(student);
+
+	        averageValorations.put(studentRepository.findByName(student.getName()).getId() , avgRating);
+	    }
+
+	    return averageValorations;
+	}
+	
+	
 
 
     

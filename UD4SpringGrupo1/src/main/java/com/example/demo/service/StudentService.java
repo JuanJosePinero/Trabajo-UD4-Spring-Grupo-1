@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Student;
@@ -9,7 +10,7 @@ import com.example.demo.model.StudentModel;
 
 public interface StudentService {
 
-	List<StudentModel> listAllStudents();
+	List<Student> listAllStudents();
 	
 	List<StudentModel> listAllEnabledOrDisabledStudents();
 	
@@ -50,5 +51,9 @@ public interface StudentService {
 	public List<Student> getStudentsByProFamily(int proFamilyId);
 
 	List<Student> getAdminScreenFilterBy(String opcion, String familiaProf);
+	
+	public Map<Integer, Integer> getNumberOfFinishedServices(List<Student> studentList);
+
+	Map<Integer, Double> getAverageValoration(List<Student> studentList); 
 
 }
