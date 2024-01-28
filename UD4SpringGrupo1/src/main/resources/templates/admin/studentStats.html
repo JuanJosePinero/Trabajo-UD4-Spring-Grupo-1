@@ -75,7 +75,8 @@
 					<td th:text="${student.profesionalFamily.name}"></td>
 					<td th:text="${numberOfFinishedServices[student.id]}"></td>
 					<td th:text="${averageValorations[student.id] == -1 ? 'No data available' :
-             					#numbers.formatDecimal(averageValorations[student.id], 1, 'COMMA', 2, 'POINT')}"></td>
+              #numbers.formatDecimal(averageValorations[student.id], 1, 'COMMA', 2, 'POINT')} + ' ⭐'"></td>
+
 				</tr>
 			</tbody>
 		</table>
