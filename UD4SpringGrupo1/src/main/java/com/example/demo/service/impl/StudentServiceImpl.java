@@ -262,7 +262,7 @@ public class StudentServiceImpl implements StudentService, UserDetailsService {
         	if(!student.getServicios().isEmpty())
         		studentsWithServices.add(student);	
 		}
-        studentsWithServices.sort(Comparator.comparingInt(this::getNumberOfServices));
+        studentsWithServices.sort(Comparator.comparingInt(this::getNumberOfServices).reversed());
         return studentsWithServices;
     	
     }
