@@ -19,9 +19,17 @@
 
 			<div class="form-group">
 				<input th:field="*{name}" type="text" class="form-control" placeholder="Name" autofocus="true" />
-				<input th:field="*{address}" type="text" class="form-control" placeholder="Address" autofocus="true" />
-				<input th:field="*{email}" type="text" class="form-control" placeholder="Email" autofocus="true" />
+				<input th:field="*{address}" type="text" class="form-control" placeholder="Address" autofocus="true" />				
 				<input th:field="*{phone}" type="text" class="form-control" placeholder="Phone" />
+				<label for="email">Business email:</label>
+				<select th:field="*{email}" name="studentEmail" class="form-control">
+			    	<option th:each="student : ${studentEmails}" 
+			            th:if="${student.role == 'ROLE_STUDENT'}"
+			            th:value="${student.email}" 
+			            th:text="${student.email}">
+			    	</option>
+				</select>
+
 				<label for="logo">Business Logo</label>
 				<input id="logoImagen" type="file" class="form-control-file" accept="image/*" name="logoImagen" />
 				<input type="hidden" id="logo" name="logo">
@@ -33,11 +41,7 @@
 			</div>
 			<button class="btn btn-lg btn-primary" type="submit">Save</button>
 	</div>
-
-
 	</form>
-
-
 	</div>
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

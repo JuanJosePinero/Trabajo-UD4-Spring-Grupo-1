@@ -76,6 +76,16 @@ h1{
     cursor: pointer;
 }
 
+.btn-add {
+    padding: 8px 16px; /* Ajusta el padding según tus preferencias */
+    min-width: auto; /* Permite que el ancho se ajuste automáticamente al contenido */
+    background-color: #0179fe; /* Cambia "blue" al color azul que desees */
+    color: white; /* Establece el color del texto dentro del botón */
+    border: none; /* Elimina el borde del botón si lo deseas */
+    border-radius: 5px; /* Elimina el borde del botón si lo deseas */
+    cursor: pointer;
+}
+
 .btn-cancel {
     padding: 8px 16px; /* Ajusta el padding según tus preferencias */
     min-width: auto; 
@@ -86,3 +96,58 @@ h1{
     cursor: pointer;
 }
 
+/* Agrega estilos para la disposición de los contenedores */
+/* Agrega estilos para la disposición de los contenedores */
+.info-container {
+  display: inline-block; /* Cambia a display: inline-block */
+  width: 30%; /* Ajusta el ancho según tus preferencias */
+  vertical-align: top; /* Alinea arriba */
+}
+
+.info-container2 {
+	padding: 20px;
+  display: inline-block; /* Cambia a display: inline-block */
+  width: 100%; /* Ajusta el ancho según tus preferencias */
+  vertical-align: top; /* Alinea arriba */
+}
+
+/* Estilos adicionales si es necesario */
+.info-block-head, .info-block-head2 {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: rgba(248, 249, 250, 0.8);
+  width: 360px;
+}
+
+.info-block2 {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: rgba(248, 249, 250, 0.8);
+  width: 98%;
+}
+
+.tableBusiness {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.thBusiness, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.btn-blue {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-blue:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}

@@ -1,64 +1,117 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Admin screen - Colegio Salesiano</title>
-    <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-          crossorigin="anonymous">
+<title>Admin screen - Colegio Salesiano</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+	crossorigin="anonymous">
+	<link href="/css/adminStyles.css" rel="stylesheet">
 </head>
 
 <body>
-<div th:replace="/main/CustomNavbar.html"></div>
-<div class="container mt-5">
-    <h2 class="text-center">List of Students</h2>
+	<div th:replace="/main/CustomNavbar.html"></div>
+	<br>
+	<div class="container mt-5">
+		<div style="display: flex; justify-content: space-between;"
+			class="ml-4">
+			<span>
+				<h2 class="text-center">List of Students</h2>
+			</span> <span>
+				<div th:if="${success}" class="alert alert-success">
+					<p th:text="${success}"></p>
+				</div>
+				<form action="#" th:action="@{/admin/adminScreen}" method="GET"
+					class="row">
+					<div class="form-row align-items-center">
+						<div class="col-auto">
+							<select id="familiaProfesional" name="opcion" class="form-control">
+								<option value="">Select a profesional family</option>
+								<th:block th:each="family : ${proFamilies}">
+									<option th:value="${family.id}" th:text="${family.name}"></option>
+								</th:block>
+							</select>
+						</div>
+						<div class="col-auto">
+							<button class="btn btn-primary btn-sm text-uppercase ml-2" type="submit">Filter</button>
+						</div>
+					</div>
+					<div class="col-auto">
+						<select id="filterBy" name="filterBy" class="form-control">
+							<option value="null">Select an option</option>
+							<option value="all">All Services</option>
+							<option value="MorePositiveValorations">More positive
+								valorations</option>
+							<option value="LessPositiveValorations">Less positive
+								valorations</option>
+							<option value="NumberOfServices">Number of services (+
+								to -)</option>
+						</select>
+					</div>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>Email</th>
-            <th>Profesional Family</th>
-            <th>Enabled</th>
-            <th>Edit</th>
-            <th>Delete</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="student : ${students}" th:unless="${student.deleted == 1}" th:if="${student.role == 'ROLE_STUDENT'}">
-            <td hidden="id" th:text="${student.id}"></td>
-            <td th:text="${student.name}"></td>
-            <td th:text="${student.surname}"></td>
-            <td th:text="${student.username}"></td>
-            <td th:text="${student.profesionalFamily.name}"></td>
+					<div class="col-auto">
+						<button class="btn btn-primary btn-sm text-uppercase ml-2"
+							type="submit">Filter</button>
+					</div>
+				</form>
+			</span>
+		</div>
+		<br>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Surname</th>
+					<th>Email</th>
+					<th>Profesional Family</th>
+					<th>Enabled</th>
+					<th>Edit</th>
+					<th>Delete</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="student : ${students}"
+					th:unless="${student.deleted == 1}"
+					th:if="${student.role == 'ROLE_STUDENT'}">
+					<td hidden="id" th:text="${student.id}"></td>
+					<td th:text="${student.name}"></td>
+					<td th:text="${student.surname}"></td>
+					<td th:text="${student.email}"></td>
+					<td th:text="${student.profesionalFamily.name}"></td>
 
-            <td>
-                <form th:action="@{'/admin/enabled/' + ${student.id}}" method="post">
-                    <button type="submit" class="btn btn-link p-0 m-0">
-                        <img th:src="${student.enabled == 1 ? '/imgs/on.png' : '/imgs/off.png'}" alt="Toggle img" width="40px">
-                    </button>
-                </form>
-            </td>
-            <td>
-                <form th:action="@{'/admin/editStudent/' + ${student.id}}" method="get">
-                    <button type="submit" class="btn btn-link p-0 m-0">
-                        <img src="/imgs/edit.png" alt="Edit img" width="30px">
-                    </button>
-                </form>
-            </td>
-            <td>
-                <form th:action="@{'/admin/deleteStudent/' + ${student.id}}" method="post"
-                      onsubmit="return confirm('¿Estás seguro que quieres cambiar su estado?');">
-                    <button type="submit" class="btn btn-link p-0 m-0">
-                        <img src="/imgs/delete.png" alt="Edit img" width="30px">
-                    </button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+					<td>
+						<form th:action="@{'/admin/enabled/' + ${student.id}}"
+							method="post">
+							<button type="submit" class="btn btn-link p-0 m-0">
+								<img
+									th:src="${student.enabled == 1 ? '/imgs/on.png' : '/imgs/off.png'}"
+									alt="Toggle img" width="40px">
+							</button>
+						</form>
+					</td>
+					<td>
+						<form th:action="@{'/admin/editStudent/' + ${student.id}}"
+							method="get">
+							<button type="submit" class="btn btn-link p-0 m-0">
+								<img src="/imgs/edit.png" alt="Edit img" width="30px">
+							</button>
+						</form>
+					</td>
+					<td>
+						<form th:action="@{'/admin/deleteStudent/' + ${student.id}}"
+							method="post"
+							onsubmit="return confirm('¿Estás seguro que quieres cambiar su estado?');">
+							<button type="submit" class="btn btn-link p-0 m-0">
+								<img src="/imgs/delete.png" alt="Edit img" width="30px">
+							</button>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
 
 </body>
 </html>

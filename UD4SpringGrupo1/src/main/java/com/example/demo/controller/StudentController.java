@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Report;
@@ -82,7 +83,7 @@ public class StudentController {
 	}
 	
 	@GetMapping("/viewServices/assign/{serviceId}")
-	public String studentAssigned(@PathVariable("serviceId") int serviceId, Model model) {
+	public String studentAssigned(@PathVariable("serviceId") int serviceId, Model model, RedirectAttributes redirectAttributes) {
 	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    String nameStudent = ((UserDetails) principal).getUsername();  
         StudentModel student=studentService.getStudentByName(nameStudent);
@@ -94,6 +95,7 @@ public class StudentController {
 		    
 		    model.addAttribute("serviceList", serviceList);
 		    model.addAttribute("idStudent",idStudent);
+		    redirectAttributes.addFlashAttribute("successMessage", "You assign correctly");
 		} else {
 		    model.addAttribute("error", "Student does not have any services.");
 		}
@@ -139,7 +141,7 @@ public class StudentController {
 	@PostMapping("/writeReport")
 	public String sendReport(@ModelAttribute("servicioId") int serviceId,
 	                        @ModelAttribute("reportModel") ReportModel reportModel,
-	                        Model model) throws ParseException {
+	                        Model model, RedirectAttributes redirectAttributes) throws ParseException {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    String username = ((UserDetails) principal).getUsername();
 	    StudentModel student = studentService.getStudentByName(username);
@@ -153,8 +155,9 @@ public class StudentController {
 	    s.setHappeningDate(dateFormat.parse(formattedDate));
 	    servicioService.updateServicio(servicioServiceImpl.entity2model(s));
 
-
+	    redirectAttributes.addFlashAttribute("successMessage", "Service finished correctly");
 	    return "redirect:/student/viewServices?studentUsername="+username;
+	    //
 	}
 	
 }

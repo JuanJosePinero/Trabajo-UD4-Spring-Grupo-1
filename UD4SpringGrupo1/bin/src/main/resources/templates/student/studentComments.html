@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Page where students can add themselves to any available service.</title>
+<link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+        crossorigin="anonymous">
+  <link href="/css/styles.css" rel="stylesheet">
+  <style>
+    .green-background {
+      background-color: lightgreen;
+    }
+
+    .light-red-background {
+      background-color: lightcoral;
+    }
+
+    /* Modificaciones para el div */
+    .centered-container {
+      text-align: center;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background-color: rgba(248, 249, 250, 0.8);
+      width: 50%; /* Ajusta el ancho según tus preferencias */
+    }
+    
+    .centered-title {
+      text-align: center;
+      margin: auto;
+    }
+
+    /* Añade estilos para el salto de línea */
+    .comment {
+      white-space: pre-line; /* Mantendrá los saltos de línea en el comentario */
+      max-height: 150px; /* Ajusta la altura máxima según tus preferencias */
+      overflow: auto; /* Agrega una barra de desplazamiento si es necesario */
+    }
+  </style>
+</head>
+<body class="bodyBusiness">
+    <div th:replace="/main/CustomNavbar.html"></div>
+
+    <!-- Div modificado -->
+    <br><br>
+    <div class="centered-container">
+        <div class="centered-title">
+            <h3>Your comments</h3>
+        </div>
+        <div class="info-block2">
+            <p>Here are all the comments that you wrote to your services</p>
+            <hr>
+            <table class="tableBusiness" th:if="${#lists.isEmpty(serviceList)}">
+                <tr>
+                    <td colspan="2"><br><h2>No comments available</h2><br></td>
+                </tr>
+            </table>
+            <table class="tableBusiness" th:unless="${#lists.isEmpty(serviceList)}">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody id="serviceTableBody" th:each="service : ${serviceList}">
+                    <tr data-family-name="${service.profesionalFamilyId.name}" th:if="${service.comment != null and !service.comment.isEmpty()}">
+                        <td th:hidden="${service.id}"></td>
+                        <td th:text="${service.title}"></td>
+                        <td>
+                            <div class="comment" th:text="${service.comment}"></div>
+                            <script>
+                                var commentElement = document.querySelector(".comment");
+                                var maxCommentLength = 60;
+                                var commentText = commentElement.textContent;
+                                var segmentedComment = "";
+                                
+                                for (var i = 0; i < commentText.length; i += maxCommentLength) {
+                                    var segment = commentText.substr(i, maxCommentLength);
+                                    segmentedComment += segment + "<br>";
+                                }
+                                
+                                commentElement.innerHTML = segmentedComment;
+                            </script>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

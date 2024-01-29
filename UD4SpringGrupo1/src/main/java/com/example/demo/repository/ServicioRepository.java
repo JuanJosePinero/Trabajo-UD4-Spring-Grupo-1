@@ -1,11 +1,10 @@
 package com.example.demo.repository;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.entity.Business;
@@ -28,5 +27,6 @@ public interface ServicioRepository  extends JpaRepository<Servicio, Serializabl
 	public abstract List<Report> getReportsForServicesByBusinessId(Business business);
 	List<Servicio> findByFinishedAndStudentId(int finished, Student studentId);
 	public abstract List<Servicio> findByValorationIsNotNullAndBusinessIdAndProfesionalFamilyId(Business businessId, ProFamily proFamilyId);
+	public abstract List<Servicio>findByHappeningDateBetween(Date registerDateBegin,Date registerDateEnd);
 
 }

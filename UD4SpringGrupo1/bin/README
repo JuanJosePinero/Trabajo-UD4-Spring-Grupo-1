@@ -1,0 +1,17 @@
+README!
+
+En relación a la base de datos, las contrasenias de los Students y de los Business son todas 123. 
+Prueba a usar estas cuentas que están puestas con todos los valores de los filtros para que te sea mas fácil
+y no tengas que estar cambiando de la base de datos 1 a 1.
+
+------------------------------------------------------------------
+ROLE_STUDENT -> ale@gmail.com
+ROLE_BUSINESS -> e1@gmail.com
+ROLE_ADMIN -> a@gmail.com (aunque este no haga falta)
+
+Otros 2 que puedes usar que tambien están medio preparados son
+
+ROLE_STUDENT -> pablo@gmail.com
+ROLE_BUSINESS -> e2@gmail.com 
+
+------------------------------------------------------------------

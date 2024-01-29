@@ -1,25 +1,34 @@
 package com.example.demo.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.ProFamily;
+import com.example.demo.entity.Student;
 import com.example.demo.model.ProFamilyModel;
 import com.example.demo.repository.ProFamilyRepository;
+import com.example.demo.repository.StudentRepository;
 import com.example.demo.service.ProFamilyService;
 
 @Configuration
 @Service("proFamilyService")
 public class ProFamilyServiceImpl implements ProFamilyService {
-
-    private final ProFamilyRepository proFamilyRepository;
-
-    public ProFamilyServiceImpl(ProFamilyRepository proFamilyRepository) {
-        this.proFamilyRepository = proFamilyRepository;
-    }
+	
+	@Autowired
+	@Qualifier("proFamilyRepository")
+	private ProFamilyRepository proFamilyRepository;
+	
+	@Autowired
+	@Qualifier("studentRepository")
+	private StudentRepository studentRepository;
     
     private ProFamily model2entity(ProFamilyModel proFamilyModel) {
 		ModelMapper mapper = new ModelMapper();
@@ -69,4 +78,25 @@ public class ProFamilyServiceImpl implements ProFamilyService {
 		return proFamilyRepository.findAll();
 	}
 
+	public List<ProFamily> getAllNotEmpty() {
+        Map<ProFamily, Integer> familyCounts = new HashMap<>();
+        List<Student> allStudents = studentRepository.findAll();
+        for (Student student : allStudents) {
+        	if(student.getRole().equalsIgnoreCase("ROLE_STUDENT")) {
+	            ProFamily family = student.getProfesionalFamily();
+	            if (family != null) {
+	                familyCounts.put(family, familyCounts.getOrDefault(family, 0) + 1);
+	            }
+        	}
+        }
+
+        List<ProFamily> familiesWithStudents = new ArrayList<>();
+        for (Map.Entry<ProFamily, Integer> entry : familyCounts.entrySet()) {
+            if (entry.getValue() > 0) {
+                familiesWithStudents.add(entry.getKey());
+            }
+        }
+
+        return familiesWithStudents;
+    }
 }

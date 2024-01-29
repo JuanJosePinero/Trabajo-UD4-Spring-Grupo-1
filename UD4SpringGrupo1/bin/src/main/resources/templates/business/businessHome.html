@@ -2,60 +2,164 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <title>Your business</title>
-  <link rel="stylesheet"
-        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-        crossorigin="anonymous">
-  <link href="/css/styles.css" rel="stylesheet">
-  <style>
-    .info-container,
-    .info-container2 {
-      position: fixed;
-      top: 10%;
-      text-align: left;
-    }
-
-    .info-block-head,
-    .info-block,
-    .info-block-head2,
-    .info-block2 {
-      margin: 10px;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      background-color: rgba(248, 249, 250, 0.8);
-      width: 360px;
-    }
-
-    .info-container2 {
-      left: auto; /* Reset left */
-      right: 0; /* Align to the right */
-      transform: none; /* Remove translateY and translateX */
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Your business</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+	crossorigin="anonymous">
+<link href="/css/styles.css" rel="stylesheet">
 </head>
 
 <body class="bodyBusiness">
-  <div th:replace="/main/CustomNavbar.html"></div>
+	<div th:replace="/main/CustomNavbar.html"></div>
 
-  <!-- Your Business Information -->
-  <div class="info-container">
-    <div class="info-block-head">
-      <h3>Your Business Information</h3>
+	<div class="info-container2">
+		<div class="info-block-head">
+    <h3>Your Services</h3>
+    
+</div>
+<div th:if="${successMessage}" class="alert alert-success">
+        <p th:text="${successMessage}"></p>
     </div>
-    <div class="info-block">Information Here</div>
-  </div>
+    
+		<div class="info-block2">
+			<p align="left">
+			<div class="form-row align-items-center">
+				<span> <a th:href="@{/servicio/addServicio}" class="btn-add">Add
+						Servicio</a></span>
+				<div style="display: flex; justify-content: space-between;" class="ml-4">
+					<form th:action="@{/business/home}" method="POST" class="row">
+						<div class="col-auto">
+							<select id="filterBy" name="filterBy" class="form-control">
+								<option value="null">Select an option</option>
+								<option value="all">All Services</option>
+								<option value="finishedServices">Completed Services</option>
+								<option value="asignados_no_realizados">Assigned but
+									Uncompleted Services</option>
+								<option value="no_asignados">Unassigned Services</option>
+							</select>
+						</div>
+						<br>
+						<div class="col-auto">
+							<select id="familiaProfesional" name="opcion"
+								class="form-control">
+								<option value="">Select a profesional Family</option>
+								<th:block th:each="family : ${profesionalFamilies}">
+									<option th:value="${family.id}" th:text="${family.name}"></option>
+								</th:block>
+							</select>
+						</div>
+						<br>
+						<div class="col-auto">
+    <input type="date" id="startDate" class="form-control">
+</div>
+<div class="col-auto">
+    <input type="date" id="endDate" class="form-control">
+</div>
+						
+						<br>
+						<div class="col-auto">
+							<button class="btn btn-primary btn-sm text-uppercase ml-2"
+								type="submit">Filter</button>
+						</div>
+					</form>
+				</div>
+			</div>
+			<br>
 
-  <div class="info-container2">
-    <div class="info-block-head2">
-      <h3>Your services</h3>
-    </div>
-    <div class="info-block2"><ul th:each="service : ${servicio}">
-        <li th:text="${service.id}"></li>
-      </ul></div>
-  </div>
+			<table class="tableBusiness">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Description</th>
+						<th>Student</th>
+						<th>ProFamily</th>
+						<th>Finished</th>
+						<th>Rate</th>
+						<th>Comment</th>
+						<th>Edit</th>
+						<th>Delete</th>
+					</tr>
+				</thead>
+				<tbody id="serviceTableBody">
+					<tr th:if="${servicio.isEmpty()}" class="centered-row">
+						<td colspan="9"><br>
+						<h2>No services available</h2>
+							<br></td>
+					</tr>
+					<tr th:each="service : ${servicio}"
+						th:if="${service.deleted != 1 and service.businessId?.id == business.id}">
+						<td th:hidden="${service.id}"></td>
+						<td th:text="${service.title}"></td>
+						<td th:text="${service.description}"></td>
+						<td
+							th:text="${service.studentId != null ? service.studentId.name : 'Not assigned'}"></td>
+						<td th:text="${service.profesionalFamilyId.name}"></td>
+						<td><img th:if="${service.finished == 1}"
+							src="/imgs/tick.png" alt="Sí" width="30px" /> <img
+							th:if="${service.finished != 1}" src="/imgs/cross.png" alt="No"
+							width="30px" /></td>
+						<td><a th:href="@{'/servicio/rateServicio/' + ${service.id}}"
+							class="btn btn-link p-0 m-0"
+							th:if="${service.finished == 1 and service.studentId != null}">
+								<img src="/imgs/estrella.png" alt="Star img" width="30px">
+						</a> <a href="#" onclick="return showErrorMessage();"
+							th:unless="${service.finished == 1 and service.studentId != null}">
+								<img src="/imgs/estrellaVacia.png" alt="Empty Star img"
+								width="30px">
+						</a></td>
+
+						<td><a
+							th:href="@{'/servicio/commentServicio/' + ${service.id}}"
+							class="btn btn-link p-0 m-0"
+							th:if="${service.studentId != null and service.finished == 1}">
+								<img src="/imgs/comentDone.png" alt="Comment Done img"
+								width="30px">
+						</a> <a href="#" onclick="return showCommentErrorMessage();"
+							th:unless="${service.studentId != null and service.finished == 1}">
+								<img src="/imgs/coment.png" alt="Comment img" width="30px">
+						</a></td>
+
+						<td>
+							<form th:action="@{'/servicio/editServicio/'}"
+								method="post">
+								<input type="hidden" th:value="${service.id}" name="servicioId">
+								<button type="submit" class="btn btn-link p-0 m-0">
+									<img src="/imgs/edit.png" alt="Edit img" width="30px">
+								</button>
+							</form>
+						</td>
+						<td>
+							<form th:action="@{'/servicio/deleteServicio/' + ${service.id}}"
+								method="post"
+								onsubmit="return confirm('¿Estás seguro que quieres cambiar su estado?');">
+								<button type="submit" class="btn btn-link p-0 m-0">
+									<img src="/imgs/delete.png" alt="Edit img" width="30px">
+								</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div id="selectedValue"></div>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		function showErrorMessage() {
+			alert("You can't valorate because the service is unassigned or is not finished!");
+			return false;
+		}
+	</script>
+	<script>
+		function showCommentErrorMessage() {
+			alert("You can't comment because the service is unassigned or is not finished!");
+			return false;
+		}
+	</script>
+
+
 </body>
 
 </html>

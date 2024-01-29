@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,8 +12,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.entity.Business;
 import com.example.demo.entity.ProFamily;
+import com.example.demo.entity.Student;
 import com.example.demo.model.StudentModel;
 import com.example.demo.service.ProFamilyService;
 import com.example.demo.service.StudentService;
@@ -22,6 +26,7 @@ import com.example.demo.service.StudentService;
 public class AdminController {
 
 	private static final String ADMIN_VIEW = "admin/adminScreen";
+	private static final String ADMIN_STUDENTS = "admin/studentStats";
 	private static final String EDIT_STUDENT_VIEW = "admin/editStudent";
 	
 	@Autowired
@@ -33,10 +38,35 @@ public class AdminController {
 	 private ProFamilyService proFamilyService;
 	
 	@GetMapping("/adminScreen")
-	public String adminScreen(Model model) {
-	    List<StudentModel> students = studentService.listAllStudents();
+	public String adminScreen(Model model,
+			@RequestParam(name="opcion", required=false, defaultValue="null") String opcion,
+			@RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy) {
+	    List<Student> students = studentService.getAdminScreenFilterBy(opcion, filterBy);
 	    model.addAttribute("students", students);
+	    
+	    List<ProFamily> proFamilies = proFamilyService.getAllNotEmpty();
+	    model.addAttribute("proFamilies", proFamilies);
+
 	    return ADMIN_VIEW;
+	}
+	
+	@GetMapping("/studentStats")
+	public String adminStudentsList(Model model, 
+			@RequestParam(name="opcion", required=false, defaultValue="null") String opcion,
+			@RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy) {
+	    List<Student> students = studentService.getAdminScreenFilterBy(opcion, filterBy);
+	    model.addAttribute("students", students);
+	    
+	    List<ProFamily> proFamilies = proFamilyService.getAllNotEmpty();
+	    model.addAttribute("proFamilies", proFamilies);
+	 	    
+	    Map<Integer, Double> averageValorations = studentService.getAverageValoration(students);
+	    model.addAttribute("averageValorations", averageValorations);
+	    	    
+	    Map<Integer, Integer> numberOfFinishedServices = studentService.getNumberOfFinishedServices(students);
+	    model.addAttribute("numberOfFinishedServices", numberOfFinishedServices);
+
+	    return ADMIN_STUDENTS;
 	}
 
 	
@@ -56,11 +86,11 @@ public class AdminController {
     }
 	
 	@PostMapping("/enabled/{studentId}")
-	public String enable(@PathVariable("studentId") int studentId, Model model) {
+	public String enable(@PathVariable("studentId") int studentId, Model model, @RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy) {
 		
 		studentService.enableStudent(studentId);
 		    
-	    return "redirect:/admin/adminScreen";
+	    return "redirect:/admin/adminScreen?filterBy="+filterBy;
 	}
 	
 	@PostMapping("/deleteStudent/{studentId}")

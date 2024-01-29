@@ -2,11 +2,15 @@ package com.example.demo.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -24,6 +28,7 @@ import com.example.demo.entity.Business;
 import com.example.demo.entity.ProFamily;
 import com.example.demo.entity.Report;
 import com.example.demo.entity.Servicio;
+import com.example.demo.entity.Student;
 import com.example.demo.model.BusinessModel;
 import com.example.demo.model.ServicioModel;
 import com.example.demo.model.StudentModel;
@@ -70,16 +75,38 @@ public class BusinessController {
 	private StudentService studentService;
 
 	@GetMapping("/list")
-	public String business(Model model) {
-		List<Business> businessList = businessService.getAllBusiness();
-		model.addAttribute("business1", businessList);
-		return BUSINESS_VIEW;
+	public String business(Model model, @RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy) {
+		
+		 	List<Business> businessList = businessService.getBusinessList(filterBy);
+		    model.addAttribute("business1", businessList);
+		    
+		    Map<Integer, Integer> numberOfServices = businessService.getAllNumberOfServices(businessList);
+		    model.addAttribute("numberOfServices", numberOfServices);
+		    
+		    
+		    Map<Integer, Integer> numberOfFinishedServices = businessService.getAllNumberOfFinishedServices(businessList);
+		    model.addAttribute("numberOfFinishedServices", numberOfFinishedServices);
+		    return BUSINESS_VIEW;
 	}
+	
+//	@GetMapping("/list/orderByServiceAmount")
+//	public String orderByServiceAmount(Model model) {
+//		List<Business> businessList = businessService.getBusinessOrderedByServiceAmount();
+//		model.addAttribute("business1", businessList);
+//		return BUSINESS_VIEW;
+//	}
+//	
+//	@GetMapping("/list/orderByServiceFinished")
+//	public String orderByServiceFinsihed(Model model) {
+//		List<Business> businessList = businessService.getBusinessOrderedByServiceFinished();
+//		model.addAttribute("business1", businessList);
+//		return BUSINESS_VIEW;
+//	}
 
 	@GetMapping("/addBusiness")
 	public String addBusiness(Model model) {
 		model.addAttribute("businessModel", new BusinessModel());
-		List<StudentModel> studentEmails = studentService.listAllStudents();
+		List<Student> studentEmails = studentService.listAllStudents();
 		model.addAttribute("studentEmails", studentEmails);
 		return ADD_BUSINESS_VIEW;
 	}
@@ -220,121 +247,117 @@ public class BusinessController {
 	}
 	
 	@GetMapping("/home")
-	public String Business(@RequestParam(name="opcion", required=false, defaultValue="0") String opcion, 
-	                       @RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy, 
-	                       Model model) {
-	    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	    String username = ((UserDetails) principal).getUsername();
-	    StudentModel student = studentService.getStudentByName(username);
-	    String email = student.getEmail();
-	    Business business = businessService.getIdByEmail(email);
-	    List<ProFamily> profesionalFamilies = proFamilyService.getAll();
-	    model.addAttribute("profesionalFamilies", profesionalFamilies);
-	    
-	    if (!filterBy.equals("null")) {
-	    	if (filterBy.equals("finishedServices")) {
-	            List<ServicioModel> listServicios;
-	            if (Integer.parseInt(opcion) != 0) {
-	                ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
-	                String proFamName = profam.getName();
-	                listServicios = servicioService.getFinishedServiciosByProFamily(proFamName);
-	            } else {
-	                listServicios = servicioService.getFinishedServicios();
-	            }
-	            model.addAttribute("servicio", listServicios);
-	        } else if (filterBy.equals("asignados_no_realizados")) {
-	            List<ServicioModel> listServicios;
-	            if (Integer.parseInt(opcion) != 0) {
-	                ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
-	                String proFamName = profam.getName();
-	                listServicios = servicioService.getAssignedButUncompletedServiciosByProFamily(proFamName);
-	            } else {
-	                listServicios = servicioService.getAssignedButUncompletedServices();
-	            }
-	            model.addAttribute("servicio", listServicios);
-	        } else if (filterBy.equals("no_asignados")) {
-	            List<ServicioModel> listServicios;
-	            if (Integer.parseInt(opcion) != 0) {
-	                ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
-	                String proFamName = profam.getName();
-	                listServicios = servicioService.getUnassignedServiciosByProFamily(proFamName);
-	            } else {
-	                listServicios = servicioService.getUnassignedServicios();
-	            }
-	            model.addAttribute("servicio", listServicios);
-	        } else {
-	            List<ServicioModel> servicios = servicioService.getAllServicios();
-	            model.addAttribute("servicio", servicios);
-	        }
-	    } else if (Integer.parseInt(opcion) != 0) {
-	        ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
-	        String proFamName = profam.getName();
-	        
-	        List<ServicioModel> listServicios = servicioService.findServiciosByProFamily(proFamName);
-	        
+    public String getBusiness(@RequestParam(name="opcion", required=false, defaultValue="0") String opcion, 
+                              @RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy,
+                              @RequestParam(name="startDate", required=false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+                              @RequestParam(name="endDate", required=false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+                              Model model) {
+        return processBusiness(opcion, filterBy, startDate, endDate, model);
+    }
 
-	        model.addAttribute("servicio", listServicios);
-	    } else {
-	        List<ServicioModel> servicios = servicioService.getAllServicios();
-	        model.addAttribute("servicio", servicios);
-	    }
-	    model.addAttribute("business", business);
-	    return BUSINESS_HOME_VIEW;
-	}
+    @PostMapping("/home")
+    public String postBusiness(@RequestParam(name="opcion", required=false, defaultValue="0") String opcion, 
+                               @RequestParam(name="filterBy", required=false, defaultValue="null") String filterBy,
+                               @RequestParam(name="startDate", required=false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+                               @RequestParam(name="endDate", required=false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+                               Model model) {
+        return processBusiness(opcion, filterBy, startDate, endDate, model);
+    }
 
-	@GetMapping("/reports")
-	public String Reports(@RequestParam(name="opcion",required=false,defaultValue="0")String opcion,Model model) {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String username = ((UserDetails) principal).getUsername();
+    private String processBusiness(String opcion, String filterBy,Date startDate,Date endDate, Model model) {
+    	
+    	System.out.println("QUE PASA cn la opcion "+opcion);
+    	System.out.println("QUE PASA cn el filtro "+filterBy);
+    	
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
+        StudentModel student = studentService.getStudentByName(username);
+        String email = student.getEmail();
+        Business business = businessService.getIdByEmail(email);
+        List<ProFamily> profesionalFamilies = proFamilyService.getAllNotEmpty();
+        model.addAttribute("profesionalFamilies", profesionalFamilies);
+        
+        List<ServicioModel> listServicios = servicioService.getFilteredServices(opcion, filterBy,startDate,endDate);
+        model.addAttribute("servicio", listServicios);
+        model.addAttribute("business", business);
+       
+        return BUSINESS_HOME_VIEW;
+    }
+	
+    @PostMapping("/reports")
+    public String reportsPost(@RequestParam(name = "opcion", required = false, defaultValue = "0") String opcion, Model model) {
+        return processReports(opcion, model);
+    }
 
-		StudentModel student = studentService.getStudentByName(username);
-		String email = student.getEmail();
-		Business business = businessService.getIdByEmail(email);
-		
-		List<ProFamily> profesionalFamilies = proFamilyService.getAll();
-		model.addAttribute("profesionalFamilies", profesionalFamilies);
-		
-		if(Integer.parseInt(opcion)!=0) {
-			
-			ProFamily profam=proFamilyService.findById(Integer.parseInt(opcion));
-			List<Report>reports=reportService.findReportsByServiceProFamily(profam.getName(),business);
-			model.addAttribute("report", reports);
-			List<Servicio> businessIdServices=reports.stream().map(report->report.getServicioId()).collect(Collectors.toList());
-			
-			model.addAttribute("businessIdServices",businessIdServices);
-
-		}else {
-			
-			List<Report> reports = servicioService.getReportsForServicesByBusinessId(business);
-			model.addAttribute("report", reports);
-			List<Servicio> businessIdServices=reports.stream().map(report->report.getServicioId()).collect(Collectors.toList());
-			model.addAttribute("businessIdServices",businessIdServices);
-		}
-		model.addAttribute("username",username);
-
-		return BUSINESS_REPORT_VIEW;
-	}
+    @GetMapping("/reports")
+    public String reports(@RequestParam(name = "opcion", required = false, defaultValue = "0") String opcion, Model model) {
+        return processReports(opcion, model);
+    }
 
 
-	@GetMapping("/ratedServicios")
-	public String ratedServicios(@RequestParam(name="opcion",required=false,defaultValue="0")String opcion, Model model) {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String username = ((UserDetails) principal).getUsername();
+    private String processReports(String opcion, Model model) {
+    	
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
 
-		StudentModel student = studentService.getStudentByName(username);
-		String email = student.getEmail();
-		Business business = businessService.getIdByEmail(email);		
-		List<ProFamily> profesionalFamilies = proFamilyService.getAll();
-		model.addAttribute("profesionalFamilies", profesionalFamilies);
-		if(Integer.parseInt(opcion)!=0) {
-			ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
-			List<ServicioModel> servicios = servicioService.findByValorationIsNotNullAndBusinessIdAndProfesionalFamilyId(business, profam);
-			model.addAttribute("servicio", servicios);
-		}else {	
-			List<ServicioModel> servicios =servicioService.getServicesByBusinessId(business);
-			model.addAttribute("servicio", servicios);
-		}
-		return BUSINESS_RATED_SERVICES_VIEW;
-	}
+        StudentModel student = studentService.getStudentByName(username);
+        String email = student.getEmail();
+        Business business = businessService.getIdByEmail(email);
+
+        List<ProFamily> profesionalFamilies = proFamilyService.getAllNotEmpty();
+        model.addAttribute("profesionalFamilies", profesionalFamilies);
+
+        if (Integer.parseInt(opcion) != 0) {
+            ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
+            List<Report> reports = reportService.findReportsByServiceProFamily(profam.getName(), business);
+            model.addAttribute("report", reports);
+            List<Servicio> businessIdServices = reports.stream().map(report -> report.getServicioId()).collect(Collectors.toList());
+            model.addAttribute("businessIdServices", businessIdServices);
+
+        } else {
+            List<Report> reports = servicioService.getReportsForServicesByBusinessId(business);
+            model.addAttribute("report", reports);
+            List<Servicio> businessIdServices = reports.stream().map(report -> report.getServicioId()).collect(Collectors.toList());
+            model.addAttribute("businessIdServices", businessIdServices);
+        }
+        model.addAttribute("username", username);
+
+        return BUSINESS_REPORT_VIEW;
+    }
+    
+    @GetMapping("/ratedServicios")
+    public String ratedServicios(@RequestParam(name = "opcion", required = false, defaultValue = "0") String opcion, Model model) {
+        return processRatedServicios(opcion, model);
+    }
+
+    @PostMapping("/ratedServicios")
+    public String ratedServiciosPost(@RequestParam(name = "opcion", required = false, defaultValue = "0") String opcion, Model model) {
+        return processRatedServicios(opcion, model);
+    }
+
+    private String processRatedServicios(String opcion, Model model) {
+    	
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
+
+        StudentModel student = studentService.getStudentByName(username);
+        String email = student.getEmail();
+        Business business = businessService.getIdByEmail(email);
+        List<ProFamily> profesionalFamilies = proFamilyService.getAllNotEmpty();
+        model.addAttribute("profesionalFamilies", profesionalFamilies);
+
+        if (Integer.parseInt(opcion) != 0) {
+            ProFamily profam = proFamilyService.findById(Integer.parseInt(opcion));
+            List<ServicioModel> servicios = servicioService.findByValorationIsNotNullAndBusinessIdAndProfesionalFamilyId(business, profam);
+            model.addAttribute("servicio", servicios);
+        } else {
+            List<ServicioModel> servicios = servicioService.getServicesByBusinessId(business);
+            model.addAttribute("servicio", servicios);
+        }
+
+        return BUSINESS_RATED_SERVICES_VIEW;
+    }
+	
+	
 
 }
